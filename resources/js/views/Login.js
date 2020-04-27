@@ -38,6 +38,7 @@ const Login = () => {
                 console.log(response);
                 setToken(response.data.access_token);
                 dispatch({ type: 'USER_LOGIN', token: response.data.access_token, email: sEmail });
+                localStorage.setItem('token', response.data.access_token);
                 history.push('/profile');
             }).catch((err) => {
                 console.log(err);

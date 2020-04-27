@@ -72677,6 +72677,7 @@ var Login = function Login() {
         token: response.data.access_token,
         email: sEmail
       });
+      localStorage.setItem('token', response.data.access_token);
       history.push('/profile');
     })["catch"](function (err) {
       console.log(err);
@@ -72763,7 +72764,12 @@ var Profile = function Profile() {
   var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
       _useState4 = _slicedToArray(_useState3, 2),
       user = _useState4[0],
-      setUser = _useState4[1];
+      setUser = _useState4[1]; // useEffect(() => {
+  //     localStorage.setItem('token', token);
+  //     const savedToken = localStorage.getItem('token');
+  //     console.log(savedToken);
+  // }, [user])
+
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     console.log(token);
@@ -72771,7 +72777,7 @@ var Profile = function Profile() {
       method: 'GET',
       url: '/api/auth/user',
       headers: {
-        'Authorization': 'Bearer ' + token
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     };
     axios(authOptions).then(function (response) {

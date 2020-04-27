@@ -7,6 +7,13 @@ const Profile = () => {
     const token = useSelector(state => state.usersReducer.token);
     const [user, setUser] = useState('');
 
+    // useEffect(() => {
+    //     localStorage.setItem('token', token);
+    //     const savedToken = localStorage.getItem('token');
+
+    //     console.log(savedToken);
+    // }, [user])
+
     useEffect(() => {
         console.log(token);
 
@@ -14,7 +21,7 @@ const Profile = () => {
             method: 'GET',
             url: '/api/auth/user',
             headers: {
-                'Authorization': 'Bearer ' + token
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         }
 
