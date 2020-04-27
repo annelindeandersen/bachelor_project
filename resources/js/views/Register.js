@@ -9,21 +9,18 @@ const Register = () => {
     const [sPassword, setPassword] = useState('');
     const [sConfirmPassword, setConfirmPassword] = useState('');
 
-    let data = {
-        name: sName,
-        email: sEmail,
-        password: sPassword,
-        password_confirmation: sConfirmPassword
-    }
-
     const authOptions = {
         method: 'POST',
         url: '/api/auth/signup',
-        data: data,
+        data: {
+            name: sName,
+            email: sEmail,
+            password: sPassword,
+            password_confirmation: sConfirmPassword
+        },
         headers: {
             'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            // 'Authentication': 'Bearer ' + token
+            'X-Requested-With': 'XMLHttpRequest'
         }
     }
 
@@ -47,7 +44,6 @@ const Register = () => {
             <input value={sEmail} onChange={(event) => setEmail(event.target.value)} id="registerEmail" name="registerEmail" className="form-control" placeholder="email" /><br />
             <input value={sPassword} onChange={(event) => setPassword(event.target.value)} id="registerPassword" name="registerPassword" className="form-control" type="password" placeholder="password" /><br />
             <input value={sConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} id="registerConfirmPassword" name="registerConfirmPassword" className="form-control" type="password" placeholder="confirm password" /><br />
-            {/* <input id="confirmRegisterPassword" className="form-control" placeholder="confirm password" /><br /> */}
             <meta name="csrf-token" content="{{ csrf_token() }}" />
             <input id="registerButton" className="form-control" type="submit" value="Register" onClick={register} />
 

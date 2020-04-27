@@ -1,24 +1,32 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Login = () => {
-    const [user, setUser] = useState({});
+    // Redux
+    const users = useSelector(state => state.usersReducer.users);
+    const dispatch = useDispatch();
+
+    // States
+    const [token, setToken] = useState('');
     const [sEmail, setEmail] = useState('');
     const [sPassword, setPassword] = useState('');
 
-    let data = {
-        email: sEmail,
-        password: sPassword,
-    }
+    // Current history
+    let history = useHistory();
+
+    console.log({ users, token });
 
     const authOptions = {
         method: 'POST',
         url: '/api/auth/login',
-        data: data,
+        data: {
+            email: sEmail,
+            password: sPassword,
+        },
         headers: {
             'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            // 'Authentication': 'Bearer ' + token
+            'X-Requested-With': 'XMLHttpRequest'
         }
     }
 
@@ -28,7 +36,9 @@ const Login = () => {
         axios(authOptions)
             .then(response => {
                 console.log(response);
-                setUser(response.data);
+                setToken(response.data.access_token);
+                dispatch({ type: 'USER_LOGIN', token: response.data.access_token, email: sEmail });
+                history.push('/profile');
             }).catch((err) => {
                 console.log(err);
             })
