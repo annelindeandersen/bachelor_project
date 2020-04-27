@@ -3,15 +3,23 @@ import { Link } from 'react-router-dom';
 
 const Menu = () => {
     return (
-        <nav className="container">
-            <div>
-                <Link to="/">Home</Link>
+        <nav>
+            <div className="container">
+            <div className="logo">
+              <Link to="/">DELIVR</Link>
             </div>
-            <div>
-                <Link to="/login">Login</Link>
+                
+            <div className="d-flex flex-row justify-content-end">
+                <div className="nav-links">
+                    <Link to="/">Home</Link>
+                </div>
+                <div className="nav-links">
+                    <Link to="/login">Login</Link>
+                </div>
+                <div className="nav-links">
+                    <Link to="/register">Register</Link>
+                </div>
             </div>
-            <div>
-                <Link to="/register">Register</Link>
             </div>
         </nav>
     )

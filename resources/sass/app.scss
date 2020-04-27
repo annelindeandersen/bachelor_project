@@ -1,8 +1,231 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Muli:wght@200;400;600;700;800;900&display=swap');
 // Variables
 @import 'variables';
+@import "mixins";
+
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+body {
+  background-color: #f2f2f2;
+}
+nav {
+  height: 10vh;
+
+}
+
+.nav-container {
+  padding: 0 165px;
+}
+
+.nav-links {
+  margin-left: 60px;
+  font-size: 24px;
+  font-family: $display-font;
+  a {
+    color:$black;
+  }
+}
+
+.background {
+  width: 100vw;
+  height: 100%;
+  background-color: #A1CFB8;
+  background-image: url('../images/chilli_rot.png');
+  background-position: top right;
+  background-repeat: no-repeat;
+  rotate: 90deg;
+  background-size: 60%;
+}
+
+.orange-button {
+  color: $white;
+  font-family: $display-font;
+  font-size: 20px;
+  padding: 0 20px;
+  background-color: $orange;
+  display:inline;
+  text-decoration: none;
+}
+
+.orange-button:hover {
+  text-decoration: none;
+}
+
+.home-container {
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  .logo {
+    color: $orange;
+    font-family: $display-font;
+    font-size: 32px;
+  }
+
+  p {
+    font-size: $body-size;
+    color: $white;
+    text-align: left;
+    font-size: 24px;
+    font-weight: 200;
+
+    @include md {
+      font-size: 16px;
+      padding: 0px 15px 30px;
+      color: black;
+    }
+  }
+}
+
+.title {
+  color: $white;
+  font-family: $display-font;
+  font-size: 32px;
+
+  @include md {
+    font-size: 24px;
+    color: black;
+  
+  }
+
+}
+
+.home-menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.home-options {
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  @include md {
+    display: inline-block;
+  }
+
+
+    a {
+        text-decoration: none;
+        padding: 0 20px;
+
+        @include md {
+          padding: 20px 0;
+        }
+
+    .home-menu:hover {
+      color: $pink;
+    }
+  }
+}
+
+.home-options a {
+  border-right: 6px solid $white;
+
+  @include md {
+    border-right: none;
+  }
+}
+
+.home-options a:last-child {
+  border-right: none;
+}
+
+.home-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 100px 150px 30px;
+
+  @include md {
+    padding: 0;
+  }
+  
+}
+
+.home-menu {
+  color: $white;
+  font-family: $display-font;
+  font-size: 54px;
+  text-transform: uppercase;
+  vertical-align: text-top;
+
+  @include md {
+    padding: 50px 0;
+  }
+
+
+  .menu-small {
+    font-size: 20px;
+    padding: 12px 6px;
+
+    @include md {
+      font-size: 24px;
+      padding: 0px 6px;
+    }
+  }
+
+  @include md {
+    font-size: 24px;
+    padding: 0px;
+  }
+}
+
+.restaurants-page {
+  background-color:#f2f2f2;
+}
+
+.restaurants-container {
+  width: 100vw;
+  height: 90vh;
+  background-color: #A1CFB8;
+  background-image: url('../images/chef.jpg');
+  background-position: top right;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-color: #f2f2f2;
+
+  @include md {
+    background-position: top center;
+    background-size: 100% 50%;
+  }
+}
+.join-us {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 180px;
+
+  @include md {
+    
+    width: 90%;
+    bottom: 150px;
+  }
+}
+.heading {
+  font-family: $display-font;
+  font-size: 32px;
+  @include md {
+ 
+    font-size: 24px;
+  }
+}
+
+.heading-p {
+  font-size: 24px;
+  font-weight: 200;
+  @include md {
+    
+    font-size: 16px;
+  }
+}

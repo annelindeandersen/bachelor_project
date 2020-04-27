@@ -3,22 +3,28 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 // Views
-import Home from './Home';
-import Login from './Login';
-import Register from './Register';
-import Profile from './Profile';
+import Home from './../views/Home';
+import ForRestaurants from './../views/ForRestaurants';
+import Login from './../views/Login';
+import Register from './../views/Register';
+import Profile from './../views/Profile';
 
 // Components
 import Menu from './../components/Menu';
 import Footer from './../components/Footer';
 
+
+
 function Index() {
     return (
         <Router>
-            <Menu />
             <Switch>
                 <Route exact path="/">
                     <Home />
+                </Route>
+                <Route exact path="/for-restaurants">
+                    <Menu />
+                    <ForRestaurants />
                 </Route>
                 <Route path="/login">
                     <Login />

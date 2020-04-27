@@ -1,19 +1,42 @@
 // Body
-$body-bg: #f8fafc;
+// $body-bg: #A1CFB8;
 
 // Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
+ $font-family-sans-serif: 'Muli', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
+$body-font: 'Muli', sans-serif;
+$display-font: 'Fjalla One', sans-serif;
+$body-body: 16px;
+$display-size: 32px;
+$display-p: 32px;
+$body-size: 16px;
 
 // Colors
+$green: #a2cfb8;
+$orange: #f35b2a;
+$pink: #d6aac7;
+$white: #ffffff;
+
 $blue: #3490dc;
 $indigo: #6574cd;
 $purple: #9561e2;
-$pink: #f66d9b;
-$red: #e3342f;
-$orange: #f6993f;
+
+$red: #f35b2b;
+
 $yellow: #ffed4a;
-$green: #38c172;
+
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
+
+// Small tablets and large smartphones (landscape view)
+$screen-sm: 576px;
+
+// Small tablets (portrait view)
+$screen-md: 768px;
+
+// Tablets and small desktops
+$screen-lg: 992px;
+
+// Large tablets and desktops
+$screen-xl: 1200px;
