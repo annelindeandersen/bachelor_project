@@ -15,7 +15,11 @@ const Login = () => {
     // Current history
     let history = useHistory();
 
-    console.log({ users, token });
+    useEffect(() => {
+        // set logout to false, so user can login again
+        dispatch({ type: 'LOGOUT_USER', logout: false });
+        // console.log({ users, token });
+    }, [])
 
     const authOptions = {
         method: 'POST',
@@ -37,7 +41,7 @@ const Login = () => {
             .then(response => {
                 console.log(response);
                 setToken(response.data.access_token);
-                dispatch({ type: 'USER_LOGIN', token: response.data.access_token, email: sEmail });
+                dispatch({ type: 'USER_TOKEN', token: response.data.access_token });
                 localStorage.setItem('token', response.data.access_token);
                 history.push('/profile');
             }).catch((err) => {

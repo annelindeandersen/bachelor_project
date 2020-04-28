@@ -72423,19 +72423,50 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
 
 
 
 var Menu = function Menu() {
+  var location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useLocation"])();
+  var history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useHistory"])();
+  var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
+  var users = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
+    return state.usersReducer.users;
+  });
+
+  var logout = function logout() {
+    var authOptions = {
+      method: 'GET',
+      url: '/api/auth/logout',
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    };
+    axios(authOptions).then(function (response) {
+      console.log(response);
+      localStorage.removeItem('token');
+      dispatch({
+        type: 'LOGOUT_USER',
+        logout: true
+      });
+    })["catch"](function (err) {
+      console.log(err);
+    });
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
     className: "container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
     to: "/"
-  }, "Home")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+  }, "Home")), location.pathname === '/profile' ? '' : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
     to: "/login"
-  }, "Login")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+  }, "Login")), location.pathname === '/profile' ? '' : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
     to: "/register"
-  }, "Register")));
+  }, "Register")), location.pathname === '/login' || location.pathname === '/register' ? '' : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    onClick: logout
+  }, "Logout")));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Menu);
@@ -72469,11 +72500,22 @@ var reducer = function reducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
-  if (action.type === 'USER_LOGIN') {
+  if (action.type === 'USER_TOKEN') {
     return _objectSpread({}, state, {
-      token: action.token,
-      email: action.email
+      token: action.token
     });
+  }
+
+  if (action.type === 'CURRENT_USER') {
+    return _objectSpread({}, state, {
+      user: action.user
+    });
+  }
+
+  if (action.type === 'LOGOUT_USER') {
+    return {
+      logout: action.logout
+    };
   }
 
   return state;
@@ -72650,10 +72692,13 @@ var Login = function Login() {
 
 
   var history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useHistory"])();
-  console.log({
-    users: users,
-    token: token
-  });
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    // set logout to false, so user can login again
+    dispatch({
+      type: 'LOGOUT_USER',
+      logout: false
+    }); // console.log({ users, token });
+  }, []);
   var authOptions = {
     method: 'POST',
     url: '/api/auth/login',
@@ -72673,9 +72718,8 @@ var Login = function Login() {
       console.log(response);
       setToken(response.data.access_token);
       dispatch({
-        type: 'USER_LOGIN',
-        token: response.data.access_token,
-        email: sEmail
+        type: 'USER_TOKEN',
+        token: response.data.access_token
       });
       localStorage.setItem('token', response.data.access_token);
       history.push('/profile');
@@ -72752,27 +72796,30 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var Profile = function Profile() {
+  // Redux states
+  var token = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
+    return state.usersReducer.token;
+  });
+  var logout = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
+    return state.usersReducer.logout;
+  });
+  var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
+
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
       _useState2 = _slicedToArray(_useState, 2),
       message = _useState2[0],
       setMessage = _useState2[1];
 
-  var token = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
-    return state.usersReducer.token;
-  });
-
   var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
       _useState4 = _slicedToArray(_useState3, 2),
       user = _useState4[0],
-      setUser = _useState4[1]; // useEffect(() => {
-  //     localStorage.setItem('token', token);
-  //     const savedToken = localStorage.getItem('token');
-  //     console.log(savedToken);
-  // }, [user])
+      setUser = _useState4[1];
 
-
+  var history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useHistory"])();
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    console.log(token);
+    console.log({
+      'TOKEN': token
+    });
     var authOptions = {
       method: 'GET',
       url: '/api/auth/user',
@@ -72783,11 +72830,26 @@ var Profile = function Profile() {
     axios(authOptions).then(function (response) {
       console.log(response);
       setUser(response.data);
+      dispatch({
+        type: 'CURRENT_USER',
+        user: response.data
+      });
+      dispatch({
+        type: 'USER_TOKEN',
+        token: localStorage.getItem('token')
+      });
     })["catch"](function (err) {
       console.log(err);
       setMessage('Error, this login is incorrect');
+      history.push('/login');
     });
   }, []);
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    if (logout === true) {
+      console.log('Logout is clicked');
+      history.push('/login');
+    }
+  }, [logout]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, message === '' ? 'Profile for ' + user.name : message));
