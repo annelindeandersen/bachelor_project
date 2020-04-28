@@ -1,6 +1,6 @@
 const initialState = {
-    users: {
-    }
+    users: {},
+    logout: true
 }
 
 const reducer = (state = initialState, action) => {

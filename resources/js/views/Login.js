@@ -16,9 +16,8 @@ const Login = () => {
     let history = useHistory();
 
     useEffect(() => {
-        // set logout to false, so user can login again
-        dispatch({ type: 'LOGOUT_USER', logout: false });
-        // console.log({ users, token });
+        // set logout to true, so user can login again
+        dispatch({ type: 'LOGOUT_USER', logout: true });
     }, [])
 
     const authOptions = {
@@ -42,6 +41,7 @@ const Login = () => {
                 console.log(response);
                 setToken(response.data.access_token);
                 dispatch({ type: 'USER_TOKEN', token: response.data.access_token });
+                // dispatch({ type: 'LOGOUT_USER', logout: false });
                 localStorage.setItem('token', response.data.access_token);
                 history.push('/profile');
             }).catch((err) => {

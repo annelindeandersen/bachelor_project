@@ -8,6 +8,8 @@ import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import Profile from './Profile';
+import RestaurantOverview from './order food/RestaurantOverview';
+import RestaurantSingleView from './order food/RestaurantSingleView';
 
 // Components
 import Menu from './../components/Menu';
@@ -44,6 +46,12 @@ function Index() {
                 </Route>
                 <Route path="/profile">
                     <Profile />
+                </Route>
+                <Route path="/orderfood">
+                    <RestaurantOverview />
+                </Route>
+                <Route path="/orderfood/?id">
+                    <RestaurantSingleView />
                 </Route>
             </Switch>
             <Footer />

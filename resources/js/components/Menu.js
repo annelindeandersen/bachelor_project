@@ -6,9 +6,9 @@ const Menu = () => {
     let location = useLocation();
     let history = useHistory();
     const dispatch = useDispatch();
-    const users = useSelector(state => state.usersReducer.users);
+    const logout = useSelector(state => state.usersReducer.logout);
 
-    const logout = () => {
+    const logmeout = () => {
         const authOptions = {
             method: 'GET',
             url: '/api/auth/logout',
@@ -21,7 +21,7 @@ const Menu = () => {
             .then(response => {
                 console.log(response);
                 localStorage.removeItem('token');
-                dispatch({ type: 'LOGOUT_USER', logout: true });
+                dispatch({ type: 'LOGOUT_USER', logout: 'click' });
             }).catch((err) => {
                 console.log(err);
             })
@@ -32,19 +32,19 @@ const Menu = () => {
             <div>
                 <Link to="/">Home</Link>
             </div>
-            {location.pathname === '/profile' ? '' :
+            {logout === false ? '' :
                 <div>
                     <Link to="/login">Login</Link>
                 </div>
             }
-            {location.pathname === '/profile' ? '' :
+            {logout === false ? '' :
                 <div>
                     <Link to="/register">Register</Link>
                 </div>
             }
-            {location.pathname === '/login' || location.pathname === '/register' ? '' :
+            {logout === true ? '' :
                 <div>
-                    <button onClick={logout}>Logout</button>
+                    <button onClick={logmeout}>Logout</button>
                 </div>
             }
         </nav>
