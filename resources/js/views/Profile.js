@@ -13,6 +13,14 @@ const Profile = () => {
     let history = useHistory();
 
     useEffect(() => {
+        if (logout === 'click') {
+            console.log('Logout is clicked')
+            // dispatch({ type: 'LOGOUT_USER', logout: false });
+            history.push('/login');
+        }
+    }, [logout])
+
+    useEffect(() => {
         console.log({ 'TOKEN': token });
 
         const authOptions = {
@@ -29,6 +37,7 @@ const Profile = () => {
                 setUser(response.data);
                 dispatch({ type: 'CURRENT_USER', user: response.data });
                 dispatch({ type: 'USER_TOKEN', token: localStorage.getItem('token') });
+                dispatch({ type: 'LOGOUT_USER', logout: false });
             }).catch((err) => {
                 console.log(err);
                 setMessage('Error, this login is incorrect');
@@ -36,13 +45,6 @@ const Profile = () => {
             })
 
     }, [])
-
-    useEffect(() => {
-        if (logout === true) {
-            console.log('Logout is clicked')
-            history.push('/login');
-        }
-    }, [logout])
 
     return (
         <div className="container">

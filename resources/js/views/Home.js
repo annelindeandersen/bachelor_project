@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     return (
@@ -8,7 +9,7 @@ const Home = () => {
                 <div className="card">
                     <h1 className="card-header">Welcome to DELIVR</h1>
                     <div>
-                        <button className="form-control">ORDER FOOD</button>
+                        <Link to="/orderfood"><button className="form-control">ORDER FOOD</button></Link>
                         <button className="form-control">RESTAURANTS</button>
                         <button className="form-control">VOLUNTEERS</button>
                     </div>
