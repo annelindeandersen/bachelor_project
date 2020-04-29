@@ -50,7 +50,7 @@ function Index() {
                 <Route path="/orderfood">
                     <RestaurantOverview />
                 </Route>
-                <Route path="/orderfood/?id">
+                <Route path="/restaurant">
                     <RestaurantSingleView />
                 </Route>
             </Switch>
