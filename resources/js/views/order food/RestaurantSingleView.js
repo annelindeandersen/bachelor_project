@@ -41,79 +41,93 @@ const RestaurantSingleView = () => {
                     {!menu ? '' :
                         <div id="menu">
                             {/* get starter dishes */}
-                            <div id="starters">
+                            <div className="menu-type" id="starters">
                                 <h3>{menu.data[0].starter[1].length === 0 ? '' : menu.data[0].starter[0]}</h3>
                                 {menu.data[0].starter[1].map((item, index) => (
-                                    <div key={index}>
-                                        <h5>{index + 1} - {item.title}</h5>
-                                        <p>{item.description}</p>
-                                        <strong>{item.price} DKK</strong>
+                                    <div className="menu-item" key={index}>
+                                        <div><h5>{item.title}</h5>
+                                            <p>{item.description}</p>
+                                            <strong>{item.price} DKK</strong>
+                                        </div>
+                                        <button className="green-button">ADD</button>
                                     </div>
                                 ))}
                             </div>
                             {/* get snack dishes */}
-                            <div id="snacks">
+                            <div className="menu-type" id="snacks">
                                 <h3>{menu.data[0].snack[1].length === 0 ? '' : menu.data[0].snack[0]}</h3>
                                 {menu.data[0].snack[1].map((item, index) => (
-                                    <div key={index}>
-                                        <h5>{index + 1} - {item.title}</h5>
-                                        <p>{item.description}</p>
-                                        <strong>{item.price} DKK</strong>
+                                    <div className="menu-item" key={index}>
+                                        <div><h5>{item.title}</h5>
+                                            <p>{item.description}</p>
+                                            <strong>{item.price} DKK</strong>
+                                        </div>
+                                        <button className="green-button">ADD</button>
                                     </div>
                                 ))}
                             </div>
                             {/* get main dishes */}
-                            <div id="mains">
+                            <div className="menu-type" id="mains">
                                 <h3>{menu.data[0].main[1].length === 0 ? '' : menu.data[0].main[0]}</h3>
                                 {menu.data[0].main[1].map((item, index) => (
-                                    <div key={index}>
-                                        <h5>{index + 1} - {item.title}</h5>
-                                        <p>{item.description}</p>
-                                        <strong>{item.price} DKK</strong>
+                                    <div className="menu-item" key={index}>
+                                        <div><h5>{item.title}</h5>
+                                            <p>{item.description}</p>
+                                            <strong>{item.price} DKK</strong>
+                                        </div>
+                                        <button className="green-button">ADD</button>
                                     </div>
                                 ))}
                             </div>
                             {/* get food dishes */}
-                            <div id="food">
+                            <div className="menu-type" id="food">
                                 <h3>{menu.data[0].food[1].length === 0 ? '' : menu.data[0].food[0]}</h3>
                                 {menu.data[0].food[1].map((item, index) => (
-                                    <div key={index}>
-                                        <h5>{index + 1} - {item.title}</h5>
-                                        <p>{item.description}</p>
-                                        <strong>{item.price} DKK</strong>
+                                    <div className="menu-item" key={index}>
+                                        <div><h5>{item.title}</h5>
+                                            <p>{item.description}</p>
+                                            <strong>{item.price} DKK</strong>
+                                        </div>
+                                        <button className="green-button">ADD</button>
                                     </div>
                                 ))}
                             </div>
                             {/* get dessert dishes */}
-                            <div id="desserts">
+                            <div className="menu-type" id="desserts">
                                 <h3>{menu.data[0].dessert[1].length === 0 ? '' : menu.data[0].dessert[0]}</h3>
                                 {menu.data[0].dessert[1].map((item, index) => (
-                                    <div key={index}>
-                                        <h5>{index + 1} - {item.title}</h5>
-                                        <p>{item.description}</p>
-                                        <strong>{item.price} DKK</strong>
+                                    <div className="menu-item" key={index}>
+                                        <div><h5>{item.title}</h5>
+                                            <p>{item.description}</p>
+                                            <strong>{item.price} DKK</strong>
+                                        </div>
+                                        <button className="green-button">ADD</button>
                                     </div>
                                 ))}
                             </div>
                             {/* get beverages */}
-                            <div id="beverages">
+                            <div className="menu-type" id="beverages">
                                 <h3>{menu.data[0].beverage[1].length === 0 ? '' : menu.data[0].beverage[0]}</h3>
                                 {menu.data[0].beverage[1].map((item, index) => (
-                                    <div key={index}>
-                                        <h5>{index + 1} - {item.title}</h5>
-                                        <p>{item.description}</p>
-                                        <strong>{item.price} DKK</strong>
+                                    <div className="menu-item" key={index}>
+                                        <div><h5>{item.title}</h5>
+                                            <p>{item.description}</p>
+                                            <strong>{item.price} DKK</strong>
+                                        </div>
+                                        <button className="green-button">ADD</button>
                                     </div>
                                 ))}
                             </div>
                             {/* get extra dishes */}
-                            <div id="extras">
+                            <div className="menu-type" id="extras">
                                 <h3>{menu.data[0].extra[1].length === 0 ? '' : menu.data[0].extra[0]}</h3>
                                 {menu.data[0].extra[1].map((item, index) => (
-                                    <div key={index}>
-                                        <h5>{index + 1} - {item.title}</h5>
-                                        <p>{item.description}</p>
-                                        <strong>{item.price} DKK</strong>
+                                    <div className="menu-item" key={index}>
+                                        <div><h5>{item.title}</h5>
+                                            <p>{item.description}</p>
+                                            <strong>{item.price} DKK</strong>
+                                        </div>
+                                        <button className="green-button">ADD</button>
                                     </div>
                                 ))}
                             </div>
