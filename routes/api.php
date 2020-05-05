@@ -31,3 +31,11 @@ Route::group([
         Route::get('user', 'AuthController@user');
     });
 });
+
+Route::get('/getrestaurants', 'RestaurantController@restaurant');
+Route::get('/getselected', 'RestaurantController@selectedrestaurant');
+Route::get('/country', 'RestaurantController@country');
+Route::get('/getcategories', 'RestaurantController@categories');
+Route::get('/getcategory', 'RestaurantController@category');
+Route::get('/getprofile', 'RestaurantController@profile');
+Route::get('/getmenu', 'MenuController@menu');
