@@ -11,6 +11,10 @@ class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
+    public function cart() {
+        return $this->hasOne('App\Cart');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

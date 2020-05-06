@@ -14,7 +14,7 @@ class CreateRestaurantsTable extends Migration
     public function up()
     {
         Schema::create('restaurants', function(Blueprint $table){
-            $table->increments('id', true)-> unsigned();
+            $table->bigIncrements('id', true)-> unsigned();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->unique();
@@ -40,7 +40,6 @@ class CreateRestaurantsTable extends Migration
                 'city'=> 'Cph',
                 'postcode'=> '1212',
                 'country_id'=> '1',
-                // 'profile_id'=> '1',
                 'password'=> '11111',
             ],
             [
@@ -51,7 +50,6 @@ class CreateRestaurantsTable extends Migration
                 'city'=> 'Cph',
                 'postcode'=> '1000',
                 'country_id'=> '2',
-                // 'profile_id'=> '2',
                 'password'=> '11111',
             ],
             [
@@ -62,7 +60,6 @@ class CreateRestaurantsTable extends Migration
                 'city'=> 'Cph',
                 'postcode'=> '1000',
                 'country_id'=> '1',
-                // 'profile_id'=> '3',
                 'password'=> '11111',
             ]
         ]);

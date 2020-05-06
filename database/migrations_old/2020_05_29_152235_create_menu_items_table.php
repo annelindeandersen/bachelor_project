@@ -15,7 +15,7 @@ class CreateMenuItemsTable extends Migration
     {
         Schema::create('menu_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('restaurant_id');
+            $table->bigInteger('restaurant_id')->unsigned();
             $table->foreign('restaurant_id')->references('id')->on('restaurants');
             $table->integer('menu_item_type_id')->unsigned();
             $table->foreign('menu_item_type_id')->references('id')->on('menu_item_types');

@@ -14,8 +14,11 @@ class CreateRestaurantsToCategoryTable extends Migration
     public function up()
     {
         Schema::create('restaurants_to_category', function (Blueprint $table) {
-            $table->integer('restaurant_id')->unsigned();
+            $table->unsignedInteger('restaurant_id');
+            $table->foreign('restaurant_id')->references('id')->on('restaurants');
             $table->integer('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('categories');
+
             $table->timestamps();
 
             $table->engine = 'InnoDb';

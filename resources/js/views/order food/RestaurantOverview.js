@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const RestaurantOverview = () => {
     const [restaurants, setRestaurants] = useState('');
+    const [restaurantCategories, setRestaurantCategories] = useState('');
     const [categories, setCategories] = useState('');
     const [catClick, setCatClick] = useState('');
     const [header, setHeader] = useState('Selected Restaurants');
@@ -28,6 +29,7 @@ const RestaurantOverview = () => {
             .then(response => {
                 console.log(response);
                 setRestaurants(response);
+                setRestaurantCategories(response);
             }).catch((err) => {
                 console.log(err);
             })
@@ -69,6 +71,7 @@ const RestaurantOverview = () => {
                                     <img className="restaurant-image" src={`./img/${restaurant.restaurant.image}`} />
                                     <div className="button-wrapper">
                                         {restaurant.restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>))}
+                                        {/* {!restaurantCategories ? '' : restaurantCategories.data.map((res, index) => res.restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>)))} */}
                                         <Link to={`/restaurant?id=${restaurant.restaurant.id}`}><button className="green-button">See menu</button></Link>
                                     </div>
                                 </div>

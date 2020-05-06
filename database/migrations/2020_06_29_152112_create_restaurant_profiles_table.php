@@ -14,16 +14,18 @@ class CreateRestaurantProfilesTable extends Migration
     public function up()
     {
         Schema::create('restaurant_profiles', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('description');
             $table->string('logo');
-            $table->string('opening_hour');
-            $table->string('closing_hour');
-            $table->integer('restaurant_id')->unsigned();
+            $table->time('opening_hour');
+            $table->time('closing_hour');
+            $table->unsignedInteger('restaurant_id');
+            $table->foreign('restaurant_id')->references('id')->on('restaurants');
             $table->timestamps();
 
             $table->engine = 'InnoDb';
         });
+        
         DB::table('restaurant_profiles')->insert([
             [
                 'description'=> 'This restaurant sells pizza',
@@ -41,7 +43,7 @@ class CreateRestaurantProfilesTable extends Migration
             ],
             [
                 'description'=> 'This restaurant sells tacos',
-                'logo'=> '3.jpg',
+                'image'=> '3.jpg',
                 'opening_hour'=> '10',
                 'closing_hour'=> '21',
                 'restaurant_id'=> '3'

@@ -67,3 +67,17 @@ body {
     box-shadow: 0px 0px 10px rgb(177, 177, 177);
     border-radius: 5px;
 }
+
+#details {
+    padding: 20px;
+    background: white;
+    box-shadow: 0px 0px 10px rgb(177, 177, 177);
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.single-view-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 10px;
+}

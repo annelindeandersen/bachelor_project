@@ -38,4 +38,8 @@ Route::get('/country', 'RestaurantController@country');
 Route::get('/getcategories', 'RestaurantController@categories');
 Route::get('/getcategory', 'RestaurantController@category');
 Route::get('/getprofile', 'RestaurantController@profile');
+
 Route::get('/getmenu', 'MenuController@menu');
+
+Route::get('/getcart', 'CartController@cart');
+Route::get('/getcarts', 'CartController@carts');

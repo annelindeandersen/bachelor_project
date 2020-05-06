@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriesTable extends Migration
+class CreateMenuItemTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,31 +13,32 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('menu_item_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('category');
+            $table->string('type');
             $table->timestamps();
-
-            $table->engine = 'InnoDb';
         });
-        DB::table('categories')->insert([
+        DB::table('menu_item_types')->insert([
             [
-                'category'=> 'Vegetarian'
+                'type'=> 'Starter',
             ],
             [
-                'category'=> 'Italian'
+                'type'=> 'Main',
             ],
             [
-                'category'=> 'Vegan'
+                'type'=> 'Food',
             ],
             [
-                'category'=> 'Mexican'
+                'type'=> 'Snack',
             ],
             [
-                'category'=> 'Pizza'
+                'type'=> 'Dessert',
             ],
             [
-                'category'=> 'Burger'
+                'type'=> 'Beverage',
+            ],
+            [
+                'type'=> 'Extra',
             ],
         ]);
     }
@@ -49,6 +50,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('menu_item_types');
     }
 }
