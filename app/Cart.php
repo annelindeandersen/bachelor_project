@@ -14,4 +14,13 @@ class Cart extends Model
         return $this->hasMany('App\CartItem');
     }
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id'
+    ];
+
 }

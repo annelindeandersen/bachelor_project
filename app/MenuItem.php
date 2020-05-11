@@ -17,6 +17,6 @@ class MenuItem extends Model
     }
 
     public function cart_item() {
-        return $this->belongsToMany('App\CartItem');
+        return $this->belongsTo('App\CartItem');
     }
 }

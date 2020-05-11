@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const RestaurantSingleView = () => {
     const location = useLocation();
     console.log(location);
+
+    // logged in user
+    const user = useSelector(state => state.usersReducer.user);
 
     const [restaurant, setRestaurant] = useState('');
     const [menu, setMenu] = useState('');
@@ -31,6 +35,19 @@ const RestaurantSingleView = () => {
                 console.log(err);
             })
     }, [])
+
+    const addToCart = (item) => {
+        console.log(item);
+        console.log(user);
+
+        axios.post('/api/addtocart', { user: user.id, menu_item: item.id })
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
 
     return (
         <div className="container">
@@ -58,7 +75,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button">ADD</button>
+                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>
@@ -71,7 +88,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button">ADD</button>
+                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>
@@ -84,7 +101,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button">ADD</button>
+                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>
@@ -97,7 +114,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button">ADD</button>
+                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>
@@ -110,7 +127,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button">ADD</button>
+                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>
@@ -123,7 +140,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button">ADD</button>
+                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>
@@ -136,7 +153,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button">ADD</button>
+                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>

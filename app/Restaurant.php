@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\Restaurant as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Restaurant extends Model
 {
+    use Notifiable;
+    
     public function country()
     {
         return $this->belongsTo('App\Country');
@@ -31,7 +35,7 @@ class Restaurant extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'address', 'phone', 'city', 'postcode', 'country_id'
     ];
 
     /**

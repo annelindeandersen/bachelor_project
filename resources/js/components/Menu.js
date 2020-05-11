@@ -44,7 +44,17 @@ const Menu = () => {
             }
             {logout === true ? '' :
                 <div>
+                    <Link to="/profile">Profile</Link>
+                </div>
+            }
+            {logout === true ? '' :
+                <div>
                     <button onClick={logmeout}>Logout</button>
+                </div>
+            }
+            {logout === true ? '' :
+                <div>
+                    <Link to="/cart">Cart</Link>
                 </div>
             }
         </nav>

@@ -6,10 +6,11 @@ const Profile = () => {
     // Redux states
     const token = useSelector(state => state.usersReducer.token);
     const logout = useSelector(state => state.usersReducer.logout);
+    const user = useSelector(state => state.usersReducer.user);
     const dispatch = useDispatch();
 
     const [message, setMessage] = useState('');
-    const [user, setUser] = useState('');
+    // const [user, setUser] = useState('');
     let history = useHistory();
 
     useEffect(() => {
@@ -33,22 +34,39 @@ const Profile = () => {
 
         axios(authOptions)
             .then(response => {
-                console.log(response);
-                setUser(response.data);
+                console.log(response.data);
+                dispatch({ type: 'LOGOUT_USER', logout: false });
                 dispatch({ type: 'CURRENT_USER', user: response.data });
                 dispatch({ type: 'USER_TOKEN', token: localStorage.getItem('token') });
-                dispatch({ type: 'LOGOUT_USER', logout: false });
             }).catch((err) => {
                 console.log(err);
                 setMessage('Error, this login is incorrect');
                 history.push('/login');
             })
-
     }, [])
 
     return (
         <div className="container">
-            <h1>{message === '' ? 'Profile for ' + user.name : message}</h1>
+            {!user ? '' :
+                <div>
+                    <h1>{message === '' ? 'Profile for ' + user.first_name + ' ' + user.last_name : message}</h1>
+                    <div>
+                        <h2>Your details:</h2>
+                        <b>Email: </b><p>{user.email}</p>
+                        <b>Phone: </b><p>{user.phone}</p>
+                        <b>Address: </b><p>{user.address}</p>
+                        <b>City: </b><p>{user.city}, {user.postcode}</p>
+                    </div>
+                    <div>
+                        <h2>Your orders:</h2>
+                        <b>Order nr: </b><p></p>
+                        <b>Date: </b><p></p>
+                        <b>Items: </b><p></p>
+                        <b>Amount: </b><p></p>
+                    </div>
+                </div>
+            }
+
         </div>
     )
 }

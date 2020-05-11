@@ -19,8 +19,52 @@ class CartController extends Controller
      */
     public function cart(Request $request)
     {
-        $selected = $request->id;
-        $cart = Cart::where('user_id', '=', '1')->first();
+        $user = $request->user;
+        $cart = Cart::where('user_id', '=', $user)->first();
+        $cartArray = array();
+
+        $cart_items = CartItem::where('cart_id', '=', $cart->id)->get();
+
+        $cart_items_array = array();
+        $price_array = array();
+
+        // get the menu item from cart item
+        foreach($cart_items as $cart_item) {
+            $cart_items_array[] = ([
+                'menu_item' => $cart_item->menu_item
+            ]);
+            $price_array[] = ($cart_item->menu_item->price);
+        }
+
+        $cartArray = ([
+            'cart' => $cart,
+            'user' => $cart->user,
+            'items' => $cart_items_array,
+            'price_array' => $price_array,
+            'total' => array_sum($price_array),
+        ]);
+
+        return response()->json($cartArray);
+    }
+
+    /**
+     * Add to cart for logged in user
+     *
+     * @return [json] cart object
+     */
+    public function addcart(Request $request)
+    {
+        $user_id = $request->user;
+        $menu_item_id = $request->menu_item;
+
+        $cart = Cart::where('user_id', '=', $user_id)->first();
+
+        $cart_item = new CartItem([
+            'cart_id' => $cart->id,
+            'menu_item_id' => $menu_item_id,
+        ]);
+        $cart_item->save();
+
         $cartArray = array();
 
         $cartArray = ([

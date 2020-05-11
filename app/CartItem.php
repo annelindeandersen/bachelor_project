@@ -11,6 +11,15 @@ class CartItem extends Model
     }
 
     public function menu_item() {
-        return $this->belongsToMany('App\MenuItem');
+        return $this->belongsTo('App\MenuItem');
     }
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'cart_id', 'menu_item_id'
+    ];
 }

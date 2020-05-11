@@ -20,6 +20,9 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('restaurant_id');
             $table->foreign('restaurant_id')->references('id')->on('restaurants');
             $table->integer('total_amount');
+            $table->dateTime('delivery_time', 0);
+            $table->boolean('accepted');
+            $table->string('status');
             $table->timestamps();
 
             $table->engine = 'InnoDb';
@@ -29,11 +32,17 @@ class CreateOrdersTable extends Migration
                 'user_id'=> '1',
                 'restaurant_id'=> '2',
                 'total_amount'=> '100',
+                'delivery_time'=> '2020-05-10 18:00:00',
+                'accepted'=> false,
+                'status' => 'Pending'
             ],
             [
                 'user_id'=> '2',
                 'restaurant_id'=> '1',
                 'total_amount'=> '150',
+                'delivery_time'=> '2020-05-10 19:15:00',
+                'accepted'=> true,
+                'status' => 'Sent'
             ],
         ]);
     }
