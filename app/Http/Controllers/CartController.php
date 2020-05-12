@@ -27,7 +27,7 @@ class CartController extends Controller
 
         $cart_items_array = array();
         $price_array = array();
-
+ 
         // get the menu item from cart item
         foreach($cart_items as $cart_item) {
             $cart_items_array[] = ([

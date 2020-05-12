@@ -22,6 +22,8 @@ class OrderController extends Controller
         $user = $request->user;
 
         $orders = Order::where('user_id', '=', $user)->get();
+        // $order_items = OrderItem::where('order_id', '=', )
+
         $ordersArray = array();
 
         foreach($orders as $order) {
@@ -86,4 +88,47 @@ class OrderController extends Controller
 
         return response()->json('The order and order items were created');
     }
+
+    // restaurant section ********************************************************************************
+
+    //get all orders by restaruant id
+    public function getOrders(Request $request, $id)
+    {
+        $orderArray = array();
+        $orderArray = Order::where('restaurant_id', '=', $id)->get();
+        // echo $orderArray;
+        $orderItems = array();
+        foreach($orderArray as $order) {
+            $orderItems =  $orderItemsArray =  $order->order_item;
+            }
+        $menuItemsArray = array();
+        foreach($orderItems as $orderItem) {
+            $menuItemsArray[] = ([
+                'menu_item' => $orderItem->menu_item
+            ]);
+        }
+        $fullOrderArray = array();
+        $fullOrderArray = ([
+            'order_details' => $orderArray
+        ]);
+        return response()->json($fullOrderArray);
+        }
+        //accept order by
+        public function acceptOrder(Request $request, $id)
+        {
+            $order = Order::where('id', $id)
+            ->update(['accepted' => 1]);
+            return response()->json([
+                'message' => 'Order has been Accepted',
+            ], 201);
+        }
+        //reject order
+        public function rejectOrder(Request $request, $id)
+        {
+            $order = Order::where('id', $id)
+            ->update(['accepted' => -1]);
+            return response()->json([
+                'message' => 'Order has been Rejected',
+            ], 201);
+        }
 }
