@@ -13,14 +13,31 @@ use App\OrderItem;
 
 class OrderController extends Controller
 {
-    public function payment() {
-        //
+    /**
+     * get order for user
+     *
+     * @return [json] order object
+     */
+    public function getorder(Request $request) {
+        $user = $request->user;
+
+        $orders = Order::where('user_id', '=', $user)->get();
+        $ordersArray = array();
+
+        foreach($orders as $order) {
+            $orderArray[] = ([
+                'order' => $order,
+                'order_item' => $order->order_item
+            ]);
+        }
+
+        return response()->json($orderArray);
     }
 
     /**
      * create order for user
      *
-     * @return [json] cart object
+     * @return [json] order object
      */
     public function create(Request $request)
     {
@@ -51,7 +68,7 @@ class OrderController extends Controller
             'total_amount' => array_sum($price_array),
             'delivery_time' => $date,
             'accepted' => 0,
-            'status' => '0'
+            'status' => 0
         ]);
         $new_order->save();
         
@@ -66,8 +83,6 @@ class OrderController extends Controller
             ]);
             $new_order_items->save();
         }
-
-        // delete cart items!
 
         return response()->json('The order and order items were created');
     }

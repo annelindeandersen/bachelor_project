@@ -21,8 +21,8 @@ class CreateOrdersTable extends Migration
             $table->foreign('restaurant_id')->references('id')->on('restaurants');
             $table->integer('total_amount');
             $table->dateTime('delivery_time', 0);
-            $table->boolean('accepted');
-            $table->string('status');
+            $table->integer('accepted');
+            $table->integer('status');
             $table->timestamps();
 
             $table->engine = 'InnoDb';
@@ -33,16 +33,16 @@ class CreateOrdersTable extends Migration
                 'restaurant_id'=> '2',
                 'total_amount'=> '100',
                 'delivery_time'=> '2020-05-10 18:00:00',
-                'accepted'=> false,
-                'status' => 'Pending'
+                'accepted'=> 0,
+                'status' => 0
             ],
             [
                 'user_id'=> '2',
                 'restaurant_id'=> '1',
                 'total_amount'=> '150',
                 'delivery_time'=> '2020-05-10 19:15:00',
-                'accepted'=> true,
-                'status' => 'Sent'
+                'accepted'=> 1,
+                'status' => 1
             ],
         ]);
     }

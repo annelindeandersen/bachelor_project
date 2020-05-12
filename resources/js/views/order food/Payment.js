@@ -8,16 +8,20 @@ import { setHours, setMinutes } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
 
 const Payment = () => {
+    // variables and states for date & time
     const [startDate, setStartDate] = useState(new Date());
     const today = new Date();
     const currentTime = today.getHours();
     const [openingHour, setOpeningHour] = useState('');
     const [closingHour, setClosingHour] = useState('');
+
+    // redux & history
     const restaurantId = useSelector(state => state.ordersReducer.restaurant);
     const user = useSelector(state => state.usersReducer.user);
     const history = useHistory();
 
     console.log(restaurantId, openingHour, closingHour, currentTime);
+    console.log({ today: today.toISOString().substring(0, 10) + ' ' + today.toISOString().substring(11, 16) });
 
     useEffect(() => {
         // if no id then redirect to cart to fetch id once again
@@ -37,11 +41,20 @@ const Payment = () => {
     }, [restaurantId])
 
     const orderNow = () => {
-        console.log('clicked', user, restaurantId, startDate);
+        console.log('clicked', user, restaurantId, startDate.toISOString().substring(0, 10) + ' ' + startDate.toISOString().substring(11, 16));
 
-        axios.post('/createorder', { id: user.id, restaurant: restaurantId, date: startDate })
+        axios.post('/api/createorder', { id: user.id, restaurant: restaurantId, date: startDate.toISOString().substring(0, 10) + ' ' + startDate.toISOString().substring(11, 16) })
             .then(response => {
                 console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+        axios.post('/api/deleteall', { user: user.id })
+            .then(response => {
+                console.log(response);
+                history.push('/receipt');
             })
             .catch(error => {
                 console.log(error);

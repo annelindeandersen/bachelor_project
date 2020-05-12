@@ -11,6 +11,7 @@ const Cart = () => {
 
     // logged in user
     const user = useSelector(state => state.usersReducer.user);
+    const deleted = useSelector(state => state.ordersReducer.deleted);
     const dispatch = useDispatch();
 
     const history = useHistory();
@@ -23,11 +24,12 @@ const Cart = () => {
                 console.log(response.data);
                 setCart(response.data);
                 setCurrentRestaurant(response.data.items.map(item => item.menu_item.restaurant_id)[0]);
+                dispatch({ type: "DELETE_ONE", deleted: false })
             })
             .catch(error => {
                 console.log(error);
             })
-    }, [user])
+    }, [user, deleted])
 
     const order = () => {
         console.log('pressed order');
@@ -35,15 +37,27 @@ const Cart = () => {
         history.push('/payment');
     }
 
+    const deleteOne = ({ item }) => {
+        console.log(item.menu_item.id);
+        axios.post('/api/deleteone', { user: user.id, menu_item: item.menu_item.id })
+            .then(response => {
+                console.log(response);
+                dispatch({ type: "DELETE_ONE", deleted: true })
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
     return (
         <div className="container">
             <h1>Cart</h1>
-            {!cart ? '' : cart.items.map((item, index) => (
+            {!cart ? 'Nothing added to cart yet' : cart.items.map((item, index) => (
                 <div key={index}>
                     <strong>{item.menu_item.title}</strong>
                     <p>{item.menu_item.description}</p>
                     <p>{item.menu_item.price} DKK</p>
-                    <button className="green-button">Delete</button>
+                    <button onClick={() => deleteOne({ item })} className="green-button">Delete</button>
                 </div>
             ))}
             <br />

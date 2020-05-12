@@ -77,6 +77,39 @@ class CartController extends Controller
     }
 
     /**
+     * Delete all from cart for logged in user
+     *
+     * @return [json] cart object
+     */
+    public function deleteall(Request $request)
+    {
+        $user_id = $request->user;
+
+        $cart = Cart::where('user_id', '=', $user_id)->first();
+
+        $cart_item = CartItem::where('cart_id', '=', $cart->id)->delete();
+
+        return response()->json('Cart items deleted');
+    }
+
+    /**
+     * Delete all from cart for logged in user
+     *
+     * @return [json] cart object
+     */
+    public function deleteone(Request $request)
+    {
+        $user_id = $request->user;
+        $menu_item_id = $request->menu_item;
+
+        $cart = Cart::where('user_id', '=', $user_id)->first();
+
+        $cart_item = CartItem::where('cart_id', '=', $cart->id)->where('menu_item_id', '=', $menu_item_id)->delete();
+
+        return response()->json('Cart item was deleted');
+    }
+
+    /**
      * Get carts with cart items for all users
      *
      * @return [json] cart object

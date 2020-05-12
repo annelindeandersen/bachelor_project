@@ -13,6 +13,7 @@ import RestaurantOverview from './order food/RestaurantOverview';
 import RestaurantSingleView from './order food/RestaurantSingleView';
 import Cart from './order food/Cart';
 import Payment from './order food/Payment';
+import Receipt from './order food/Receipt';
 
 // Components
 import Menu from './../components/Menu';
@@ -86,6 +87,9 @@ function Index() {
                 </Route>
                 <Route path="/payment">
                     <Payment />
+                </Route>
+                <Route path="/receipt">
+                    <Receipt />
                 </Route>
             </Switch>
             <Footer />

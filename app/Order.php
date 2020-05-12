@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    public function order_item()
+    {
+        return $this->hasMany('App\OrderItem');
+    }
     /**
      * The attributes that are mass assignable.
      *

@@ -19,4 +19,8 @@ class MenuItem extends Model
     public function cart_item() {
         return $this->belongsTo('App\CartItem');
     }
+
+    public function order_item() {
+        return $this->belongsTo('App\OrderItem');
+    }
 }

@@ -53,7 +53,10 @@ Route::get('/getcart', 'CartController@cart');
 Route::get('/getcarts', 'CartController@carts');
 Route::post('/addtocart', 'CartController@addcart');
 Route::get('/gettotal', 'CartController@total');
+Route::post('/deleteall', 'CartController@deleteall');
+Route::post('/deleteone', 'CartController@deleteone');
 
 // Orders
 Route::post('/payment', 'OrderController@payment');
 Route::post('/createorder', 'OrderController@create');
+Route::get('/getorder', 'OrderController@getorder');
