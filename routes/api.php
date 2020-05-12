@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+// User
 Route::group([
     'prefix' => 'auth'
 ], function () {
@@ -31,3 +32,31 @@ Route::group([
         Route::get('user', 'AuthController@user');
     });
 });
+
+// Restaurant auth
+Route::post('/registerrestaurant', 'RestaurantAuthController@restaurantRegister');
+Route::post('/loginrestaurant', 'RestaurantAuthController@restaurantLogin');
+
+// Restaurants
+Route::get('/getrestaurants', 'RestaurantController@restaurant');
+Route::get('/getselected', 'RestaurantController@selectedrestaurant');
+Route::get('/country', 'RestaurantController@country');
+Route::get('/getcategories', 'RestaurantController@categories');
+Route::get('/getcategory', 'RestaurantController@category');
+Route::get('/getprofile', 'RestaurantController@profile');
+
+// Menu
+Route::get('/getmenu', 'MenuController@menu');
+
+// Cart
+Route::get('/getcart', 'CartController@cart');
+Route::get('/getcarts', 'CartController@carts');
+Route::post('/addtocart', 'CartController@addcart');
+Route::get('/gettotal', 'CartController@total');
+Route::post('/deleteall', 'CartController@deleteall');
+Route::post('/deleteone', 'CartController@deleteone');
+
+// Orders
+Route::post('/payment', 'OrderController@payment');
+Route::post('/createorder', 'OrderController@create');
+Route::get('/getorder', 'OrderController@getorder');

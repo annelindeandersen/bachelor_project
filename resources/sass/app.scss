@@ -6,3 +6,8 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.restaurant-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}

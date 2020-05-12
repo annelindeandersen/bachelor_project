@@ -11,13 +11,17 @@ class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
+    public function cart() {
+        return $this->hasOne('App\Cart');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name', 'last_name', 'address', 'phone', 'city', 'postcode', 'email', 'password',
     ];
 
     /**

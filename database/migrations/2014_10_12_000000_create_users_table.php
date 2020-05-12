@@ -14,14 +14,42 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->increments('id');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('address');
+            $table->string('phone')->unique();
+            $table->string('city');
+            $table->string('postcode');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->engine = 'InnoDb';
         });
+        DB::table('users')->insert([
+            [
+                'first_name'=> 'Anne',
+                'last_name'=> 'Linde',
+                'email'=> 'anne_linde@yahoo.dk',
+                'phone'=> '29647715',
+                'address'=> 'Dalgas Boulevard 89',
+                'city'=> 'Frederiksberg',
+                'postcode'=> '2000',
+                'password'=> '1234',
+            ],
+            [
+                'first_name'=> 'Fiona',
+                'last_name'=> 'Okafor',
+                'email'=> 'fiona@gmail.com',
+                'phone'=> '172635',
+                'address'=> 'Borgskrivervej 7',
+                'city'=> 'København N',
+                'postcode'=> '2400',
+                'password'=> '1234',
+            ],
+        ]);
     }
 
     /**

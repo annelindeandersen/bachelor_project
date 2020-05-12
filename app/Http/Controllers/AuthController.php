@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
+use App\Cart;
 class AuthController extends Controller
 {
     /**
@@ -18,18 +19,37 @@ class AuthController extends Controller
     public function signup(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
             'email' => 'required|string|email|unique:users',
+            'phone' => 'required|string|unique:users',
+            'address' => 'required|string',
+            'city' => 'required|string',
+            'postcode' => 'required|string',
             'password' => 'required|string|confirmed'
         ]);
         $user = new User([
-            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'city' => $request->city,
+            'postcode' => $request->postcode,
             'password' => bcrypt($request->password)
         ]);
         $user->save();
+        
+        // create a cart for the new user
+        $thisuser = User::where('email', '=', $request->email)->first();
+        $cart = new Cart([
+            'user_id' => $thisuser->id,
+        ]);
+        $cart->save();
+
         return response()->json([
-            'message' => 'Successfully created user!'
+            'message' => 'Successfully created user!',
+            'cart' => $cart
         ], 201);
     }
   
