@@ -26,11 +26,11 @@ class RestaurantController extends Controller
         $restaurants = Restaurant::all();
         $allRestaurants = array();
 
-        foreach ($restaurants as $key =>  $restaurant ) {
+        foreach ($restaurants as $restaurant ) {
             $allRestaurants[] = ([
                 'restaurant' => $restaurant,
                 'country' => $restaurant->country,
-                'category' => $restaurant->category[0],
+                // 'category' => $restaurant->category[0],
                 'profile' => $restaurant->profile,
             ]);
         }

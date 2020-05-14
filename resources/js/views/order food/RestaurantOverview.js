@@ -70,7 +70,7 @@ const RestaurantOverview = () => {
                                     <h3>{restaurant.restaurant.name}</h3>
                                     <img className="restaurant-image" src={`./img/${restaurant.restaurant.image}`} />
                                     <div className="button-wrapper">
-                                        {restaurant.restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>))}
+                                        {/* {restaurant.restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>))} */}
                                         {/* {!restaurantCategories ? '' : restaurantCategories.data.map((res, index) => res.restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>)))} */}
                                         <Link to={`/restaurant?id=${restaurant.restaurant.id}`}><button className="green-button">See menu</button></Link>
                                     </div>

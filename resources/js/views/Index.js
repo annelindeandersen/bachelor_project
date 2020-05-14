@@ -75,20 +75,20 @@ function Index() {
     }, [])
 
     // get restaurant information if logged in
-    useEffect(() => {
-        const getRestaurant = async () => {
-            try {
-                const response = await fetch(`/api/getRestaurant?id=${localStorageData}`);
-                const data = await response.json();
-                console.log(response);
-                console.log(data);
-                dispatch({ type: 'CURRENT_USER', payload: data });
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        getRestaurant();
-    }, []);
+    // useEffect(() => {
+    //     const getRestaurant = async () => {
+    //         try {
+    //             const response = await fetch(`/api/getRestaurant?id=${localStorageData}`);
+    //             const data = await response.json();
+    //             console.log(response);
+    //             console.log(data);
+    //             dispatch({ type: 'CURRENT_USER', payload: data });
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
+    //     getRestaurant();
+    // }, []);
 
     return (
         <Router>

@@ -25,6 +25,11 @@ class Restaurant extends Model
         return $this->belongsToMany('App\MenuItem', 'menu_items');
     }
 
+    public function order()
+    {
+        return $this->hasMany('App\Order');
+    }
+
     public function profile()
     {
         return $this->hasOne('App\RestaurantProfile');

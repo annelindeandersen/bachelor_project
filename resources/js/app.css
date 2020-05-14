@@ -90,3 +90,22 @@ nav {
     grid-template-columns: 1fr 2fr;
     grid-gap: 10px;
 }
+
+.order {
+    display: flex;
+    justify-content: space-between;
+}
+
+#profileWrapper {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.356);
+    padding: 20px;
+}
+
+.visible {
+    display: grid;
+}
+
+.hidden {
+    display: none;
+}

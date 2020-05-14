@@ -21,15 +21,28 @@ class OrderController extends Controller
     public function getorder(Request $request) {
         $user = $request->user;
 
+        // get the order for the user
         $orders = Order::where('user_id', '=', $user)->get();
-        // $order_items = OrderItem::where('order_id', '=', )
 
         $ordersArray = array();
+        $order_items_Array = array();
 
         foreach($orders as $order) {
+
+            // get the menu items that match the order items
+            $order_items = OrderItem::where('order_id', '=', $order->id)->get();
+
+            foreach($order_items as $order_item) {
+                $order_items_Array[] = ([
+                    'menu_item' => $order_item->menu_item
+                ]);
+            }
+
+            // array of order with the matching menu items
             $orderArray[] = ([
                 'order' => $order,
-                'order_item' => $order->order_item
+                'restaurant' => $order->restaurant,
+                'order_items' => $order_items_Array
             ]);
         }
 

@@ -24,6 +24,8 @@ Route::group([
 ], function () {
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signup');
+    Route::post('password', 'AuthController@password');
+    Route::post('update', 'AuthController@update');
     Route::post('restaurantRegister', 'RestaurantAuthController@restaurantRegister');
     Route::post('restaurantLogin', 'RestaurantAuthController@restaurantLogin');
   
