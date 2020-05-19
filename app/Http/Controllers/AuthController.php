@@ -131,17 +131,18 @@ class AuthController extends Controller
      */
     public function update(Request $request)
     {
+        $user = $request->user;
+
         $request->validate([
             'first_name' => 'string',
             'last_name' => 'string',
-            'email' => 'string|email|unique:users',
-            'phone' => 'string|unique:users',
+            'email' => 'string|email|unique:users,email,'.$user,
+            'phone' => 'string|unique:users,phone,'.$user,
             'address' => 'string',
             'city' => 'string',
             'postcode' => 'string',
         ]);
         
-        $user = $request->user;
         $first_name = $request->first_name;
         $last_name = $request->last_name;
         $phone = $request->phone;
@@ -152,32 +153,32 @@ class AuthController extends Controller
 
         $current_user = User::where('id', '=', $user)->first();
 
-        if (isset($first_name)){
+        if ($first_name !== $current_user->first_name){
             $current_user->update(['first_name' => $first_name]);
             $current_user->save();
         }
-        if (isset($last_name)){
+        if ($last_name !== $current_user->last_name){
             $current_user->update(['last_name' => $last_name]);
             $current_user->save();
         }
-        if (isset($email)){
+        if ($email !== $current_user->email){
             $current_user->update(['email' => $email]);
             $current_user->save();
         }
-        if (isset($phone)){
+        if ($phone !== $current_user->phone){
             $current_user->update(['phone' => $phone]);
             $current_user->save();
         }
-        if (isset($address)){
+        if ($address !== $current_user->address){
             $current_user->update(['address' => $address]);
             $current_user->save();
         }
-        if (isset($city)){
+        if ($city !== $current_user->city){
             $current_user->update(['city' => $city]);
             $current_user->save();
         }
-        if (isset($postcode)){
-            $current_user->update(['post$postcode' => $postcode]);
+        if ($postcode !== $current_user->postcode){
+            $current_user->update(['postcode' => $postcode]);
             $current_user->save();
         }
         

@@ -19,34 +19,12 @@ class OrderController extends Controller
      * @return [json] order object
      */
     public function getorder(Request $request) {
+
         $user = $request->user;
 
-        // get the order for the user
-        $orders = Order::where('user_id', '=', $user)->get();
+        $orders = Order::with('order_item.menu_item', 'restaurant')->where('user_id', '=', $user)->get();
 
-        $ordersArray = array();
-        $order_items_Array = array();
-
-        foreach($orders as $order) {
-
-            // get the menu items that match the order items
-            $order_items = OrderItem::where('order_id', '=', $order->id)->get();
-
-            foreach($order_items as $order_item) {
-                $order_items_Array[] = ([
-                    'menu_item' => $order_item->menu_item
-                ]);
-            }
-
-            // array of order with the matching menu items
-            $orderArray[] = ([
-                'order' => $order,
-                'restaurant' => $order->restaurant,
-                'order_items' => $order_items_Array
-            ]);
-        }
-
-        return response()->json($orderArray);
+        return response()->json($orders->toArray());
     }
 
     /**
@@ -63,16 +41,12 @@ class OrderController extends Controller
         $cart = Cart::where('user_id', '=', $user)->first();
         $orderArray = array();
 
-        $cart_items = CartItem::where('cart_id', '=', $cart->id)->get();
+        $cart_items = CartItem::with('menu_item')->where('cart_id', '=', $cart->id)->get();
 
-        $cart_items_array = array();
         $price_array = array();
 
-        // get the menu item from cart item
+        // get the menu item price from cart item
         foreach($cart_items as $cart_item) {
-            $cart_items_array[] = ([
-                'menu_item' => $cart_item->menu_item
-            ]);
             $price_array[] = ($cart_item->menu_item->price);
         }
 
@@ -88,18 +62,21 @@ class OrderController extends Controller
         $new_order->save();
         
         // get the order just created
-        $order = Order::where('user_id', '=', $user)->where('delivery_time', '=', $date)->first();
+        // $order = Order::where('user_id', '=', $user)->where('delivery_time', '=', $date)->first();
 
         foreach($cart_items as $cart_item){
             //create new order items
             $new_order_items = new OrderItem([
-                'order_id' => $order->id,
+                'order_id' => $new_order->id,
                 'menu_item_id' => $cart_item->menu_item->id,
             ]);
             $new_order_items->save();
         }
 
-        return response()->json('The order and order items were created');
+        // get full order just placed
+        $fullOrder = Order::with('order_item.menu_item', 'restaurant')->find($new_order->id);
+        // $fullOrder = Order::with('order_item.menu_item', 'restaurant')->where('user_id', '=', $user)->where('delivery_time', '=', $date)->first();
+        return response()->json($fullOrder);
     }
 
     // restaurant section ********************************************************************************

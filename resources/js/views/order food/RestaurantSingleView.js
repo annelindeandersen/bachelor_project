@@ -10,9 +10,20 @@ const RestaurantSingleView = () => {
 
     // logged in user
     const user = useSelector(state => state.usersReducer.user);
+    const logout = useSelector(state => state.usersReducer.logout);
+    console.log(user);
 
     const [restaurant, setRestaurant] = useState('');
     const [menu, setMenu] = useState('');
+    const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
+
+    useEffect(() => {
+        if (logout === 'click') {
+            console.log('Logout is clicked')
+            history.push('/login');
+        }
+    }, [logout])
 
     useEffect(() => {
         axios.get('/api/getselected', { params: { id: location.search.replace('?id=', '') } })
@@ -40,13 +51,20 @@ const RestaurantSingleView = () => {
         console.log(item);
         console.log(user);
 
-        axios.post('/api/addtocart', { user: user.id, menu_item: item.id })
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        if (!user || user === undefined) {
+            console.log('cannot add');
+            setError('Sorry, you must login/register to order food!');
+        } else {
+            axios.post('/api/addtocart', { user: user.id, menu_item: item.id })
+                .then(response => {
+                    console.log(response);
+                    setMessage('Item was added to cart!');
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+
     }
 
     return (
@@ -66,6 +84,7 @@ const RestaurantSingleView = () => {
                 </div>
                 {!menu ? '' :
                     <div id="menu">
+                        <p>{error}</p><p>{message}</p>
                         {/* get starter dishes */}
                         <div className="menu-type" id="starters">
                             <h3>{menu.data[0].starter[1].length === 0 ? '' : menu.data[0].starter[0]}</h3>

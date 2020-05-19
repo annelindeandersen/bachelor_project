@@ -60,6 +60,7 @@ Route::post('/deleteone', 'CartController@deleteone');
 Route::post('/payment', 'OrderController@payment');
 Route::post('/createorder', 'OrderController@create');
 Route::get('/getorder', 'OrderController@getorder');
+Route::get('/test', 'OrderController@test');
 
 //RESTAURANTS FLOW ************************************************
 

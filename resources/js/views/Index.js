@@ -6,9 +6,9 @@ import styling from './../app.css';
 
 // Views for users
 import Home from './Home';
-import Login from './Login';
-import Register from './Register';
-import Profile from './Profile';
+import Login from './user/Login';
+import Register from './user/Register';
+import Profile from './user/Profile';
 import RestaurantOverview from './order food/RestaurantOverview';
 import RestaurantSingleView from './order food/RestaurantSingleView';
 import Cart from './order food/Cart';
@@ -25,7 +25,7 @@ import CreateProfile from './restaurant/CreateProfile';
 import Orders from './restaurant/Orders';
 
 // Components
-import Menu from './../components/Menu';
+import Menu from './user/Menu';
 import Footer from './../components/Footer';
 
 // Connect redux

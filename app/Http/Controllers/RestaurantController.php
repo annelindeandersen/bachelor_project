@@ -23,18 +23,9 @@ class RestaurantController extends Controller
      */
     public function restaurant(Request $request)
     {
-        $restaurants = Restaurant::all();
-        $allRestaurants = array();
-
-        foreach ($restaurants as $restaurant ) {
-            $allRestaurants[] = ([
-                'restaurant' => $restaurant,
-                'country' => $restaurant->country,
-                // 'category' => $restaurant->category[0],
-                'profile' => $restaurant->profile,
-            ]);
-        }
-        return response()->json($allRestaurants);
+        $restaurants = Restaurant::with('country', 'profile', 'category')->get();
+       
+        return response()->json($restaurants);
     }
 
     /**
@@ -77,19 +68,11 @@ class RestaurantController extends Controller
     public function category(Request $request)
     {
         $categoryRequest = $request->category;
-
-        // get restaurants with category
-        $categories = Category::where('category', '=', $categoryRequest)->get();
-
-        $getrestaurants = array();
         
-        foreach ($categories as $key => $category) {
-            $getrestaurants[] = ([
-                'restaurant' => $category->restaurants,
-                'category' => $category->category,
-                ]);
-        }
-        return response()->json($getrestaurants);
+        // get restaurants with category
+        $categories = Category::with('restaurants.category')->where('category', '=', $categoryRequest)->get();
+
+        return response()->json($categories);
     }
 
     /**

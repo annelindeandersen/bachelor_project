@@ -1,5 +1,4 @@
 const initialState = {
-    order: {},
     delete: false
 }
 
@@ -14,6 +13,12 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             deleted: action.deleted
+        }
+    }
+    if (action.type === 'GET_ORDER') {
+        return {
+            ...state,
+            order: action.order
         }
     }
     return state;
