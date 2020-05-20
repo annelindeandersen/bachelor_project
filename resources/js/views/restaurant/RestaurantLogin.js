@@ -71,6 +71,7 @@ const Login = () => {
             <input value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" className="form-control" placeholder="email" /><br />
             <input value={sPassword} onChange={(e) => setPassword(e.target.value)} type="password" id="loginPassword" className="form-control" placeholder="password" /><br />
             <input id="loginButton" className="form-control" type="submit" value="Login" onClick={login} />
+            <small>Forgot your password?<Link to="/restaurant-password-request" >Reset password</Link></small>
         </div>
     );
 }

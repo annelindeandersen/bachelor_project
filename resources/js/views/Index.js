@@ -19,14 +19,14 @@ import Receipt from './order food/Receipt';
 import ForRestaurants from './restaurant/ForRestaurants';
 import RestaurantRegister from './restaurant/Register';
 import RestaurantLogin from './restaurant/RestaurantLogin';
-import RestaurantMenu from './restaurant/RestaurantMenu';
 import Dashboard from './restaurant/Dashboard';
-import CreateProfile from './restaurant/CreateProfile';
-import Orders from './restaurant/Orders';
+import PasswordResetRequest from './restaurant/PasswordResetRequestForm';
+import PasswordReset from './restaurant/PasswordReset';
 
 // Components
 import Menu from './user/Menu';
 import Footer from './../components/Footer';
+import RestaurantMenu from './../components/RestaurantMenu';
 
 // Connect redux
 import { createStore, combineReducers } from 'redux';
@@ -72,75 +72,106 @@ function Index() {
             }).catch((err) => {
                 console.log(err);
             })
+
+        axios.get('/api/getRestaurant/', { params: { id: localStorageData } })
+            .then(response => {
+                console.log({ 'FROM_INDEX': response });
+                dispatch({ type: 'CURRENT_USER', restaurant: response.data.restaurant });
+                dispatch({ type: 'LOGGED_OUT', logged_out: false });
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }, [])
 
     // get restaurant information if logged in
-    // useEffect(() => {
-    //     const getRestaurant = async () => {
-    //         try {
-    //             const response = await fetch(`/api/getRestaurant?id=${localStorageData}`);
-    //             const data = await response.json();
-    //             console.log(response);
-    //             console.log(data);
-    //             dispatch({ type: 'CURRENT_USER', payload: data });
-    //         } catch (error) {
-    //             console.log(error)
-    //         }
-    //     }
-    //     getRestaurant();
-    // }, []);
+    useEffect(() => {
+
+        // axios.get('/api/getRestaurant/', { params: { id: localStorageData } })
+        //     .then(response => {
+        //         console.log({ 'FROM_INDEX': response });
+        //         dispatch({ type: 'CURRENT_USER', restaurant: response.data.restaurant });
+        //         dispatch({ type: 'LOGGED_OUT', logged_out: false });
+        //     })
+        //     .catch(error => {
+        //         console.log(error)
+        //     })
+
+        // const getRestaurantData = async () => {
+        //     try {
+        //         const response = await fetch(`/api/getRestaurant/${localStorageData}`);
+        //         const data = await response.json()
+        //         //   console.log({'index':data.restaurant.id})
+        //         dispatch({ type: 'CURRENT_USER', restaurant: data.restaurant });
+        //         dispatch({ type: 'LOGGED_OUT', logged_out: false });
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+        // }
+        // getRestaurantData();
+    }, []);
 
     return (
         <Router>
-            <Menu />
             <Switch>
                 <Route exact path="/">
+                    <Menu />
                     <Home />
                 </Route>
                 <Route path="/login">
+                    <Menu />
                     <Login />
                 </Route>
                 <Route path="/register">
+                    <Menu />
                     <Register />
                 </Route>
                 <Route path="/profile">
+                    <Menu />
                     <Profile />
                 </Route>
                 <Route path="/orderfood">
+                    <Menu />
                     <RestaurantOverview />
                 </Route>
                 <Route path="/restaurant">
+                    <Menu />
                     <RestaurantSingleView />
                 </Route>
                 <Route path="/cart">
+                    <Menu />
                     <Cart />
                 </Route>
                 <Route path="/payment">
                     <Payment />
                 </Route>
                 <Route path="/receipt">
+                    <Menu />
                     <Receipt />
                 </Route>
                 <Route exact path="/for-restaurants">
+                    <RestaurantMenu />
                     <ForRestaurants />
                 </Route>
                 <Route exact path="/restaurant-register">
+                    <RestaurantMenu />
                     <RestaurantRegister />
                 </Route>
                 <Route exact path="/restaurant-login">
+                    <RestaurantMenu />
                     <RestaurantLogin />
                 </Route>
                 <Route exact path="/restaurant-dashboard">
+                    <RestaurantMenu />
                     <Dashboard />
                 </Route>
-                <Route exact path="/restaurant-profile">
-                    <CreateProfile />
-                </Route>
-                <Route exact path="/restaurant-menu">
+                <Route exact path="/restaurant-password-request">
                     <RestaurantMenu />
+                    <PasswordResetRequest />
                 </Route>
-                <Route exact path="/restaurant-orders">
-                    <Orders />
+                <Route exact path="/restaurant-password-reset">
+                    <RestaurantMenu />
+                    <PasswordReset />
                 </Route>
             </Switch>
             <Footer />
