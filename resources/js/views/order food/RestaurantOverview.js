@@ -77,11 +77,11 @@ const RestaurantOverview = () => {
 
                             !restaurants ? '' : restaurants.data.map((restaurant, index) => (
                                 <div className="restaurant" key={index}>
-                                    <h3>{restaurant.name}</h3>
-                                    <img className="restaurant-image" src={`./img/${restaurant.image}`} />
+                                    <h3>{restaurant.restaurant.name}</h3>
+                                    <img className="restaurant-image" src={`./img/${restaurant.restaurant.image}`} />
                                     <div className="button-wrapper">
-                                        {restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>))}
-                                        <Link to={`/restaurant?id=${restaurant.id}`}><button className="green-button">See menu</button></Link>
+                                        {restaurant.restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>))}
+                                        <Link to={`/restaurant?id=${restaurant.restaurant.id}`}><button className="green-button">See menu</button></Link>
                                     </div>
                                 </div>
                             ))

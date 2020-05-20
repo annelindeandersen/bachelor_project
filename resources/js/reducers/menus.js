@@ -1,5 +1,5 @@
 const initialState = {
-    menu: [],
+    menu: '',
 }
 const reducer = (state = initialState, action) => {
     if (action.type === 'ITEM_ADDED') {

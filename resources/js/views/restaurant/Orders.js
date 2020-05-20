@@ -2,79 +2,285 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
+import Axios from 'axios';
+// import RestaurantOrder from '../../components/RestaurantOrder';
+import './../../restaurant.css';
 
 const Orders = () => {
     //redux
-    const logged_out = useSelector(state => state.restaurantsReducer.logged_out);
-    const restaurant = useSelector(state => state.restaurantsReducer.restaurants);
+    const order_accepted = useSelector(state => state.ordersReducer.order_accepted_status);
+    const order_in_progress = useSelector(state => state.ordersReducer.in_progress_status);
+    const order_ready = useSelector(state => state.ordersReducer.ready_for_dispatch_status);
+    const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
     const dispatch = useDispatch();
-    console.log(`${restaurant.id} is from redddddux`)
-    const [aOrders, setOrders] = useState();
-    const getOrders = async () => {
-        const response = await fetch(`/api/getOrders/${restaurant.id}`);
-        console.log('id is ' + restaurant.id)
-        const data = await response.json();
-        console.log(response);
-        console.log(data);
-        setOrders(data.order_details)
-    };
+    const [aAcceptedOrders, setAcceptedOrders] = useState();
+    const [aReceivedOrders, setReceivedOrders] = useState();
+    const [aOrdersInProgress, setOrdersInProgress] = useState();
+    const [aOrdersForDispatch, setOrdersForDispatch] = useState();
+
+    console.log({ 'RESTAURANT_FROM_ORDER': restaurant })
+    //get new orders
     useEffect(() => {
-        getOrders();
-    }, [restaurant.id])
+        console.log(!restaurant ? '' : restaurant)
+        // if (restaurant) {
+        axios.get('/api/getNewOrders', { params: { id: restaurant && restaurant.id } })
+            .then(response => {
+                setReceivedOrders(response.data);
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        // }
+    }, [restaurant, order_accepted, order_in_progress, order_ready]);
 
-    console.log(aOrders);
+    //get accepted orders
+    useEffect(() => {
+        console.log(!restaurant ? '' : restaurant)
+        // if (restaurant) {
+        axios.get('/api/getAcceptedOrders/', { params: { id: restaurant && restaurant.id } })
+            .then(response => {
+                console.log(response.data);
+                setAcceptedOrders(response.data);
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        // }
+    }, [restaurant, order_accepted, order_in_progress, order_ready]);
 
-    // useEffect(()=> {
+    //get orders in progress
+    useEffect(() => {
+        console.log(!restaurant ? '' : restaurant)
+        // if (restaurant) {
+        axios.get('/api/ordersInProgress/', { params: { id: restaurant && restaurant.id } })
+            .then(response => {
+                setOrdersInProgress(response.data);
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        // }
+    }, [restaurant, order_accepted, order_in_progress, order_ready])
+
+    //get orders dispatched
+    useEffect(() => {
+        console.log(!restaurant ? '' : restaurant)
+        // if (restaurant) {
+        axios.get('/api/ordersforDispatch', { params: { id: restaurant && restaurant.id } })
+            .then(response => {
+                console.log(response)
+                setOrdersForDispatch(response.data);
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        // }
+    }, [restaurant, order_accepted, order_in_progress, order_ready])
+
+    //accept order
     const accept = async (id) => {
-        console.log(id);
-        event.preventDefault();
-        const response = await fetch(`/api/acceptOrder/${id}`, {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
-        const data = await response.json();
-        console.log(data)
-    }
-    // },[])
 
-    const reject = async (id) => {
-        console.log(id);
-        event.preventDefault();
-        const response = await fetch(`/api/rejectOrder/${id}`, {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
+        axios.post('/api/acceptOrder', { id: id })
+            .then(response => {
+                console.log(response);
+                dispatch({ type: 'ORDER_ACCEPTED', order_accepted: true });
+                dispatch({ type: 'ORDER_ACCEPTED', order_accepted: false });
+            })
+            .catch(error => {
+                console.log(error);
+            })
 
-        const data = await response.json();
-        console.log(data)
+        // try {
+        //     // console.log(id);
+        //     event.preventDefault();
+        //     const response = await fetch(`/api/acceptOrder/${id}`, {
+        //         method: 'post',
+        //         headers: {
+        //             'Accept': 'application/json',
+        //             'Content-Type': 'application/json'
+        //         }
+        //     });
+        //     const data = await response.json();
+        //     // console.log(data)
+        //     dispatch({ type: 'ORDER_ACCEPTED', order_accepted: true });
+        //     dispatch({ type: 'ORDER_ACCEPTED', order_accepted: false });
+        // } catch (error) {
+        //     console.log(error)
+        // }
     }
+
+    //reject order
+    const reject = (id) => {
+        // console.log(id);
+        event.preventDefault();
+
+        axios.post('/api/rejectOrder', { id: id })
+            .then(response => {
+                console.log(response);
+                dispatch({ type: 'ORDER_ACCEPTED', order_accepted: false });
+                dispatch({ type: 'ORDER_ACCEPTED', order_accepted: '' });
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+        // const response = await fetch(`/api/rejectOrder/${id}`, {
+        //     method: 'post',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     }
+        // });
+        // const data = await response.json();
+        // dispatch({ type: 'ORDER_ACCEPTED', order_accepted: false });
+        // dispatch({ type: 'ORDER_ACCEPTED', order_accepted: '' });
+    }
+
+    //set order in progress
+    const setInProgress = (id) => {
+        console.log(id);
+
+        axios.post('/api/orderInProgress', { id: id })
+            .then(response => {
+                console.log(response);
+                dispatch({ type: 'IN_PROGRESS', order_ready: true });
+                dispatch({ type: 'IN_PROGRESS', order_ready: false });
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+        // event.preventDefault();
+        // const response = await fetch(`/api/orderInProgress/${id}`, {
+        //     method: 'post',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     }
+        // });
+        // const data = await response.json();
+        // console.log(data)
+        // dispatch({ type: 'IN_PROGRESS', order_ready: true });
+        // dispatch({ type: 'IN_PROGRESS', order_ready: false });
+    }
+
+    //set ready for dispatch
+    const setReadyForDispatch = async (id) => {
+        console.log(id);
+
+        axios.post('/api/ordersforDispatch/', { id: id })
+            .then(response => {
+                console.log(response)
+                dispatch({ type: 'READY_FOR_DISPATCH', order_ready: true });
+                dispatch({ type: 'READY_FOR_DISPATCH', order_ready: false });
+            })
+            .catch(error => {
+                console.log(error)
+            });
+
+
+        // event.preventDefault();
+        // const response = await fetch(`/api/ordersforDispatch/${id}`, {
+        //     method: 'post',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     }
+        // });
+        // const data = await response.json();
+        // console.log(data)
+        // dispatch({ type: 'READY_FOR_DISPATCH', order_ready: true });
+        // dispatch({ type: 'READY_FOR_DISPATCH', order_ready: false });
+    }
+
     return (
         <div className="container">
             <h1>Orders</h1>
-            {aOrders && aOrders.map((order) => (
-                <div>
-                    <h1>{order.id}</h1>
-                    <button name="accept" type="submit" value={order.id} onClick={(event) => accept(event.target.value)}>Accept</button>
-                    <button name="reject" type="submit" value={order.id} onClick={(event) => reject(event.target.value)}>Reject</button>
-                    <h1>{order.delivery_time}</h1>
-                    {order.order_items.map((item) => (
-                        <div>
-                            <p>{item.menu_item}</p>
-                            <p>{item.menu_item.description}</p>
-                            <p>{item.menu_item.price} kr.</p>
+            <div className="order_container">
+                <div className="section">
+                    <h2>New orders</h2>
+                    {aReceivedOrders && aReceivedOrders.map((order, i) => (
+                        <div key={i}>
+                            <h1>{order.id}</h1>
+                            <button name="accept" type="submit" value={order.id} onClick={(event) => accept(event.target.value)}>Accept</button>
+                            <button name="reject" type="submit" value={order.id} onClick={(event) => reject(event.target.value)}>Reject</button>
+                            <h5>{order.delivery_time}</h5>
+                            <h5>Total price: {order.total_amount},-</h5>
+                            <p>{order.user.first_name} {order.user.last_name}</p>
+                            {order.order_item ? order.order_item.map((item, i) => (
+                                <div key={i}>
+                                    <p>{item.menu_item.id}. {item.menu_item.title}</p>
+                                </div>
+                            )) : ''}
+                            <hr></hr>
                         </div>
                     ))}
                 </div>
-            ))}
+                <div className="section">
+                    <h2>Accepted</h2>
+                    {aAcceptedOrders && aAcceptedOrders.map((order, i) => (
+                        <div key={i}>
+                            <h1>{order.id}</h1>
+                            <button name="status" type="submit" value={order.id} onClick={(event) => setInProgress(event.target.value)}>
+                                Mark as in Progress
+                            </button>
+                            <h5>{order.delivery_time}</h5>
+                            <h5>Total price: {order.total_amount},-</h5>
+                            <p>{order.user.first_name} {order.user.last_name}</p>
+                            {order.order_item ? order.order_item.map((item, i) => (
+                                <div key={i}>
+                                    <p>{item.menu_item.title}</p>
+                                </div>
+                            )) : ''}
+                            <hr></hr>
+                        </div>
+                    ))}
+                </div>
+                <div className="section">
+                    <h2>In Progress</h2>
+                    {aOrdersInProgress && aOrdersInProgress.map((order, i) => (
+                        <div key={i}>
+                            <h1>{order.id}</h1>
+                            <button name="status" type="submit" value={order.id}
+                                onClick={(event) => setReadyForDispatch(event.target.value)}>Mark as Ready for Dispatch</button>
+                            <h5>{order.delivery_time}</h5>
+                            <h5>Total price: {order.total_amount},-</h5>
+                            <p>{order.user.first_name} {order.user.last_name}</p>
+                            {order.order_item ? order.order_item.map((item, i) => (
+                                <div key={i}>
+                                    <p>{item.menu_item.title}</p>
+                                    <p></p>
+                                </div>
+                            )) : ''}
+                            <hr></hr>
+                        </div>
+                    ))}
+                </div>
+                <div className="section">
+                    <h2>Ready for pick up</h2>
+                    {aOrdersForDispatch && aOrdersForDispatch.map((order, i) => (
+                        <div key={i}>
+                            <h1>{order.id}</h1>
+                            {/* <button name="status" type="submit" value={order.id} onClick={(event) => setForDispatch(event.target.value)}>
+                                Mark as Completed
+                        </button> */}
+                            <h5>{order.delivery_time}</h5>
+                            <h5>Total price: {order.total_amount},-</h5>
+                            <p>{order.user.first_name} {order.user.last_name}</p>
+                            {order.order_item ? order.order_item.map((item, i) => (
+                                <div key={i}>
+                                    <p>{item.menu_item.title}</p>
+                                </div>
+                            )) : ''}
+                            <hr></hr>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }
+
 export default Orders;
 if (document.getElementById('orders')) {
     ReactDOM.render(<Orders />, document.getElementById('orders'));

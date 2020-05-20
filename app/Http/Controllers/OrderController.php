@@ -113,8 +113,9 @@ class OrderController extends Controller
 
     // restaurant section ******************************************************************************
      // get new order by restaurant id
-     public function getNewOrders(Request $request, $id)
+     public function getNewOrders(Request $request)
      {
+        $id = $request->id;
        $aReceivedOrders = Order::with('user', 'order_item.menu_item')
        ->where('restaurant_id', '=', $id)
        ->where('status', '=', 0)
@@ -124,8 +125,9 @@ class OrderController extends Controller
        return response()->json($aReceivedOrders);
      }
           // get accepted order by restaurant id
-          public function getAcceptedOrders(Request $request, $id)
+          public function getAcceptedOrders(Request $request)
           {
+            $id = $request->id;
             $aAcceptedOrders = Order::with('user', 'order_item.menu_item')
             ->where('restaurant_id', '=', $id)
             ->where('status', '=', 0)
@@ -139,8 +141,9 @@ class OrderController extends Controller
            return response()->json( $aAcceptedOrders);
           }
         //get order in progress
-        public function getOrdersInProgress(Request $request, $id)
+        public function getOrdersInProgress(Request $request)
         {
+            $id = $request->id;
             $aOrdersInPorgress = Order::with('user', 'order_item.menu_item')
             ->where('restaurant_id', '=', $id)
             ->where('status', '=', 1)
@@ -150,8 +153,9 @@ class OrderController extends Controller
             return response()->json($aOrdersInPorgress);
         }
     //get order in dispatched
-    public function getOrdersDispatched(Request $request, $id)
+    public function getOrdersDispatched(Request $request)
     {
+        $id = $request->id;
         $aOrdersInPorgress = Order::with('user', 'order_item.menu_item')
         ->where('restaurant_id', '=', $id)
         ->where('status', '=', 2)
@@ -161,8 +165,9 @@ class OrderController extends Controller
         return response()->json($aOrdersInPorgress);
     }
     //accept order by restaurant id
-    public function acceptOrder(Request $request, $id)
-    {
+    public function acceptOrder(Request $request)
+    {   
+        $id = $request->id;
         $order = Order::where('id', $id)
         ->update(['accepted' => 1]);
         return response()->json([
@@ -170,8 +175,9 @@ class OrderController extends Controller
         ], 201);
     }
     //reject order by restaurant id
-    public function rejectOrder(Request $request, $id)
+    public function rejectOrder(Request $request)
     {
+        $id = $request->id;
         $order = Order::where('id', $id)
         ->update(['accepted' => -1]);
         return response()->json([
@@ -179,8 +185,9 @@ class OrderController extends Controller
         ], 201);
     }
         //set order status in progress
-        public function setStatusInProgress(Request $request, $id)
+        public function setStatusInProgress(Request $request)
         {
+            $id = $request->id;
             $order = Order::where('id', $id)
             ->update(['status' => 1]);
             return response()->json([
@@ -188,8 +195,9 @@ class OrderController extends Controller
             ], 201);
         }
         //set order status in progress
-        public function setStatusDispatched(Request $request, $id)
+        public function setStatusDispatched(Request $request)
         {
+            $id = $request->id;
             $order = Order::where('id', $id)
             ->update(['status' => 2]);
             return response()->json([

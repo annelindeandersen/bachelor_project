@@ -23,9 +23,23 @@ class RestaurantController extends Controller
      */
     public function restaurant(Request $request)
     {
+        // $restaurantWithProfile = Restaurant::with('profile')
         $restaurants = Restaurant::with('country', 'profile', 'category')->get();
+
+        $restaurant_array = [];
+
+        foreach($restaurants as $restaurant) {
+            if($restaurant->profile !== null) {
+                $restaurant_array[] = ([
+                    'restaurant' => $restaurant,
+                    'country' => $restaurant->country,
+                    'category' => $restaurant->category,
+                    'profile' => $restaurant->profile
+                ]);
+            }
+        }
        
-        return response()->json($restaurants);
+        return response()->json($restaurant_array);
     }
 
     /**
@@ -94,55 +108,122 @@ class RestaurantController extends Controller
     }
 
     //RESTAURANT FLOW *********************************************************************************
+    //get reataurant by id for dashboard page
+    public function getRestaurant(Request $request)
+    {
+        $encryptedEmail = $request->id;
+        $decryptedEmail = Crypt::decryptString($encryptedEmail);
+        $restaurant = Restaurant::with('profile')->where('email', '=', $decryptedEmail)->first();
+            return response()->json([
+            'restaurant' => $restaurant,
+    ], 200);
+    }
+    //create a restaurant profile
+    public function createProfile(Request $request, $id)
+    {
+        $imageName = $id.'.jpg';
+        if(!$request->description){return 'Please enter a description';}
+        if(!$request->opening_hour){return 'Please enter a opening_hour';}
+        if(!$request->closing_hour){return 'Please enter a closing_hour';}
+        $profile = new RestaurantProfile([
+            'restaurant_id' => $id,
+            'description' => $request->description,
+            'logo' => $imageName,
+            'opening_hour' => $request->opening_hour,
+            'closing_hour' => $request->closing_hour
+        ]);
+        $categories  = $request->categories;
+        foreach ($categories as &$category) {
+            echo $category;
+            RestaurantsToCategory::firstOrCreate([
+                'restaurant_id' => $id,
+                'category_id' => $category,
+            ]);
+        }
+        $image = $request->logo;
+        if(!$image){return 'Please enter a description';}
+        File::put('img/'.$imageName, base64_decode($image));
+        $profile->save();
+        return response()->json([
+            'message' => 'Successfully saved menu',
+            'data'=>  $profile,
+            'categories'=>  $categories
+        ], 201);
+    }
+    //update profile
+    public function updateProfile(Request $request)
+    {
+        $id = $request->id;
+        $restaurantData = Restaurant::with('profile')->find($id);
+        // echo $restaurantData;
 
+        $editableFields = [];
+        if($request->name){ array_push($editableFields, 'name');}
+        if($request->email){ array_push($editableFields, 'email');}
+        if($request->phone){ array_push($editableFields, 'phone');}
+        if($request->address){ array_push($editableFields, 'address');}
+        if($request->city){ array_push($editableFields, 'city');}
+        if($request->postcode){ array_push($editableFields, 'postcode');}
+        if($request->country_id){ array_push($editableFields, 'country_id');}
+        if($request->image){ array_push($editableFields, 'image');}
 
-         //get reataurant by id for dashboard page
-         
-         public function getRestaurant(Request $request)
-         {
+        $profileEditableFields = [];
+        // echo print_r($profileEditableFields);
+        if($request->description){ array_push($profileEditableFields, 'description');}
+        if($request->logo){ array_push($profileEditableFields, 'logo');}
+        if($request->opening_hour){ array_push($profileEditableFields, 'opening_hour');}
+        if($request->closing_hour){ array_push($profileEditableFields, 'closing_hour');}
 
-            $restaurants = Restaurant::all();
-            $encryptedId = $request->id;
-            //echo  $encryptedId;
-            $decryptedId = Crypt::decryptString($encryptedId);
-            echo  $decryptedId;
-        
-            // $restaurant = Restaurant::where('email', '=', $decryptedId)->first();
-            //        return response()->json([
-            //     'data' => $restaurant,
-            // ], 200);
-         
+        // echo print_r($profileEditableFields);
+        // if($restaurantData == null){$restaurantData = new Restaurant();}
 
-         }
+        // profile update if not exists
+        if($restaurantData->profile == null){
+            $newProfile = new RestaurantProfile([
+                'restaurant_id' => $id,
+                'description' => $request->description,
+                'logo' => $request->logo,
+                'opening_hour' => $request->opening_hour,
+                'closing_hour' => $request->closing_hour,
+            ]);
+            $newProfile->save();
+            return 'Success in creating';
+        } else {
+            // profile update when exists
+            $profileFieldsToUpdate = $request->only($profileEditableFields);
+            $restaurantData->profile->fill($profileFieldsToUpdate);
+            $restaurantData->profile->save();
 
-             //create a restaurant profile
-          //add menu item
-          public function createProfile(Request $request, $id) 
-          {
-             $profile = new RestaurantProfile([
-                 'restaurant_id' => $id,
-                 'description' => $request->description,
-                 'logo' => $request->logo,
-                 'opening_hour' => $request->opening_hour,
-                 'closing_hour' => $request->closing_hour
-             ]);
+             // restaurant update
+            $fieldsToUpdate = $request->only($editableFields);
+            $restaurantData->fill($fieldsToUpdate);
+            $restaurantData->save();
 
-          //    $file = Request::file('image');
-          //    $file->move(public_path('/uploads/'. $request->image));
-          //    Image::make(public_path('/uploads/'. $request->image))->resize(300,300)->save(public_path('/uploads/'. $request->image));
+            return $restaurantData;
+            // return response()->json($restaurantData);
+        }
+        // $categories  = $request->categories;
+        // foreach ($categories as $category) {
+        //     // echo $category;
+        //     RestaurantsToCategory::firstOrCreate([
+        //         'restaurant_id' => $id,
+        //         'category_id' => $category,
+        //     ]);
+        // }
 
-             $profile->save();
-             return response()->json([
-                 'message' => 'Successfully saved menu',
-                 'data'=>  $profile
-             ], 201);
-         }
-
-             //get countries
-             public function getCountries(Request $request)
-             {
-                 $countryArray =  Country::all();
-                  return $countryArray;
-              }  
-
+       
+        // return $restaurantData;
+    }
+    //get countries for select
+    public function getCountries(Request $request)
+    {
+        $countryArray =  Country::all();
+        return $countryArray;
+    }
+    //get categories for select
+    public function getCategories(Request $request)
+    {
+        $categoryArray =  Category::all();
+        return $categoryArray;
+    }
 }
