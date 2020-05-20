@@ -27,6 +27,42 @@ class OrderController extends Controller
         return response()->json($orders->toArray());
     }
 
+
+    /**
+     * TEST TEST TEST
+     *
+     * @return [json] order object
+     */
+    public function test(Request $request) {
+
+        $user = $request->user;
+
+        $orders = Order::where('user_id', '=', $user)->first();
+        $order_items = OrderItem::with('menu_item', 'order')->where('order_id', '=', $orders->id)->get();
+
+        $newOrdersArray = array_merge($order_items->toArray());
+
+        $newArray = array();
+
+        foreach($newOrdersArray as $newOrderArray) {
+
+            // $newArray[] = ([
+            //     'order' => $newOrderArray
+            // ]);
+            $newArray[] = ([
+                'order' => $newOrderArray->groupBy('menu_item_id')
+            ]);
+            // foreach()
+            // return $newOrderArray->order_item->groupBy('menu_item_id');
+        }
+
+        // $newOrdersArray[] = [...$orders];
+
+        return response()->json($newArray);
+    }
+
+
+
     /**
      * create order for user
      *
@@ -60,9 +96,6 @@ class OrderController extends Controller
             'status' => 0
         ]);
         $new_order->save();
-        
-        // get the order just created
-        // $order = Order::where('user_id', '=', $user)->where('delivery_time', '=', $date)->first();
 
         foreach($cart_items as $cart_item){
             //create new order items
@@ -75,7 +108,6 @@ class OrderController extends Controller
 
         // get full order just placed
         $fullOrder = Order::with('order_item.menu_item', 'restaurant')->find($new_order->id);
-        // $fullOrder = Order::with('order_item.menu_item', 'restaurant')->where('user_id', '=', $user)->where('delivery_time', '=', $date)->first();
         return response()->json($fullOrder);
     }
 

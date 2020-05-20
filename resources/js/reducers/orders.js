@@ -15,6 +15,12 @@ const reducer = (state = initialState, action) => {
             deleted: action.deleted
         }
     }
+    if (action.type === 'GET_CART') {
+        return {
+            ...state,
+            cart: action.cart
+        }
+    }
     if (action.type === 'GET_ORDER') {
         return {
             ...state,

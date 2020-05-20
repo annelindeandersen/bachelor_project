@@ -93907,6 +93907,12 @@ var reducer = function reducer() {
     });
   }
 
+  if (action.type === 'GET_CART') {
+    return _objectSpread({}, state, {
+      cart: action.cart
+    });
+  }
+
   if (action.type === 'GET_ORDER') {
     return _objectSpread({}, state, {
       order: action.order
@@ -94336,8 +94342,8 @@ var Cart = function Cart() {
       id: currentRestaurant
     });
     dispatch({
-      type: "GET_ORDER",
-      order: cart
+      type: "GET_CART",
+      cart: cart
     });
     history.push('/payment');
   };
@@ -94506,7 +94512,7 @@ var Payment = function Payment() {
     return state.ordersReducer.restaurant;
   });
   var order = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(function (state) {
-    return state.ordersReducer.order;
+    return state.ordersReducer.cart;
   });
   var user = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(function (state) {
     return state.usersReducer.user;

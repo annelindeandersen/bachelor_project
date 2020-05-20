@@ -34,7 +34,7 @@ const Cart = () => {
     const order = () => {
         console.log('pressed order');
         dispatch({ type: "RESTAURANT", id: currentRestaurant })
-        dispatch({ type: "GET_ORDER", order: cart })
+        dispatch({ type: "GET_CART", cart: cart })
         history.push('/payment');
     }
 

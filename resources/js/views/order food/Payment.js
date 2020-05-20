@@ -31,7 +31,7 @@ const Payment = () => {
 
     // redux & history
     const restaurantId = useSelector(state => state.ordersReducer.restaurant);
-    const order = useSelector(state => state.ordersReducer.order);
+    const order = useSelector(state => state.ordersReducer.cart);
     const user = useSelector(state => state.usersReducer.user);
     const logout = useSelector(state => state.usersReducer.logout);
     const dispatch = useDispatch();
