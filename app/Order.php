@@ -1,24 +1,18 @@
 <?php
-
 namespace App;
-
 use Illuminate\Database\Eloquent\Model;
-
 class Order extends Model
 {
     public function order_item()
     {
         return $this->hasMany('App\OrderItem');
     }
-
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo('App\User');
     }
-
-    public function parentable()
+    public function restaurant()
     {
-        return $this->morphTo();
+        return $this->belongsTo('App\Restaurant');
     }
     /**
      * The attributes that are mass assignable.

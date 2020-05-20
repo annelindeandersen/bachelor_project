@@ -94144,7 +94144,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var initialState = {
-  order: {},
   "delete": false,
   order_accepted_status: '',
   in_progress_status: false,
@@ -94188,6 +94187,18 @@ var reducer = function reducer() {
   if (action.type === 'READY_FOR_DISPATCH') {
     return _objectSpread({}, state, {
       ready_for_dispatch_status: action.order_ready
+    });
+  }
+
+  if (action.type === 'GET_CART') {
+    return _objectSpread({}, state, {
+      cart: action.cart
+    });
+  }
+
+  if (action.type === 'GET_ORDER') {
+    return _objectSpread({}, state, {
+      order: action.order
     });
   }
 

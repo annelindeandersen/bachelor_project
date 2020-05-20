@@ -1,5 +1,4 @@
 const initialState = {
-    order: {},
     delete: false,
     order_accepted_status: '',
     in_progress_status:false,
@@ -24,7 +23,6 @@ const reducer = (state = initialState, action) => {
             ...state,
             accepted: action.accepted
         }   
-
     }
     if (action.type === 'ORDER_ACCEPTED') {
         return {
@@ -43,6 +41,18 @@ const reducer = (state = initialState, action) => {
             ...state,
             ready_for_dispatch_status: action.order_ready
         }   
+    }
+    if (action.type === 'GET_CART') {
+        return {
+            ...state,
+            cart: action.cart
+        }
+    }
+    if (action.type === 'GET_ORDER') {
+        return {
+            ...state,
+            order: action.order
+        }
     }
     return state;
 
