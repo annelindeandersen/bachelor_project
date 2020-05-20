@@ -1,0 +1,43 @@
+.outertag{
+    margin: 10px;
+    float:left;
+    background:lightgray;
+  }
+  
+.tag_input {
+    display:none;
+  }
+
+  input[type="checkbox"]{
+    width: 30px; /*Desired width*/
+    height: 20px; /*Desired height*/
+  }
+  
+  .chcklabel{
+    /* padding: 5px 10px; */
+    background:lightgray;
+
+    cursor:pointer;
+  }
+  .chckclicked{
+    background:gray;
+    border-color:black;
+  }
+
+
+  .profile-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #000000;
+  }
+
+
+  .order_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .section {
+    width: 25%;
+  }

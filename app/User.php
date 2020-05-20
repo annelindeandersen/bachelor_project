@@ -11,8 +11,14 @@ class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
-    public function cart() {
+    public function cart() 
+    {
         return $this->hasOne('App\Cart');
+    }
+
+    public function order()
+    {
+        return $this->hasOne('App\Order');
     }
 
     /**

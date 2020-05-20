@@ -33,44 +33,28 @@ const Login = () => {
                 })
             });
             const data = await response.json();
-            console.log(response)
-            console.log(data)
+            console.log({'login-response':response})
+            console.log({'login-data':data})
 
             if (response.status === 200) {
                 localStorage.setItem('email', data.local_storage_id);
-                const sessionData = data.session_data;
                 // sessionStorage.setItem('email', data.session_data);
-                // dispatch({ type: 'LOGOUT_USER', logged_out: false });
-                dispatch({ type: 'CURRENT_USER', payload: data });
+                dispatch({ type: 'LOGOUT_USER', logged_out: false });
+                dispatch({ type: 'CURRENT_USER', restaurant: data.restaurant });
                 history.push('/restaurant-dashboard');
             }
         } catch (error) {
             console.log(error)
         }
     }
-    //     axios(authOptions)
-    //         .then(response => {
-    //             console.log(response);
-    //             // setToken(response.data.access_token);
-    //                 dispatch({ type: 'SESSION_STARTED',
-    //                 payload: {
-    //                     restaurants: {
-    //                     },
-    //                     logout: false
-    //                   } });
-    //             // dispatch({ type: 'LOGOUT_USER', logout: false });
-    //             localStorage.setItem('email', response.data.email);
-    //             // history.push('/restaurant-dashboard');
-    //         }).catch((err) => {
-    //             console.log(err);
-    //         })
-    // }
+
     return (
         <div className="container d-flex justify-content-center">
             <h1 className="card-header">Login to dashboard</h1><br />
             <input value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" className="form-control" placeholder="email" /><br />
             <input value={sPassword} onChange={(e) => setPassword(e.target.value)} type="password" id="loginPassword" className="form-control" placeholder="password" /><br />
             <input id="loginButton" className="form-control" type="submit" value="Login" onClick={login} />
+            <small>Forgot your password?<Link to="/restaurant-password-request">Reset password</Link></small>
         </div>
     );
 }

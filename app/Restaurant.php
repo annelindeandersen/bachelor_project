@@ -20,7 +20,7 @@ class Restaurant extends Model
         return $this->belongsToMany('App\Category', 'restaurants_to_category');
     }
 
-    public function menu()
+    public function menu_order()
     {
         return $this->belongsToMany('App\MenuItem', 'menu_items');
     }
@@ -29,6 +29,8 @@ class Restaurant extends Model
     {
         return $this->hasOne('App\RestaurantProfile');
     }
+ 
+    
     /**
      * The attributes that are mass assignable.
      *

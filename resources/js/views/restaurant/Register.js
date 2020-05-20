@@ -15,7 +15,7 @@ const Register = () => {
     const [sConfirmPassword, setConfirmPassword] = useState('');
     const [aCountries, setCountries] = useState([]);
 
-    //get countis for select options
+    //get countries for select options
     const getCountries = async () => {
         const result = await fetch('/api/getCountries', {
             method: 'get',
@@ -75,7 +75,7 @@ const Register = () => {
             <input value={sPostcode} onChange={(event) => setPostcode(event.target.value)} id="restaurantRegisterPostcode" name="registerRestaurantPostcode" className="form-control" placeholder="postcode" /><br />
             <label htmlFor="countries_select">Select Country</label>
             <select id="countries_select" value={sCountry} onChange={(event) => setCountry(event.target.value)}>
-                <option>Select a country</option>
+                <option selected="selected">Select a country</option>
                 {
                     aCountries.map(country => (
                         <option value={country.id}>{country.name}</option>
