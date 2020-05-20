@@ -11,7 +11,7 @@ class MenuItem extends Model
         return $this->belongsTo('App\Restaurant');
     }
 
-    public function type()
+    public function menu_item_type()
     {
         return $this->belongsTo('App\MenuItemType', 'menu_item_type_id');
     }
@@ -23,4 +23,11 @@ class MenuItem extends Model
     public function order_item() {
         return $this->belongsTo('App\OrderItem');
     }
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['restaurant_id', 'menu_item_type_id', 'title', 'description', 'price', 'image'];
 }

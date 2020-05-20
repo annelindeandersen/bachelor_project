@@ -14,11 +14,14 @@ class CreateCartItemsTable extends Migration
     public function up()
     {
         Schema::create('cart_items', function (Blueprint $table) {
+            $table->increments('id')->unsigned();
             $table->integer('cart_id')->unsigned();
             $table->foreign('cart_id')->references('id')->on('users');
             $table->integer('menu_item_id')->unsigned();
             $table->foreign('menu_item_id')->references('id')->on('menu_items');
             $table->timestamps();
+
+            $table->engine = 'InnoDb';
         });
 
         DB::table('cart_items')->insert([

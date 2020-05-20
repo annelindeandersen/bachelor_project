@@ -16,7 +16,7 @@ const Cart = () => {
 
     const history = useHistory();
 
-    console.log({ 'restaurant': currentRestaurant, 'user': user });
+    console.log({ 'restaurant': currentRestaurant, 'user': user, 'cart': cart });
 
     useEffect(() => {
         axios.get('/api/getcart', { params: { user: user && user.id } })
@@ -34,6 +34,7 @@ const Cart = () => {
     const order = () => {
         console.log('pressed order');
         dispatch({ type: "RESTAURANT", id: currentRestaurant })
+        dispatch({ type: "GET_CART", cart: cart })
         history.push('/payment');
     }
 
@@ -52,18 +53,21 @@ const Cart = () => {
     return (
         <div className="container">
             <h1>Cart</h1>
-            {!cart ? 'Nothing added to cart yet' : cart.items.map((item, index) => (
-                <div key={index}>
-                    <strong>{item.menu_item.title}</strong>
-                    <p>{item.menu_item.description}</p>
-                    <p>{item.menu_item.price} DKK</p>
-                    <button onClick={() => deleteOne({ item })} className="green-button">Delete</button>
-                </div>
-            ))}
+            {!cart ? '' :
+                cart.items.length === 0 ? 'Nothing added to cart yet' : cart.items.map((item, index) => (
+                    <div key={index}>
+                        <strong>{item.menu_item.title}</strong>
+                        <p>{item.menu_item.description}</p>
+                        <p>{item.menu_item.price} DKK</p>
+                        <button onClick={() => deleteOne({ item })} className="green-button">Delete</button>
+                    </div>
+                ))}
             <br />
-            <h3>Total: {cart.total} DKK</h3>
+            <h3>{!cart ? '' : cart.total === 0 ? '' : 'Total: ' + cart.total + ' DKK'} </h3>
             <br />
-            <button className="green-button" onClick={order}>Order</button>
+            {!cart ? '' : cart.items.length === 0 ? '' :
+                <button className="green-button" onClick={order}>Order</button>
+            }
         </div >
     )
 }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const RestaurantOverview = () => {
     const [restaurants, setRestaurants] = useState('');
@@ -9,8 +10,17 @@ const RestaurantOverview = () => {
     const [categories, setCategories] = useState('');
     const [catClick, setCatClick] = useState('');
     const [header, setHeader] = useState('Selected Restaurants');
+    const logout = useSelector(state => state.usersReducer.logout);
+    const history = useHistory();
 
     console.log({ restaurants, categories, catClick });
+
+    useEffect(() => {
+        if (logout === 'click') {
+            console.log('Logout is clicked')
+            history.push('/login');
+        }
+    }, [logout])
 
     useEffect(() => {
         // get categories
@@ -53,7 +63,7 @@ const RestaurantOverview = () => {
         <div className="container">
             <div className="row justify-content-center">
                 <div className="card">
-                    <h1 className="card-header">Select your faveorite food types and choose!</h1>
+                    {/* <h1 className="card-header">Select your faveorite food types and choose!</h1> */}
                     <div className="category-wrapper">
                         {!categories ? '' : categories.data.map((category, index) => (
                             <div key={index}>
@@ -67,24 +77,24 @@ const RestaurantOverview = () => {
 
                             !restaurants ? '' : restaurants.data.map((restaurant, index) => (
                                 <div className="restaurant" key={index}>
-                                    <h3>{restaurant.restaurant.name}</h3>
-                                    <img className="restaurant-image" src={`./img/${restaurant.restaurant.image}`} />
+                                    <h3>{restaurant.name}</h3>
+                                    <img className="restaurant-image" src={`./img/${restaurant.image}`} />
                                     <div className="button-wrapper">
-                                        {restaurant.restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>))}
-                                        {/* {!restaurantCategories ? '' : restaurantCategories.data.map((res, index) => res.restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>)))} */}
-                                        <Link to={`/restaurant?id=${restaurant.restaurant.id}`}><button className="green-button">See menu</button></Link>
+                                        {restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>))}
+                                        <Link to={`/restaurant?id=${restaurant.id}`}><button className="green-button">See menu</button></Link>
                                     </div>
                                 </div>
                             ))
 
                             :
 
-                            catClick.restaurant.map((restaurant, index) => (
+                            catClick.restaurants.map((restaurant, index) => (
                                 <div className="restaurant" key={index}>
                                     <h3>{restaurant.name}</h3>
                                     <img className="restaurant-image" src={`./img/${restaurant.image}`} />
                                     <div className="button-wrapper">
-                                        <p>{catClick.category}</p>
+                                        {/* <p>{catClick.category}</p> */}
+                                        {restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>))}
                                         <Link to={`/restaurant?id=${restaurant.id}`}><button className="green-button">See menu</button></Link>
                                     </div>
                                 </div>

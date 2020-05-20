@@ -24,6 +24,10 @@ Route::group([
 ], function () {
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signup');
+    Route::post('password', 'AuthController@password');
+    Route::post('update', 'AuthController@update');
+    Route::post('restaurantRegister', 'RestaurantAuthController@restaurantRegister');
+    Route::post('restaurantLogin', 'RestaurantAuthController@restaurantLogin');
   
     Route::group([
       'middleware' => 'auth:api'
@@ -32,10 +36,6 @@ Route::group([
         Route::get('user', 'AuthController@user');
     });
 });
-
-// Restaurant auth
-Route::post('/registerrestaurant', 'RestaurantAuthController@restaurantRegister');
-Route::post('/loginrestaurant', 'RestaurantAuthController@restaurantLogin');
 
 // Restaurants
 Route::get('/getrestaurants', 'RestaurantController@restaurant');
@@ -60,3 +60,42 @@ Route::post('/deleteone', 'CartController@deleteone');
 Route::post('/payment', 'OrderController@payment');
 Route::post('/createorder', 'OrderController@create');
 Route::get('/getorder', 'OrderController@getorder');
+Route::get('/test', 'OrderController@test');
+
+//RESTAURANTS FLOW ************************************************
+
+//add profile details / POST
+Route::post('/createProfile/{id}', 'RestaurantController@createProfile');
+
+//add menu item/ POST
+Route::post('/addMenuItem/{id}', 'MenuController@addMenuItem');
+
+//add menu options eg. started/ GET
+Route::get('/getMenuOptions', 'MenuController@getMenuOptions');
+
+//add menu items by id/ GET
+Route::get('/getMenu/{id}', 'MenuController@getMenu');
+
+//get menu item options for select dropdown
+Route::get('/getMenuItemTypes', 'MenuController@getMenuItemTypes');
+
+//get countries options for select dropdown
+Route::get('/getCountries', 'RestaurantController@getCountries');
+
+// //add to cart
+// Route::post('/addToCart/{id}', 'CartController@addToCart');
+
+//get orders
+Route::get('/getOrders/{id}', 'OrderController@getOrders');
+
+//accept order
+Route::post('/acceptOrder/{id}', 'OrderController@acceptOrder');
+
+//reject order
+Route::post('/rejectOrder/{id}', 'OrderController@rejectOrder');
+
+//check session id
+Route::post('/getRestaurantData/{id}', 'RestaurantController@getRestaurantData');
+
+//get single restaurant details / GET
+Route::get('/getRestaurant/{id}', 'RestaurantController@getRestaurant');

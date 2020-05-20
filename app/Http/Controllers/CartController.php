@@ -27,7 +27,7 @@ class CartController extends Controller
 
         $cart_items_array = array();
         $price_array = array();
-
+ 
         // get the menu item from cart item
         foreach($cart_items as $cart_item) {
             $cart_items_array[] = ([
@@ -59,21 +59,53 @@ class CartController extends Controller
 
         $cart = Cart::where('user_id', '=', $user_id)->first();
 
-        $cart_item = new CartItem([
-            'cart_id' => $cart->id,
-            'menu_item_id' => $menu_item_id,
-        ]);
-        $cart_item->save();
+        // check if cart_items exist in cart
+        $cart_items = CartItem::where('cart_id', '=', $cart->id)->first();
+        $menu_items = MenuItem::where('id', '=', $menu_item_id)->first();
+        if (isset($cart_items)) {
+            // check if cart_items have the same restaurant_id as menu_item
+            if($cart_items->menu_item->restaurant_id === $menu_items->restaurant_id) {
+                
+                // create new cart_item
+                $cart_item = new CartItem([
+                    'cart_id' => $cart->id,
+                    'menu_item_id' => $menu_item_id,
+                ]);
+                $cart_item->save();
 
-        $cartArray = array();
+                $cartArray = array();
 
-        $cartArray = ([
-            'cart' => $cart,
-            'user' => $cart->user,
-            'items' => $cart->cart_item,
-        ]);
+                $cartArray = ([
+                    'cart' => $cart,
+                    'user' => $cart->user,
+                    'items' => $cart->cart_item,
+                ]);
 
-        return response()->json($cartArray);
+                return response()->json($cartArray);
+            } 
+
+            return response()->json('It is impossible to order from more than one restaurant at once.');
+
+        } else if (!isset($cart_items)) {
+            // create new cart_item
+            $cart_item = new CartItem([
+                'cart_id' => $cart->id,
+                'menu_item_id' => $menu_item_id,
+            ]);
+            $cart_item->save();
+
+            $cartArray = array();
+
+            $cartArray = ([
+                'cart' => $cart,
+                'user' => $cart->user,
+                'items' => $cart->cart_item,
+            ]);
+
+            return response()->json($cartArray);
+        }
+
+        return response()->json('Something went wrong!');
     }
 
     /**
@@ -93,7 +125,7 @@ class CartController extends Controller
     }
 
     /**
-     * Delete all from cart for logged in user
+     * Delete one from cart for logged in user
      *
      * @return [json] cart object
      */
@@ -104,7 +136,8 @@ class CartController extends Controller
 
         $cart = Cart::where('user_id', '=', $user_id)->first();
 
-        $cart_item = CartItem::where('cart_id', '=', $cart->id)->where('menu_item_id', '=', $menu_item_id)->delete();
+        $cart_item = CartItem::where('cart_id', '=', $cart->id)->where('menu_item_id', '=', $menu_item_id)->first();
+        $cart_item->delete();
 
         return response()->json('Cart item was deleted');
     }

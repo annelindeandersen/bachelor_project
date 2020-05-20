@@ -1,18 +1,21 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Restaurant;
+use Session;
+use Illuminate\Support\Facades\Crypt;
+
 
 class RestaurantAuthController extends Controller
+
 {
+    
     /**
      * Create user
      *
@@ -28,31 +31,29 @@ class RestaurantAuthController extends Controller
      */
     public function restaurantRegister(Request $request)
     {
-        // $request->validate([
-        //     'name' => 'required|string',
-        //     'email' => 'required|string|email|unique:restaurants',
-        //     // 'phone' => 'required|string|phone',
-        //     // 'address' => 'required|string|address',
-        //     // 'city' => 'required|string|city',
-        //     // 'postcode' => 'required|string|postcode',
-        //     // 'country_id' => 'required|string|country',
-        //     'password' => 'required|string|confirmed'
-        // ]);
+
+        if(!$request->name){return 'Please enter a name';}
+        if(!$request->email){return 'Please enter an email';}
+        if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {return "Invalid email format";}
+        if(!$request->phone){return 'Please enter a phone';}
+        if(!$request->address){return 'Please enter a addess';}
+        if(!$request->city){return 'Please enter a city';}
+        if(!$request->postcode){return 'Please enter a postcode';}
+        if(!$request->password){return 'Please enter a password';}
+        if($request->password !== $request->password_confirmation){return 'Passwords must match';}
+
         $restaurant = new Restaurant([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
             'city' => $request->city,
-            'country_id' => $request->country_id,
+            'country_id' => 1,
             'postcode' => $request->postcode,
             // 'profile_id' => 1,
             'password' => Hash::make($request->password)
         ]);
         $restaurant->save();
-
-        // echo 'hello';
-
         return response()->json([
             'message' => 'Successfully created a restaurant!'
         ], 201);
@@ -70,24 +71,36 @@ class RestaurantAuthController extends Controller
      */
     public function restaurantLogin(Request $request)
     {
-        // $request->validate([
-        //     'email' => 'required|string|email',
-        //     'password' => 'required|string',
-        //     'remember_me' => 'boolean'
-        // ]);
-        // $credentials = request(['email', 'password']);
-    
+        if(!$request->email){return response()->json(['error' => 'Enter an email'], 401);}
+        if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {return response()->json(['error' => 'Enter a valid'], 401);}
+        if(!$request->password){return response()->json(['error' => 'Enter a password'], 401);}
+
         $restaurant = Restaurant::where('email', '=', $request->email)->first();
-
-        if (Auth::guard('restaurant')->attempt(['email' => $request->email , 'password' => $request->password])) {
-
         // echo $restaurant;
 
+        if(!$restaurant){return response()->json(['error' => 'User does not exist'], 401);}
         if (Hash::check($request->password, $restaurant->password)) {
-            echo 'they match';
-        }
+            Session::put('email', $restaurant->email );
+            $sessionEmail = Session::get('email');
+
+             $localStorageId = Crypt::encryptString($request->email);
+            
+            return response()->json([
+                'session_data' => $sessionEmail, 
+                'local_storage_id' =>$localStorageId, 
+                'data' => $restaurant], 200);
+        } else {
+            return response()->json(['error' => 'Authentification failed'], 400);}
+
+
+       
+
         
-     }
+        
+
+
+    
+  
      
     //     //  if ($restaurant->password !== decrypt($request->password)) {
     //     //      echo 'password fail';
@@ -117,4 +130,47 @@ class RestaurantAuthController extends Controller
         //     )->toDateTimeString()
         // ]);
     }
+
+    //check session
+
+    public function checkSession(Request $request, $session_id)
+    {
+
+
+        foreach(Session::all() as $key => $obj):
+            echo $key . ": ";
+            print_r($obj);
+            echo "\n----------\n";
+        endforeach;
+       if (Session::has('YOUR_SESSION_KEY')){
+      // do some thing if the key is exist
+    }else{
+      //the key does not exist in the session
+    }
+    }
+  
+    /**
+     * Logout user (Revoke the token)
+     *
+     * @return [string] message
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+        return response()->json([
+            'message' => 'Successfully logged out'
+        ]);
+    }
+  
+    /**
+     * Get the authenticated User
+     *
+     * @return [json] user object
+     */
+    public function user(Request $request)
+    {
+        return response()->json($request->user());
+    }
+         
 }
+

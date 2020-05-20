@@ -10,6 +10,15 @@ class Order extends Model
     {
         return $this->hasMany('App\OrderItem');
     }
+
+    public function user() {
+        return $this->belongsTo('App\User');
+    }
+
+    public function restaurant()
+    {
+        return $this->belongsTo('App\Restaurant');
+    }
     /**
      * The attributes that are mass assignable.
      *

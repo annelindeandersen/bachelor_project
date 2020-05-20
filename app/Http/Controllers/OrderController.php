@@ -19,20 +19,49 @@ class OrderController extends Controller
      * @return [json] order object
      */
     public function getorder(Request $request) {
+
         $user = $request->user;
 
-        $orders = Order::where('user_id', '=', $user)->get();
-        $ordersArray = array();
+        $orders = Order::with('order_item.menu_item', 'restaurant')->where('user_id', '=', $user)->get();
 
-        foreach($orders as $order) {
-            $orderArray[] = ([
-                'order' => $order,
-                'order_item' => $order->order_item
+        return response()->json($orders->toArray());
+    }
+
+
+    /**
+     * TEST TEST TEST
+     *
+     * @return [json] order object
+     */
+    public function test(Request $request) {
+
+        $user = $request->user;
+
+        $orders = Order::where('user_id', '=', $user)->first();
+        $order_items = OrderItem::with('menu_item', 'order')->where('order_id', '=', $orders->id)->get();
+
+        $newOrdersArray = array_merge($order_items->toArray());
+
+        $newArray = array();
+
+        foreach($newOrdersArray as $newOrderArray) {
+
+            // $newArray[] = ([
+            //     'order' => $newOrderArray
+            // ]);
+            $newArray[] = ([
+                'order' => $newOrderArray->groupBy('menu_item_id')
             ]);
+            // foreach()
+            // return $newOrderArray->order_item->groupBy('menu_item_id');
         }
 
-        return response()->json($orderArray);
+        // $newOrdersArray[] = [...$orders];
+
+        return response()->json($newArray);
     }
+
+
 
     /**
      * create order for user
@@ -48,16 +77,12 @@ class OrderController extends Controller
         $cart = Cart::where('user_id', '=', $user)->first();
         $orderArray = array();
 
-        $cart_items = CartItem::where('cart_id', '=', $cart->id)->get();
+        $cart_items = CartItem::with('menu_item')->where('cart_id', '=', $cart->id)->get();
 
-        $cart_items_array = array();
         $price_array = array();
 
-        // get the menu item from cart item
+        // get the menu item price from cart item
         foreach($cart_items as $cart_item) {
-            $cart_items_array[] = ([
-                'menu_item' => $cart_item->menu_item
-            ]);
             $price_array[] = ($cart_item->menu_item->price);
         }
 
@@ -71,19 +96,61 @@ class OrderController extends Controller
             'status' => 0
         ]);
         $new_order->save();
-        
-        // get the order just created
-        $order = Order::where('user_id', '=', $user)->where('delivery_time', '=', $date)->first();
 
         foreach($cart_items as $cart_item){
             //create new order items
             $new_order_items = new OrderItem([
-                'order_id' => $order->id,
+                'order_id' => $new_order->id,
                 'menu_item_id' => $cart_item->menu_item->id,
             ]);
             $new_order_items->save();
         }
 
-        return response()->json('The order and order items were created');
+        // get full order just placed
+        $fullOrder = Order::with('order_item.menu_item', 'restaurant')->find($new_order->id);
+        return response()->json($fullOrder);
     }
+
+    // restaurant section ********************************************************************************
+
+    //get all orders by restaruant id
+    public function getOrders(Request $request, $id)
+    {
+        $orderArray = array();
+        $orderArray = Order::where('restaurant_id', '=', $id)->get();
+        // echo $orderArray;
+        $orderItems = array();
+        foreach($orderArray as $order) {
+            $orderItems =  $orderItemsArray =  $order->order_item;
+            }
+        $menuItemsArray = array();
+        foreach($orderItems as $orderItem) {
+            $menuItemsArray[] = ([
+                'menu_item' => $orderItem->menu_item
+            ]);
+        }
+        $fullOrderArray = array();
+        $fullOrderArray = ([
+            'order_details' => $orderArray
+        ]);
+        return response()->json($fullOrderArray);
+        }
+        //accept order by
+        public function acceptOrder(Request $request, $id)
+        {
+            $order = Order::where('id', $id)
+            ->update(['accepted' => 1]);
+            return response()->json([
+                'message' => 'Order has been Accepted',
+            ], 201);
+        }
+        //reject order
+        public function rejectOrder(Request $request, $id)
+        {
+            $order = Order::where('id', $id)
+            ->update(['accepted' => -1]);
+            return response()->json([
+                'message' => 'Order has been Rejected',
+            ], 201);
+        }
 }

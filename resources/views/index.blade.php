@@ -11,5 +11,6 @@
     <body>
         <div id="index"></div>
         <script src="{{ asset('js/app.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
     </body>
 </html>

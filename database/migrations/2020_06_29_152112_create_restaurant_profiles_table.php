@@ -30,22 +30,22 @@ class CreateRestaurantProfilesTable extends Migration
             [
                 'description'=> 'This restaurant sells pizza',
                 'logo'=> '1.jpg',
-                'opening_hour'=> '12',
-                'closing_hour'=> '22',
+                'opening_hour'=> '12:00:00',
+                'closing_hour'=> '22:00:00',
                 'restaurant_id'=> '1'
             ],
             [
                 'description'=> 'This restaurant sells pasta',
                 'logo'=> '2.jpg',
-                'opening_hour'=> '10',
-                'closing_hour'=> '21',
+                'opening_hour'=> '10:00:00',
+                'closing_hour'=> '21:00:00',
                 'restaurant_id'=> '2'
             ],
             [
                 'description'=> 'This restaurant sells tacos',
                 'image'=> '3.jpg',
-                'opening_hour'=> '10',
-                'closing_hour'=> '21',
+                'opening_hour'=> '10:00:00',
+                'closing_hour'=> '21:00:00',
                 'restaurant_id'=> '3'
             ],
         ]);

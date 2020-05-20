@@ -82,4 +82,41 @@ class MenuController extends Controller
         
         return response()->json($fullMenu);
     }
+
+    //RESTAURANT FLOW
+            //add menu item
+            public function addMenuItem(Request $request, $id)
+            {
+               $menuItem = new MenuItem([
+                   'restaurant_id' => $id,
+                   'menu_item_type_id' => $request->menu_item_type_id,
+                   'title' => $request->title,
+                   'description' => $request->description,
+                   'price' => $request->price,
+                   'image' => $request->image
+               ]);
+            //    $file = Request::file('image');
+            //    $file->move(public_path('/uploads/'. $request->image));
+            //    Image::make(public_path('/uploads/'. $request->image))->resize(300,300)->save(public_path('/uploads/'. $request->image));
+               $menuItem->save();
+               return response()->json([
+                   'message' => 'Successfully saved menu',
+                   'data'=> $menuItem
+               ], 201);
+           }
+           //get menu tem
+           public function getMenuItemTypes(Request $request)
+           {
+               $menuTypesArray =  MenuItemType::all();
+                return $menuTypesArray;
+            }
+              //get menu item
+           public function getMenu(Request $request, $id)
+           {
+            $aMenuItems =  MenuItem::where([
+                ['restaurant_id', '=', $id]
+            ])->get();
+               return $aMenuItems;
+           }
+
 }

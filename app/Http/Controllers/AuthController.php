@@ -89,6 +89,101 @@ class AuthController extends Controller
             )->toDateTimeString()
         ]);
     }
+
+    /**
+     * Change password for the user
+     *
+     * @param  [string] user
+     * @param  [string] password
+     * @param  [string] new_password
+     */
+    public function password(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string'
+        ]);
+        
+        $user = $request->user;
+        $password = $request->password;
+        $new_password = $request->new_password;
+        $password_confirm = $request->confirm_password;
+
+        $current_user = User::where('id', '=', $user)->first();
+
+        if ($new_password === $password_confirm){
+            // hash password and update user
+            $current_user->update(['password' => bcrypt($new_password)]);
+            $current_user->save();
+        }
+        
+        return response()->json('Succes, password changed!');
+    }
+
+    /**
+     * Change user details
+     *
+     * @param  [string] user
+     * @param  [string] email
+     * @param  [string] phone
+     * @param  [string] address
+     * @param  [string] city
+     * @param  [string] postcode
+     */
+    public function update(Request $request)
+    {
+        $user = $request->user;
+
+        $request->validate([
+            'first_name' => 'string',
+            'last_name' => 'string',
+            'email' => 'string|email|unique:users,email,'.$user,
+            'phone' => 'string|unique:users,phone,'.$user,
+            'address' => 'string',
+            'city' => 'string',
+            'postcode' => 'string',
+        ]);
+        
+        $first_name = $request->first_name;
+        $last_name = $request->last_name;
+        $phone = $request->phone;
+        $email = $request->email;
+        $address = $request->address;
+        $city = $request->city;
+        $postcode = $request->postcode;
+
+        $current_user = User::where('id', '=', $user)->first();
+
+        if ($first_name !== $current_user->first_name){
+            $current_user->update(['first_name' => $first_name]);
+            $current_user->save();
+        }
+        if ($last_name !== $current_user->last_name){
+            $current_user->update(['last_name' => $last_name]);
+            $current_user->save();
+        }
+        if ($email !== $current_user->email){
+            $current_user->update(['email' => $email]);
+            $current_user->save();
+        }
+        if ($phone !== $current_user->phone){
+            $current_user->update(['phone' => $phone]);
+            $current_user->save();
+        }
+        if ($address !== $current_user->address){
+            $current_user->update(['address' => $address]);
+            $current_user->save();
+        }
+        if ($city !== $current_user->city){
+            $current_user->update(['city' => $city]);
+            $current_user->save();
+        }
+        if ($postcode !== $current_user->postcode){
+            $current_user->update(['postcode' => $postcode]);
+            $current_user->save();
+        }
+        
+        return response()->json('Succes, user details were updated!');
+    }
   
     /**
      * Logout user (Revoke the token)

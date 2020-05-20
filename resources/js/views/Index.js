@@ -4,19 +4,28 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import styling from './../app.css';
 
-// Views
+// Views for users
 import Home from './Home';
-import Login from './Login';
-import Register from './Register';
-import Profile from './Profile';
+import Login from './user/Login';
+import Register from './user/Register';
+import Profile from './user/Profile';
 import RestaurantOverview from './order food/RestaurantOverview';
 import RestaurantSingleView from './order food/RestaurantSingleView';
 import Cart from './order food/Cart';
 import Payment from './order food/Payment';
 import Receipt from './order food/Receipt';
 
+// Views for restaurants
+import ForRestaurants from './restaurant/ForRestaurants';
+import RestaurantRegister from './restaurant/Register';
+import RestaurantLogin from './restaurant/RestaurantLogin';
+import RestaurantMenu from './restaurant/RestaurantMenu';
+import Dashboard from './restaurant/Dashboard';
+import CreateProfile from './restaurant/CreateProfile';
+import Orders from './restaurant/Orders';
+
 // Components
-import Menu from './../components/Menu';
+import Menu from './user/Menu';
 import Footer from './../components/Footer';
 
 // Connect redux
@@ -26,11 +35,15 @@ import { Provider, useDispatch } from 'react-redux';
 // Reducers
 import users from './../reducers/users';
 import orders from './../reducers/orders';
+import restaurants from './../reducers/restaurants';
+import menus from './../reducers/menus';
 
 // Reducers combined
 const rootReducer = combineReducers({
     usersReducer: users,
-    ordersReducer: orders
+    ordersReducer: orders,
+    restaurantsReducer: restaurants,
+    menuReducer: menus
 })
 
 // Create store
@@ -38,6 +51,7 @@ const store = createStore(rootReducer, composeWithDevTools());
 
 function Index() {
     const dispatch = useDispatch();
+    const localStorageData = localStorage.getItem('email');
 
     // get user if logged in
     useEffect(() => {
@@ -59,6 +73,22 @@ function Index() {
                 console.log(err);
             })
     }, [])
+
+    // get restaurant information if logged in
+    // useEffect(() => {
+    //     const getRestaurant = async () => {
+    //         try {
+    //             const response = await fetch(`/api/getRestaurant?id=${localStorageData}`);
+    //             const data = await response.json();
+    //             console.log(response);
+    //             console.log(data);
+    //             dispatch({ type: 'CURRENT_USER', payload: data });
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
+    //     getRestaurant();
+    // }, []);
 
     return (
         <Router>
@@ -90,6 +120,27 @@ function Index() {
                 </Route>
                 <Route path="/receipt">
                     <Receipt />
+                </Route>
+                <Route exact path="/for-restaurants">
+                    <ForRestaurants />
+                </Route>
+                <Route exact path="/restaurant-register">
+                    <RestaurantRegister />
+                </Route>
+                <Route exact path="/restaurant-login">
+                    <RestaurantLogin />
+                </Route>
+                <Route exact path="/restaurant-dashboard">
+                    <Dashboard />
+                </Route>
+                <Route exact path="/restaurant-profile">
+                    <CreateProfile />
+                </Route>
+                <Route exact path="/restaurant-menu">
+                    <RestaurantMenu />
+                </Route>
+                <Route exact path="/restaurant-orders">
+                    <Orders />
                 </Route>
             </Switch>
             <Footer />

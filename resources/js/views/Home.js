@@ -10,7 +10,7 @@ const Home = () => {
                     <h1 className="card-header">Welcome to DELIVR</h1>
                     <div>
                         <Link to="/orderfood"><button className="form-control">ORDER FOOD</button></Link>
-                        <button className="form-control">RESTAURANTS</button>
+                        <Link to="/for-restaurants"><button className="form-control">RESTAURANTS</button></Link>
                         <button className="form-control">VOLUNTEERS</button>
                     </div>
                 </div>
