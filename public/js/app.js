@@ -93888,7 +93888,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var initialState = {
-  "delete": false
+  "delete": false,
+  order_accepted_status: '',
+  in_progress_status: false,
+  ready_for_dispatch_status: false
 };
 
 var reducer = function reducer() {
@@ -93904,6 +93907,30 @@ var reducer = function reducer() {
   if (action.type === 'DELETE_ONE') {
     return _objectSpread({}, state, {
       deleted: action.deleted
+    });
+  }
+
+  if (action.type === 'ACCEPT_ONE') {
+    return _objectSpread({}, state, {
+      accepted: action.accepted
+    });
+  }
+
+  if (action.type === 'ORDER_ACCEPTED') {
+    return _objectSpread({}, state, {
+      order_accepted_status: action.order_accepted
+    });
+  }
+
+  if (action.type === 'IN_PROGRESS') {
+    return _objectSpread({}, state, {
+      in_progress_status: action.order_ready
+    });
+  }
+
+  if (action.type === 'READY_FOR_DISPATCH') {
+    return _objectSpread({}, state, {
+      ready_for_dispatch_status: action.order_ready
     });
   }
 
