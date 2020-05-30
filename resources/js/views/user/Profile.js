@@ -28,29 +28,10 @@ const Profile = () => {
     const [sConfirmPassword, setConfirmPassword] = useState('');
     const [orderDetails, setOrderDetails] = useState([]);
 
+    const [userLoaded, setUserLoaded] = useState('');
     const [message, setMessage] = useState('');
     const [order, setOrder] = useState('');
     let history = useHistory();
-
-    useEffect(() => {
-        if (user) {
-            setFirstName(user.first_name);
-            setLastName(user.last_name);
-            setEmail(user.email);
-            setPhone(user.phone);
-            setAddress(user.address);
-            setCity(user.city);
-            setPost(user.postcode);
-        }
-    }, [user])
-
-    useEffect(() => {
-        if (logout === 'click') {
-            console.log('Logout is clicked')
-            // dispatch({ type: 'LOGOUT_USER', logout: false });
-            history.push('/login');
-        }
-    }, [logout])
 
     useEffect(() => {
         console.log({ 'TOKEN': token });
@@ -74,6 +55,28 @@ const Profile = () => {
                 history.push('/login');
             })
     }, [])
+
+    useEffect(() => {
+        if (user) {
+            setFirstName(user.first_name);
+            setLastName(user.last_name);
+            setEmail(user.email);
+            setPhone(user.phone);
+            setAddress(user.address);
+            setCity(user.city);
+            setPost(user.postcode);
+            setUserLoaded(user);
+        }
+    }, [user])
+
+    useEffect(() => {
+        if (logout === 'click') {
+            console.log('Logout is clicked')
+            // dispatch({ type: 'LOGOUT_USER', logout: false });
+            history.push('/login');
+        }
+    }, [logout])
+
 
     useEffect(() => {
         axios.get('/api/getorder', { params: { user: user && user.id } })
@@ -158,8 +161,8 @@ const Profile = () => {
 
 
     return (
-        <div className="container">
-            {!user ? '' :
+        <div className="container page">
+            {userLoaded === '' ? 'gregegege' :
                 <div>
                     <div id="profileClick">
                         <h4 onClick={settingsClick} className={classNames({ 'inactive': !settingsComponent, 'active': settingsComponent })}>Profile</h4>
@@ -205,7 +208,7 @@ const Profile = () => {
                                 </div>
                             </div>
                             <br />
-                            <input onClick={updateProfile} className="form-control orange-button" type="submit" value="Update" />
+                            <input onClick={updateProfile} className="form-control blue-button" type="submit" value="Update" />
                         </div>
                         <div className={classNames({ 'hidden': !orderComponent, 'visible': orderComponent })}>
                             <h2>Your orders:</h2>
@@ -254,7 +257,7 @@ const Profile = () => {
                                 <input value={sConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} className="underline-input" type="password" placeholder="confirm password" />
                             </div>
                             <br />
-                            <input onClick={updatePassword} className="form-control orange-button" type="submit" value="Update" />
+                            <input onClick={updatePassword} className="form-control blue-button" type="submit" value="Update" />
                         </div>
                     </div>
                 </div>

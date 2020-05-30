@@ -68,7 +68,7 @@ const RestaurantSingleView = () => {
     }
 
     return (
-        <div className="container">
+        <div className="container page">
             <h1 className="card-header">Restaurant {!restaurant ? '' : restaurant.restaurant.name}</h1>
             <div className="single-view-wrapper">
                 <div id="details">
@@ -94,7 +94,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
+                                    <button className="blue-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>
@@ -107,7 +107,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
+                                    <button className="blue-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>
@@ -120,7 +120,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
+                                    <button className="blue-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>
@@ -133,7 +133,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
+                                    <button className="blue-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>
@@ -146,7 +146,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
+                                    <button className="blue-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>
@@ -159,7 +159,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
+                                    <button className="blue-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>
@@ -172,7 +172,7 @@ const RestaurantSingleView = () => {
                                         <p>{item.description}</p>
                                         <strong>{item.price} DKK</strong>
                                     </div>
-                                    <button className="green-button" onClick={() => addToCart(item)}>ADD</button>
+                                    <button className="blue-button" onClick={() => addToCart(item)}>ADD</button>
                                 </div>
                             ))}
                         </div>

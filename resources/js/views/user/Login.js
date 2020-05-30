@@ -50,7 +50,7 @@ const Login = () => {
     }
 
     return (
-        <div className="container d-flex justify-content-center">
+        <div className="page container d-flex justify-content-center">
             <h1 className="card-header">Login</h1><br />
 
             <div>

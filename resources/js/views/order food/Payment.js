@@ -3,18 +3,54 @@ import ReactDOM from 'react-dom';
 import { useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import DatePicker from "react-datepicker";
-import { setHours, setMinutes } from 'date-fns';
-import "react-datepicker/dist/react-datepicker.css";
+import { setHours, setMinutes, addDays } from 'date-fns';
+import moment from 'moment';
 
 const Payment = () => {
     // variables and states for date & time
-    const today = new Date();
-    const currentTime = today.getHours();
-    const minutes = today.getMinutes();
-    const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), minutes + 45), minutes > 15 ? currentTime + 1 : currentTime));
+    const currentMonth = Number((new Date()).getMonth() + 1)
+    const currentYear = moment().year();
+    const today = moment();
+    const currentDay = moment().date();
+    const currentStamp = moment(today).unix();
+    console.log(moment(today).format('LLLL'))
+    const [dateSelected, setDateSelected] = useState(moment(today).format('LLLL'));
+
+    // setting the date
+    const [day, setDay] = useState('');
+    const [month, setMonth] = useState({ name: '', value: '' });
+    const [time, setTime] = useState('');
+
+    // restaurant opening and closing hours
     const [openingHour, setOpeningHour] = useState('');
     const [closingHour, setClosingHour] = useState('');
+
+    const monthsInYear = moment.months()
+    const daysInMonth = moment(`${currentYear}-${month.value}`).daysInMonth();
+
+    let dayRows = []
+    for (let i = 1; i < daysInMonth + 1; i++) {
+        // console.log(i);
+        const date = moment(`${currentYear}-${month.value}-${i}`).weekday()
+        const pastDate = moment(`${currentYear}-${month.value}-${i}`).isBefore(today.format('Y-MM-DD'))
+        const dateText = moment.weekdays(date)
+        dayRows.push(<option key={i} value={i} disabled={pastDate}>{i} - {(dateText)}</option>)
+    }
+
+    const hoursOpen = Number(closingHour.slice(0, 2)) - Number(openingHour.slice(0, 2))
+
+    let timeRows = []
+    for (let i = 1; i <= hoursOpen + 1; i++) {
+        // console.log(i);
+        timeRows.push(<option key={i} value={i + Number(openingHour.slice(0, 2)) - 1}>{i + Number(openingHour.slice(0, 2)) - 1}:00</option>)
+    }
+
+    console.log('DAY_ROWS', dayRows);
+    console.log('TIME_ROWS', timeRows);
+
+    useEffect(() => {
+        setDateSelected(moment(new Date(currentYear, month.value - 1, day, time)).format('LLLL'))
+    }, [month, day, time])
 
     // input states
     const [cardNumber, setCardNumber] = useState('');
@@ -37,8 +73,12 @@ const Payment = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    console.log(startDate, restaurantId, openingHour, closingHour, currentTime);
-    console.log({ today: today.toISOString().substring(0, 10) + ' ' + today.toISOString().substring(11, 16) });
+    // console.log({ 'TODAY': today.getDate() });
+    console.log({ 'OPENING_HOUR': Number(openingHour.slice(0, 2)) });
+    console.log({ 'CLOSING_HOUR': Number(closingHour.slice(0, 2)) });
+    console.log({ 'MONTH': month });
+    console.log({ 'DATE': day });
+    // console.log({ today: today.toISOString().substring(0, 10) + ' ' + today.toISOString().substring(11, 16) });
 
     useEffect(() => {
         if (logout === 'click') {
@@ -64,8 +104,9 @@ const Payment = () => {
             })
     }, [restaurantId])
 
+
     const orderNow = () => {
-        console.log('clicked', user, restaurantId, startDate.toISOString().substring(0, 10) + ' ' + startDate.toISOString().substring(11, 16));
+        // console.log('clicked', user, restaurantId, startDate.toISOString().substring(0, 10) + ' ' + startDate.toISOString().substring(11, 16));
 
         if (cardNumber.length !== 16) {
             console.log('has to be 16')
@@ -83,13 +124,13 @@ const Payment = () => {
             console.log('has to be more than 3')
             setNameError('1px solid red');
         }
-        // if (currentTime > startDate.getHours || currentTime === startDate && currentTime) {
-        //     console.log('has to be more than 3')
+        // if (currentTime > Number(closingHour.slice(0, 2))) {
+        //     console.log('The restaurant does not have enough time today. Pick another day.')
         //     setNameError('1px solid red');
         // }
 
         if (cardNumber.length === 16 && expirationDate.length === 5 && securityNumber.length === 3 && cardName.length > 3) {
-            axios.post('/api/createorder', { id: user.id, restaurant: restaurantId, date: startDate.toISOString().substring(0, 10) + ' ' + startDate.toISOString().substring(11, 16) })
+            axios.post('/api/createorder', { id: user.id, restaurant: restaurantId, date: dateSelected })
                 .then(response => {
                     console.log(response);
                     dispatch({ type: 'GET_ORDER', order: response.data });
@@ -111,7 +152,7 @@ const Payment = () => {
     }
 
     return (
-        <div>
+        <div id="payment" className="page">
             <div className="payment-wrapper">
                 <div className="datepicker">
                     <div className="flex"><h2>Review order from</h2><img className="payment-logo" src="./img/delivr-3.png" alt="logo" /></div>
@@ -124,29 +165,36 @@ const Payment = () => {
                         ))}
                     </div>
                     <h2>Delivery to</h2>
-                    <input className="form-control payment-address" disabled={true} placeholder={user && user.address + ', ' + user.postcode + ' ' + user.city} />
+                    <input className="form-control payment-address" disabled={true} placeholder={!user ? order && order.cart.user.address + ', ' + order.cart.user.postcode + ' ' + order.cart.user.city : user.address + ', ' + user.postcode + ' ' + user.city} />
                     <Link to="/profile"><i>Go to profile to change delivery address.</i></Link>
                     <h2>Pick time & date</h2>
-                    <div style={{ 'backgroundColor': asap }} onClick={() => { setAsap('lightgrey'); setLater('white'); setStartDate(setHours(setMinutes(new Date(), minutes + 30), minutes > 30 ? currentTime + 1 : currentTime)) }} className="asap">As soon as possible - approx. 30 minutes from now!</div>
-                    {/* <div style={{ 'backgroundColor': later }} onClick={() => { setLater('lightgrey'); setAsap('white'); setStartDate(setHours(setMinutes(new Date(), minutes + 30), minutes > 30 ? currentTime + 1 : currentTime)) }} className="asap">Schedule for later</div> */}
-                    <p>Or schedule for later:</p>
-                    <div onClick={() => { setLater('lightgrey'); setAsap('white') }}>
-                        <DatePicker
-                            selected={startDate.getDate() < today.getDate() ? today : startDate}
-                            minDate={today}
-                            // maxDate={today.getDate() + 7 } add 7 days to book at a time
-                            onChange={date => setStartDate(date)}
-                            style={{ 'backgroundColor': later }}
-                            showTimeSelect
-                            timeFormat="HH:mm"
-                            timeIntervals={15}
-                            timeCaption="time"
-                            dateFormat="MMMM d, yyyy h:mm aa"
-                            // inline
-                            // withPortal
-                            minTime={currentTime > openingHour.slice(0, 2) && currentTime < closingHour.slice(0, 2) && today.getDate() === startDate.getDate() ? setHours(setMinutes(new Date(), 0), currentTime + 1) : setHours(setMinutes(new Date(), 0), openingHour.slice(0, 2))}
-                            maxTime={setHours(setMinutes(new Date(), 0), closingHour.slice(0, 2))}
-                        />
+
+                    <div style={{ 'backgroundColor': asap }} onClick={() => { setAsap('lightgrey'); setLater(''); setDateSelected(moment(today).format('LLLL')) }} className="asap">As soon as possible - <i>approx. 30 minutes from now!</i></div>
+
+                    <button style={{ 'backgroundColor': later }} className="asap example-custom-input" onClick={() => { setLater('lightgrey'); setAsap('') }}>
+                        {later === '' ? <i>Schedule for later - click here </i> : ''} {later === '' ? '' : dateSelected}
+                    </button>
+                    <div id="dates">
+                        <select value={month.name} id="month" onChange={(event) => {
+                            setMonth({ name: event.target.value, value: Number(moment().month(event.target.value).format("M")) });
+                            // setNewOrder(true)
+                        }}>
+                            {monthsInYear.map((month) => (
+                                <option key={month} value={month} disabled={moment().months(month).format('M') < currentMonth}>{month}</option>
+                            ))}
+                        </select>
+                        <select value={day} id="day" onChange={(event) => {
+                            setDay(Number(event.target.value));
+                            // setNewOrder(true)
+                        }}>
+                            {dayRows}
+                        </select>
+                        <select value={time} id="time" onChange={(event) => {
+                            setTime(Number(event.target.value));
+                            // setNewOrder(true)
+                        }}>
+                            {timeRows}
+                        </select>
                     </div>
                 </div>
                 <div className="payment">
@@ -162,7 +210,7 @@ const Payment = () => {
                     </div>
                     <label id="cardLabel">Name on card</label>
                     <input style={{ 'border': nameError }} value={cardName} onChange={(event) => { setCardName(event.target.value); setNameError('') }} className="form-control card-name" placeholder="John Doe" />
-                    <button onClick={orderNow} className="orange-button">Pay {!order ? 'now!' : order.total + ' DKK'}</button>
+                    <button onClick={orderNow} className="blue-button">Pay {!order ? 'now!' : order.total + ' DKK'}</button>
                 </div>
             </div>
         </div >

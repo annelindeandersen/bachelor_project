@@ -60,14 +60,14 @@ const RestaurantOverview = () => {
     }
 
     return (
-        <div className="container">
+        <div className="container page">
             <div className="row justify-content-center">
                 <div className="card">
                     {/* <h1 className="card-header">Select your faveorite food types and choose!</h1> */}
                     <div className="category-wrapper">
                         {!categories ? '' : categories.data.map((category, index) => (
                             <div key={index}>
-                                <button onClick={() => clickCategory({ category })} className="green-button">{category.category}</button>
+                                <button onClick={() => clickCategory({ category })} className="blue-button">{category.category}</button>
                             </div>
                         ))}
                     </div>
