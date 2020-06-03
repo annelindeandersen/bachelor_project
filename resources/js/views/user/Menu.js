@@ -6,7 +6,13 @@ const Menu = () => {
     let location = useLocation();
     let history = useHistory();
     const dispatch = useDispatch();
+
+    //redux
     const logout = useSelector(state => state.usersReducer.logout);
+    const user = useSelector(state => state.usersReducer.user);
+    const addedToCart = useSelector(state => state.usersReducer.item_added);
+    const deleted = useSelector(state => state.ordersReducer.deleted);
+    const [cart, setCart] = useState('');
 
     const logmeout = () => {
         const authOptions = {
@@ -26,6 +32,18 @@ const Menu = () => {
                 console.log(err);
             })
     }
+
+    useEffect(() => {
+        axios.get('/api/getcart', { params: { user: user && user.id } })
+            .then(response => {
+                console.log({ "CART_MENU": response.data });
+                setCart(response.data);
+                dispatch({ type: "DELETE_ONE", deleted: false })
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }, [user, addedToCart, deleted])
 
     return (
         <>
@@ -58,7 +76,8 @@ const Menu = () => {
                             </div>
                         }
                         {logout === true ? '' :
-                            <div>
+                            <div id="cartMenu">
+                                <div id="cartItemsLength">{cart && cart.items.length}</div>
                                 <Link to="/cart">Cart</Link>
                             </div>
                         }

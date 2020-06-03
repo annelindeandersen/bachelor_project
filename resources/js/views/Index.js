@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -66,15 +66,18 @@ function Index() {
 
         axios(authOptions)
             .then(response => {
-                console.log(response.data);
+                console.log({ "INDEX_USER": response.data });
                 dispatch({ type: 'LOGOUT_USER', logout: false });
                 dispatch({ type: 'CURRENT_USER', user: response.data });
                 dispatch({ type: 'USER_TOKEN', token: localStorage.getItem('token') });
+                // dispatch({ type: 'CART_ITEMS', cart: cart });
             }).catch((err) => {
                 console.log(err);
             })
+    }, [])
 
-        // get restaurant information if logged in
+    // get restaurant information if logged in
+    useEffect(() => {
         axios.get('/api/getRestaurant/', { params: { id: localStorageData } })
             .then(response => {
                 console.log({ 'FROM_INDEX': response });
@@ -86,6 +89,7 @@ function Index() {
             })
     }, [])
 
+
     return (
         <div className="App">
             <Router>
@@ -95,38 +99,30 @@ function Index() {
                         <CSSTransition key={location.key} timeout={300} classNames='fade'>
                             <Switch location={location}>
                                 <Route exact path="/">
-                                    {/* <Menu /> */}
                                     <Home />
                                 </Route>
                                 <Route path="/login">
-                                    {/* <Menu /> */}
                                     <Login />
                                 </Route>
                                 <Route path="/register">
-                                    {/* <Menu /> */}
                                     <Register />
                                 </Route>
                                 <Route path="/profile">
-                                    {/* <Menu /> */}
                                     <Profile />
                                 </Route>
                                 <Route path="/orderfood">
-                                    {/* <Menu /> */}
                                     <RestaurantOverview />
                                 </Route>
                                 <Route path="/restaurant">
-                                    {/* <Menu /> */}
                                     <RestaurantSingleView />
                                 </Route>
                                 <Route path="/cart">
-                                    {/* <Menu /> */}
                                     <Cart />
                                 </Route>
                                 <Route path="/payment">
                                     <Payment />
                                 </Route>
                                 <Route path="/receipt">
-                                    {/* <Menu /> */}
                                     <Receipt />
                                 </Route>
                                 <Route exact path="/for-restaurants">

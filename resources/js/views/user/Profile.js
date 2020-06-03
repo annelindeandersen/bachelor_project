@@ -162,15 +162,25 @@ const Profile = () => {
 
     return (
         <div className="container page">
-            {userLoaded === '' ? 'gregegege' :
+            <div className="profile-page"></div>
+            {userLoaded === '' ? 'Please try again. Something went wrong.' :
                 <div>
                     <div id="profileClick">
-                        <h4 onClick={settingsClick} className={classNames({ 'inactive': !settingsComponent, 'active': settingsComponent })}>Profile</h4>
-                        <h4 onClick={orderClick} className={classNames({ 'inactive': !orderComponent, 'active': orderComponent })}>Orders</h4>
-                        <h4 onClick={passwordClick} className={classNames({ 'inactive': !passwordComponent, 'active': passwordComponent })}>Change password</h4>
+                        <div onClick={settingsClick} className={classNames({ 'inactive': !settingsComponent, 'active': settingsComponent, '2opacity-0': !settingsComponent, '2opacity-1': settingsComponent }, 'header-profile')}>
+                            <img src="./img/001-user.svg" alt="dddd" />
+                            <h4>Profile</h4>
+                        </div>
+                        <div onClick={orderClick} className={classNames({ 'inactive': !orderComponent, 'active': orderComponent, '2opacity-0': !orderComponent, '2opacity-1': orderComponent }, 'header-order')}>
+                            <img src="./img/008-noodles.svg" alt="dddd" />
+                            <h4>Orders</h4>
+                        </div>
+                        <div onClick={passwordClick} className={classNames({ 'inactive': !passwordComponent, 'active': passwordComponent, '2opacity-0': !passwordComponent, '2opacity-1': passwordComponent }, 'header-password')}>
+                            <img src="./img/004-key.svg" alt="dddd" />
+                            <h4>Change password</h4>
+                        </div>
                     </div>
                     <div id="profileWrapper">
-                        <div className={classNames({ 'hidden': !settingsComponent, 'visible': settingsComponent })}>
+                        <div className={classNames({ 'opacity-0': !settingsComponent, 'opacity-1': settingsComponent }, 'profile-component')}>
                             <h2>Profile details</h2>
                             <p>{message}</p>
                             <div className="detail-wrap">
@@ -210,7 +220,7 @@ const Profile = () => {
                             <br />
                             <input onClick={updateProfile} className="form-control blue-button" type="submit" value="Update" />
                         </div>
-                        <div className={classNames({ 'hidden': !orderComponent, 'visible': orderComponent })}>
+                        <div className={classNames({ 'opacity-0': !orderComponent, 'opacity-1': orderComponent }, 'order-component')}>
                             <h2>Your orders:</h2>
                             {order && order.data.map((item, index) => (
                                 <div className="order-item" key={index} onClick={() => toggleOrder({ item })}>
@@ -241,7 +251,7 @@ const Profile = () => {
                                 </div>
                             ))}
                         </div>
-                        <div className={classNames({ 'hidden': !passwordComponent, 'visible': passwordComponent })}>
+                        <div className={classNames({ 'opacity-0': !passwordComponent, 'opacity-1': passwordComponent }, 'password-component')}>
                             <h2>Change password</h2>
                             <br />
                             <div>

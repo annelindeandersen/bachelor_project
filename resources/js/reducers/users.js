@@ -21,6 +21,18 @@ const reducer = (state = initialState, action) => {
             logout: action.logout
         }
     }
+    if (action.type === 'CART_ITEMS') {
+        return {
+            ...state,
+            cart: action.cart
+        }
+    }
+    if (action.type === 'ITEM_ADDED') {
+        return {
+            ...state,
+            item_added: action.item_added
+        }
+    }
     return state;
 }
 

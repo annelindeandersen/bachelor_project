@@ -168,14 +168,10 @@ class RestaurantController extends Controller
         if($request->image){ array_push($editableFields, 'image');}
 
         $profileEditableFields = [];
-        // echo print_r($profileEditableFields);
         if($request->description){ array_push($profileEditableFields, 'description');}
         if($request->logo){ array_push($profileEditableFields, 'logo');}
         if($request->opening_hour){ array_push($profileEditableFields, 'opening_hour');}
         if($request->closing_hour){ array_push($profileEditableFields, 'closing_hour');}
-
-        // echo print_r($profileEditableFields);
-        // if($restaurantData == null){$restaurantData = new Restaurant();}
 
         // profile update if not exists
         if($restaurantData->profile == null){
@@ -200,7 +196,6 @@ class RestaurantController extends Controller
             $restaurantData->save();
 
             return $restaurantData;
-            // return response()->json($restaurantData);
         }
         // $categories  = $request->categories;
         // foreach ($categories as $category) {
@@ -211,7 +206,6 @@ class RestaurantController extends Controller
         //     ]);
         // }
 
-       
         // return $restaurantData;
     }
     //get countries for select

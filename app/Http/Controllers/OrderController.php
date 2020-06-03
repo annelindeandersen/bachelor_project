@@ -46,17 +46,11 @@ class OrderController extends Controller
 
         foreach($newOrdersArray as $newOrderArray) {
 
-            // $newArray[] = ([
-            //     'order' => $newOrderArray
-            // ]);
             $newArray[] = ([
-                'order' => $newOrderArray->groupBy('menu_item_id')
+                'order' => $newOrderArray
+                // 'order' => $newOrderArray->groupBy('id')
             ]);
-            // foreach()
-            // return $newOrderArray->order_item->groupBy('menu_item_id');
         }
-
-        // $newOrdersArray[] = [...$orders];
 
         return response()->json($newArray);
     }
@@ -75,7 +69,6 @@ class OrderController extends Controller
         $date = $request->date;
 
         $cart = Cart::where('user_id', '=', $user)->first();
-        $orderArray = array();
 
         $cart_items = CartItem::with('menu_item')->where('cart_id', '=', $cart->id)->get();
 
@@ -86,7 +79,7 @@ class OrderController extends Controller
             $price_array[] = ($cart_item->menu_item->price);
         }
 
-        // create new order (works)
+        // create new order
         $new_order = new Order([
             'user_id' => $user,
             'restaurant_id' => $restaurant,

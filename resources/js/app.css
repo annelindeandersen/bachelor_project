@@ -57,6 +57,27 @@ nav a {
     margin-left: 10px;
 }
 
+#cartMenu {
+    display: flex;
+}
+
+#cartMenu a {
+    margin-left: 5px;
+}
+
+#cartItemsLength {
+    background: #ff632d;
+    border-radius: 100px;
+    padding: 2px;
+    font-size: 12px;
+    color: white;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+}
+
 #logo {
     height: 60px;
     width: auto;
@@ -89,6 +110,7 @@ nav a {
     border-radius: 5px;
     padding: 10px;
     width: 100%;
+    /* height: 100%; */
     color: white;
     font-family: 'PT Sans narrow';
     text-transform: uppercase;
@@ -208,23 +230,69 @@ nav a {
     padding-right: 20px;
 }
 
+.profile-page {
+    background: url(./../../public/img/profile.jpg);
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    position: fixed;
+    opacity: 0.5;
+    z-index: -2;
+}
+
 #profileWrapper {
     background: white;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0px 0px 10px #ddd;
+    height: 53vh;
+    position: relative;
 }
 
 .order-details {
     display: none;
 }
 
+.opacity-1 {
+    opacity: 1;
+    z-index: 300;
+}
+
+.opacity-0 {
+    opacity: 0;
+    z-index: -3;
+}
+
 .visible {
-    display: grid;
+    display: block;
 }
 
 .hidden {
     display: none;
+}
+
+.profile-component, .password-component, .order-component {
+    transition: opacity 400ms ease;
+    position: absolute;
+    width: 95%;
+    background: white;
+    max-height: 50vh;
+}
+
+.header-password, .header-profile, .header-order {
+    transition: background 400ms ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-password img, .header-profile img, .header-order img {
+    height: 30px;
+    width: auto;
+    margin-right: 10px;
 }
 
 .active {
@@ -236,7 +304,10 @@ nav a {
     padding: 20px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    box-shadow: 0px 0px 10px #ddd;
+    margin-bottom: -5px;
+    z-index: 10000;
+    box-shadow: 0 -10px 10px 0px rgba(221, 221, 221, 0.452);
+    /* opacity: 1; */
 }
 
 .inactive {
@@ -246,6 +317,10 @@ nav a {
     height: 100%;
     text-align: center;
     padding: 20px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    margin-bottom: -5px;
+    /* opacity: 0; */
 }
 
 .status {
@@ -387,6 +462,16 @@ nav a {
     margin-bottom: 10px;
     cursor: pointer;
     text-align: center;
+    z-index: 15;
+}
+
+#dates {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1.1fr;
+    grid-gap: 2px;
+    margin-top: -20px;
+    transition: margin-top 300ms ease;
+    z-index: 1;
 }
 
 .react-datepicker-wrapper {

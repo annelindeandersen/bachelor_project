@@ -2,21 +2,27 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const RestaurantSingleView = () => {
     const location = useLocation();
     console.log(location);
+    const dispatch = useDispatch();
 
     // logged in user
     const user = useSelector(state => state.usersReducer.user);
     const logout = useSelector(state => state.usersReducer.logout);
-    console.log(user);
+    const [sUser, setUser] = useState('');
+    console.log({ "REDUX_USER": user, "STATE_USER": sUser });
 
     const [restaurant, setRestaurant] = useState('');
     const [menu, setMenu] = useState('');
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
+
+    useEffect(() => {
+        setUser(user);
+    }, [user])
 
     useEffect(() => {
         if (logout === 'click') {
@@ -55,10 +61,12 @@ const RestaurantSingleView = () => {
             console.log('cannot add');
             setError('Sorry, you must login/register to order food!');
         } else {
-            axios.post('/api/addtocart', { user: user.id, menu_item: item.id })
+            axios.post('/api/addtocart', { user: sUser.id, menu_item: item.id })
                 .then(response => {
                     console.log(response);
                     setMessage('Item was added to cart!');
+                    dispatch({ type: 'ITEM_ADDED', item_added: true });
+                    dispatch({ type: 'ITEM_ADDED', item_added: false });
                 })
                 .catch(error => {
                     console.log(error);
