@@ -163,6 +163,7 @@ class MenuController extends Controller
         return response()->json($fullMenu);
         }
         //del menu types
+        
         public function deleteMenuItem(Request $request, $id)
         {
             $menuItem =  MenuItem::find($id);

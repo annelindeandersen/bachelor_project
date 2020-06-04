@@ -4,12 +4,13 @@
     box-sizing: border-box;
 }
 
+
 input:focus {
     outline:none !important;
 }
 
 body {
-    background: rgb(207, 233, 207);
+    /* background: rgb(207, 233, 207); */
     font-family: 'Open sans';
 }
 

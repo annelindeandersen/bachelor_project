@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import swal from 'sweetalert';
 
 const PasswordReset = () => {
     const params = new URLSearchParams(window.location.search);
@@ -9,6 +10,9 @@ const PasswordReset = () => {
     // States
     const [sPassword, setPassword] = useState('');
     const [sPasswordConfirmation, setPasswordConfirmation] = useState('');
+
+    const el = document.createElement('div')
+    el.innerHTML = "You can now login<a href='/restaurant-login'>link</a>"
     // Current history
     let history = useHistory();
     const resetPassword = () => {
@@ -21,8 +25,12 @@ const PasswordReset = () => {
             .then(function (response) {
                 console.log(response)
                 console.log(response.status)
-                if (response.status === 201) {
-                    setMessage('An email has been sent to yoour email with a link to reset your password.')
+                if (response.status === 200) {
+                    swal({
+                        title: "Success!",
+                        content: el,
+                        icon: "success"
+                      })
                 }
                 console.log(sPassword)
             })
@@ -31,12 +39,19 @@ const PasswordReset = () => {
             });
     }
     return (
-        <div className="container d-flex justify-content-center">
-            <h1 className="card-header">Reset your password</h1><br />
-            <input value={sPassword} onChange={(e) => setPassword(e.target.value)} id="resetPassword" className="form-control" placeholder="enter new password" /><br />
-            <input value={sPasswordConfirmation} onChange={(e) => setPasswordConfirmation(e.target.value)} id="resetPasswordConfirmation" className="form-control" placeholder="confirm new password" /><br />
-            <input type="button"
-                value="Send" onClick={resetPassword} />
+        <div className="page">
+             <div className="container pt-5">
+             <div className="card card-shadow">
+                    <div className="form-container">
+                    <h1 className="orange-text text-cente">Reset your password</h1>
+                    <label className="form-label">Password</label>
+                    <input value={sPassword} onChange={(e) => setPassword(e.target.value)} id="resetPassword" placeholder="enter new password"  className="underline-input" type="password" />
+                    <label className="form-label">Password Confirmation</label>
+                    <input value={sPasswordConfirmation} onChange={(e) => setPasswordConfirmation(e.target.value)} id="resetPasswordConfirmation" placeholder="confirm new password"  className="underline-input" type="password"/>
+                    <input type="button"  className="btn btn-secondary" value="Send" onClick={resetPassword} />
+                </div>
+            </div>
+        </div>
         </div>
     );
 }

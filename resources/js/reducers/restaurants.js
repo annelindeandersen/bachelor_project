@@ -3,7 +3,8 @@ const initialState = {
     logged_out: true,
     item_added: false,
     item_deleted: false,
-    profile_updated: false
+    profile_updated: false,
+    log_out: false
 }
 let lastId = 0
 
@@ -42,6 +43,12 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             logged_out: action.logged_out
+        }
+    }
+    if (action.type === 'LOG_OUT') {
+        return {
+            ...state,
+            log_out: action.log_out
         }
     }
     return state;

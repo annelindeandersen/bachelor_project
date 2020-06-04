@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import swal from 'sweetalert';
+
 
 const Login = () => {
     // Redux
@@ -42,36 +44,32 @@ const Login = () => {
                 // sessionStorage.setItem('email', data.session_data);
                 // dispatch({ type: 'LOGOUT_USER', logged_out: false });
                 dispatch({ type: 'CURRENT_USER', payload: data });
+
                 history.push('/restaurant-dashboard');
+            } else {
+                swal("Ooops", "Incorrect login details", "error");
             }
         } catch (error) {
             console.log(error)
         }
     }
-    //     axios(authOptions)
-    //         .then(response => {
-    //             console.log(response);
-    //             // setToken(response.data.access_token);
-    //                 dispatch({ type: 'SESSION_STARTED',
-    //                 payload: {
-    //                     restaurants: {
-    //                     },
-    //                     logout: false
-    //                   } });
-    //             // dispatch({ type: 'LOGOUT_USER', logout: false });
-    //             localStorage.setItem('email', response.data.email);
-    //             // history.push('/restaurant-dashboard');
-    //         }).catch((err) => {
-    //             console.log(err);
-    //         })
-    // }
+
     return (
-        <div className="container d-flex justify-content-center">
-            <h1 className="card-header">Login to dashboard</h1><br />
-            <input value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" className="form-control" placeholder="email" /><br />
-            <input value={sPassword} onChange={(e) => setPassword(e.target.value)} type="password" id="loginPassword" className="form-control" placeholder="password" /><br />
-            <input id="loginButton" className="form-control" type="submit" value="Login" onClick={login} />
-            <small>Forgot your password?<Link to="/restaurant-password-request" >Reset password</Link></small>
+        <div className="page">
+               <div className="container pt-5">
+              <div className="form-container card card-shadow">
+                <h1 className="orange-text text-center">Login</h1>
+                <p>Don't have an account? <Link to="/restaurant-register">Register today</Link></p>
+                    <div className="">
+                    <label className="form-label">Email</label>
+                        <input className="underline-input" value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" placeholder="email" />
+                        <label className="form-label">Password</label>
+                        <input  className="underline-input" value={sPassword} onChange={(e) => setPassword(e.target.value)} type="password" id="loginPassword" placeholder="password" /><br />
+                        <input id="loginButton" type="submit" value="Login"  className="btn btn-secondary"  onClick={login} /><br />
+                        <small>Forgot your password?<Link to="/restaurant-password-request" >Reset password</Link></small>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

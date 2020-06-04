@@ -15,11 +15,11 @@ class CreateRestaurantProfilesTable extends Migration
     {
         Schema::create('restaurant_profiles', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description');
-            $table->string('logo');
-            $table->time('opening_hour');
-            $table->time('closing_hour');
-            $table->unsignedInteger('restaurant_id');
+            $table->string('description')->nullable();
+            $table->string('logo')->nullable();
+            $table->time('opening_hour')->nullable();
+            $table->time('closing_hour')->nullable();
+            $table->unsignedInteger('restaurant_id')->nullable();
             $table->foreign('restaurant_id')->references('id')->on('restaurants');
             $table->timestamps();
 

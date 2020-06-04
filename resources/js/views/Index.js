@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import styling from './../app.css';
+// import './../restaurant.css';
 
 // Views for users
 import Home from './Home';
@@ -22,11 +23,15 @@ import RestaurantLogin from './restaurant/RestaurantLogin';
 import Dashboard from './restaurant/Dashboard';
 import PasswordResetRequest from './restaurant/PasswordResetRequestForm';
 import PasswordReset from './restaurant/PasswordReset';
+import ProfileForm from './restaurant/ProfileForm';
+import RestaurantProfile from './restaurant/RestaurantProfile';
+import RestaurantMenuPage from './restaurant/RestaurantMenu';
+import RestaurantOrders from './restaurant/Orders';
 
 // Components
 import Menu from './user/Menu';
 import Footer from './../components/Footer';
-import RestaurantMenu from './../components/RestaurantMenu';
+import RestaurantMenu from './restaurant/components/RestaurantMenu';
 
 // Connect redux
 import { createStore, combineReducers } from 'redux';
@@ -87,35 +92,21 @@ function Index() {
     // get restaurant information if logged in
     useEffect(() => {
 
-        // axios.get('/api/getRestaurant/', { params: { id: localStorageData } })
-        //     .then(response => {
-        //         console.log({ 'FROM_INDEX': response });
-        //         dispatch({ type: 'CURRENT_USER', restaurant: response.data.restaurant });
-        //         dispatch({ type: 'LOGGED_OUT', logged_out: false });
-        //     })
-        //     .catch(error => {
-        //         console.log(error)
-        //     })
-
-        // const getRestaurantData = async () => {
-        //     try {
-        //         const response = await fetch(`/api/getRestaurant/${localStorageData}`);
-        //         const data = await response.json()
-        //         //   console.log({'index':data.restaurant.id})
-        //         dispatch({ type: 'CURRENT_USER', restaurant: data.restaurant });
-        //         dispatch({ type: 'LOGGED_OUT', logged_out: false });
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
-        // }
-        // getRestaurantData();
+        axios.get('/api/getRestaurant/', { params: { id: localStorageData } })
+            .then(response => {
+                console.log({ 'FROM_INDEX': response });
+                dispatch({ type: 'CURRENT_USER', restaurant: response.data.restaurant });
+                dispatch({ type: 'LOGGED_OUT', logged_out: false });
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }, []);
 
     return (
         <Router>
             <Switch>
                 <Route exact path="/">
-                    <Menu />
                     <Home />
                 </Route>
                 <Route path="/login">
@@ -162,7 +153,7 @@ function Index() {
                     <RestaurantLogin />
                 </Route>
                 <Route exact path="/restaurant-dashboard">
-                    <RestaurantMenu />
+                 
                     <Dashboard />
                 </Route>
                 <Route exact path="/restaurant-password-request">
@@ -172,6 +163,22 @@ function Index() {
                 <Route exact path="/restaurant-password-reset">
                     <RestaurantMenu />
                     <PasswordReset />
+                </Route>
+                <Route exact path="/update-profile">
+                    <RestaurantMenu />
+                    <ProfileForm />
+                </Route>
+                <Route exact path="/restaurant-profile">
+                    <RestaurantMenu />
+                    <RestaurantProfile />
+                </Route>
+                <Route exact path="/restaurant-orders">
+                    <RestaurantMenu />
+                    <RestaurantOrders />
+                </Route>
+                <Route exact path="/restaurant-menu">
+                    <RestaurantMenu />
+                    <RestaurantMenuPage />
                 </Route>
             </Switch>
             <Footer />

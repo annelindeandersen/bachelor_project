@@ -117,6 +117,7 @@ class RestaurantAuthController extends Controller
     $new_api_key->save();
    return response()->json(['message' => 'Email sent'], 201);
     }
+    
     public function resetPassword(Request $request)
     {
         $request->validate([

@@ -7,11 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Image;
 use Carbon\Carbon;
 use App\Restaurant;
 use App\Country;
 use App\Category;
 use App\RestaurantProfile;
+use App\RestaurantsToCategory;
 
 class RestaurantController extends Controller
 {
@@ -132,14 +135,15 @@ class RestaurantController extends Controller
             'opening_hour' => $request->opening_hour,
             'closing_hour' => $request->closing_hour
         ]);
-        $categories  = $request->categories;
-        foreach ($categories as &$category) {
-            echo $category;
-            RestaurantsToCategory::firstOrCreate([
-                'restaurant_id' => $id,
-                'category_id' => $category,
-            ]);
-        }
+        // $categories  = $request->categories;
+        // echo $category;
+        // foreach ($categories as &$category) {
+        //     // echo $category;
+        //     RestaurantToCategory::firstOrCreate([
+        //         'restaurant_id' => $id,
+        //         'category_id' => $category,
+        //     ]);
+        // }
         $image = $request->logo;
         if(!$image){return 'Please enter a description';}
         File::put('img/'.$imageName, base64_decode($image));
@@ -168,16 +172,11 @@ class RestaurantController extends Controller
         if($request->image){ array_push($editableFields, 'image');}
 
         $profileEditableFields = [];
-        // echo print_r($profileEditableFields);
         if($request->description){ array_push($profileEditableFields, 'description');}
         if($request->logo){ array_push($profileEditableFields, 'logo');}
         if($request->opening_hour){ array_push($profileEditableFields, 'opening_hour');}
         if($request->closing_hour){ array_push($profileEditableFields, 'closing_hour');}
 
-        // echo print_r($profileEditableFields);
-        // if($restaurantData == null){$restaurantData = new Restaurant();}
-
-        // profile update if not exists
         if($restaurantData->profile == null){
             $newProfile = new RestaurantProfile([
                 'restaurant_id' => $id,
@@ -189,7 +188,17 @@ class RestaurantController extends Controller
             $newProfile->save();
             return 'Success in creating';
         } else {
-            // profile update when exists
+            //category update
+            $categories  = $request->categories;
+            echo json_encode($categories);
+            foreach ($categories  as $category) {
+                echo $category;
+                RestaurantsToCategory::firstOrCreate([
+                    'restaurant_id' => $id,
+                    'category_id' => $category,
+                ]);
+            } 
+            // profile update 
             $profileFieldsToUpdate = $request->only($profileEditableFields);
             $restaurantData->profile->fill($profileFieldsToUpdate);
             $restaurantData->profile->save();
@@ -200,20 +209,40 @@ class RestaurantController extends Controller
             $restaurantData->save();
 
             return $restaurantData;
-            // return response()->json($restaurantData);
         }
-        // $categories  = $request->categories;
-        // foreach ($categories as $category) {
-        //     // echo $category;
-        //     RestaurantsToCategory::firstOrCreate([
-        //         'restaurant_id' => $id,
-        //         'category_id' => $category,
-        //     ]);
-        // }
+
+     
 
        
         // return $restaurantData;
     }
+
+//upload logo
+    public function uploadLogo(Request $request)
+    {
+        $url = $request->url;
+        $id = $request->id;   
+
+          $logo = RestaurantProfile::where('restaurant_id', $id)
+          ->update(['logo' => $url]);
+          return response()->json([
+              'message' => 'updated',
+          ], 200);
+    }
+
+//upload bnner
+public function uploadBanner(Request $request)
+{
+    $url = $request->url;
+    $id = $request->id;   
+    echo $url;
+      $logo = Restaurant::where('id', $id)
+      ->update(['image' => $url]);
+      return response()->json([
+          'message' => 'updated',
+      ], 200);
+}
+
     //get countries for select
     public function getCountries(Request $request)
     {

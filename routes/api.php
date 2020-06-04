@@ -65,10 +65,13 @@ Route::get('/test', 'OrderController@test');
 //RESTAURANTS FLOW ************************************************
 //add profile details / POST
 Route::post('/createProfile/{id}', 'RestaurantController@createProfile');
+
 //add menu item/ POST
 Route::post('/addMenuItem/{id}', 'MenuController@addMenuItem');
+
 //add menu item/ POST
 Route::post('/addMenuItem/{id}', 'MenuController@addMenuItem');
+
 //add menu options eg. started/ GET
 Route::get('/getMenuOptions', 'MenuController@getMenuOptions');
 //add menu items by id/ GET
@@ -92,15 +95,21 @@ Route::post('/orderInProgress', 'OrderController@setStatusInProgress');
 Route::get('/ordersInProgress', 'OrderController@getOrdersInProgress');
 //set status as dispatched
 Route::post('/ordersforDispatch', 'OrderController@setStatusDispatched');
+
 Route::get('/ordersforDispatch', 'OrderController@getOrdersDispatched');
+
 //get accepted orders
 Route::get('/getAcceptedOrders', 'OrderController@getAcceptedOrders');
+
 //get received orders
 Route::get('/getNewOrders', 'OrderController@getNewOrders');
+
 //get single restaurant details / GET
 Route::get('/getRestaurant', 'RestaurantController@getRestaurant');
+
 //add menu items by id/ GET
 Route::get('/getMenu/{id}', 'MenuController@getMenu');
+
 //add menu items by id/ GET
 Route::get('/getMenuItemTypes', 'MenuController@getMenuItemTypes');
 Route::post('/restaurantLogout', 'RestaurantAuthController@restaurantLogout');
@@ -108,3 +117,6 @@ Route::post('/restaurantPasswordReset/{key}', 'RestaurantAuthController@restaura
 Route::post('/sendPasswordResetEmail', 'RestaurantAuthController@sendPasswordResetEmail');
 Route::post('/reset', 'RestaurantAuthController@resetPassword');
 Route::post('/updateProfile', 'RestaurantController@updateProfile');
+//upload image
+Route::post('/uploadLogo', 'RestaurantController@uploadLogo');
+Route::post('/uploadBanner', 'RestaurantController@uploadBanner');
