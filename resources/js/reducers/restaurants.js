@@ -15,7 +15,7 @@ const reducer = (state = initialState, action) => {
             restaurant: action.payload.restaurant
         }
     }
-    if (action.type === 'CURRENT_USER') {
+    if (action.type === 'CURRENT_RESTAURANT') {
         return {
             ...state,
             restaurant: action.restaurant

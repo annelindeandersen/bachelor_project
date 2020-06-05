@@ -43,7 +43,7 @@ const Login = () => {
                 const sessionData = data.session_data;
                 // sessionStorage.setItem('email', data.session_data);
                 // dispatch({ type: 'LOGOUT_USER', logged_out: false });
-                dispatch({ type: 'CURRENT_USER', payload: data });
+                dispatch({ type: 'CURRENT_RESTAURANT', payload: data });
 
                 history.push('/restaurant-dashboard');
             } else {
