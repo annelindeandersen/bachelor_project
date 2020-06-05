@@ -135,7 +135,7 @@ class RestaurantController extends Controller
             'opening_hour' => $request->opening_hour,
             'closing_hour' => $request->closing_hour
         ]);
-        // $categories  = $request->categories;
+        $categories  = $request->categories;
         // echo $category;
         // foreach ($categories as &$category) {
         //     // echo $category;
