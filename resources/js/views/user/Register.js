@@ -14,7 +14,6 @@ const Register = () => {
     const [sPostCode, setPostCode] = useState('');
     const [sPassword, setPassword] = useState('');
     const [sConfirmPassword, setConfirmPassword] = useState('');
-
     const authOptions = {
         method: 'POST',
         url: '/api/auth/signup',
@@ -34,10 +33,8 @@ const Register = () => {
             'X-Requested-With': 'XMLHttpRequest'
         }
     }
-
     const register = (e) => {
         e.preventDefault();
-
         axios(authOptions)
             .then(response => {
                 console.log(response);
@@ -102,13 +99,10 @@ const Register = () => {
                 <meta name="csrf-token" content="{{ csrf_token() }}" />
                 <input id="registerButton" className="blue-button" type="submit" value="Register" onClick={register} />
             </div>
-
         </div>
     );
 }
-
 export default Register;
-
 if (document.getElementById('register')) {
     ReactDOM.render(<Register />, document.getElementById('register'));
 }

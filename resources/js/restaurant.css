@@ -1,29 +1,22 @@
-.outertag{
-    margin: 10px;
-    float:left;
-    background:lightgray;
-  }
-.tag_input {
-    display:none;
-  }
-  input[type="checkbox"]{
-    width: 30px; /*Desired width*/
-    height: 20px; /*Desired height*/
-  }
-  .chcklabel{
-    /* padding: 5px 10px; */
-    background:lightgray;
-    cursor:pointer;
-  }
-  .chckclicked{
-    background:gray;
-    border-color:black;
-  }
-  .profile-input {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid #000000;
-  }
+.grey_body {
+  width: 100%;
+  height:100vh;
+  background-color: #F2F2F2;
+}
+/* for restaurants */
+.chef-image {
+  height: 500px;
+  padding-top: 40px;
+}
+
+.grey {
+  background-color: #F2F2F2;
+}
+.chef-image img {
+  height: 100%;
+}
+
+
   .order_container {
     display: flex;
     flex-direction: row;
@@ -32,3 +25,39 @@
   .section {
     width: 25%;
   }
+
+  /* buttons */
+  .signup-button {
+    background-color: white;
+    padding: 5px 16px;
+    border: 3px solid #F35B2A;
+    color: #F35B2A;
+    text-transform: uppercase;
+    height: inherit;
+    width: inherit;
+    transition: background-color 0.2s ease, color 1s ease;
+    cursor: pointer;
+  }
+  .signup-button:hover {
+    background-color: #F35B2A;
+    color: white;
+  }
+
+  .join-us-text{
+    width: 50vw;
+  }
+  .form-container {
+    background-color: #fff;
+    padding: 40px;
+  }
+  .underline-input {
+    border: none;
+    border-bottom: 1px solid lightgrey;
+    background: none;
+    padding: 0 0 15px;
+    border-radius: 0;
+    width: 100%;
+    font-size: 18px;
+    color: #444444;
+    margin-bottom: 15px;
+}

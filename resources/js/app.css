@@ -3,16 +3,13 @@
     margin: 0;
     box-sizing: border-box;
 }
-
 input:focus {
     outline:none !important;
 }
-
 body {
     background: whitesmoke;
     font-family: 'Open sans';
 }
-
 nav {
     display: flex;
     height: 70px;
@@ -33,6 +30,7 @@ h2, h3 {
     text-transform: uppercase;
     color: gray;
 }
+
 
 label {
     color: #c8c8c8;
@@ -68,7 +66,6 @@ label {
     justify-content: flex-end;
     width: 100%;
 }
-
 .menu-items div {
     margin-left: 10px;
     cursor: pointer;
@@ -119,7 +116,6 @@ nav a {
     height: 60px;
     width: auto;
 }
-
 .green-button {
     background: rgb(236, 248, 236);
     border: none;
@@ -128,7 +124,6 @@ nav a {
     width: 100px;
     color: #444444;
 }
-
 .orange-button {
     background: #ff632d;
     border: none;
@@ -157,7 +152,6 @@ nav a {
 .orange-button:hover, .green-button:hover, .blue-button:hover {
     opacity: 0.9;
 }
-
 .category-wrapper {
     display: flex;
     justify-content: center;
@@ -172,13 +166,11 @@ nav a {
 .category-wrapper div {
     margin: 5px;
 }
-
 .restaurant-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 15px;
 }
-
 .restaurant {
     background: white;
     box-shadow: 0px 0px 10px #ddd;
@@ -214,6 +206,7 @@ nav a {
 
 .category-types {
     color: #759b85;
+
     font-family: 'PT Sans narrow';
     text-transform: uppercase;
     margin: 0;
@@ -243,6 +236,7 @@ nav a {
     align-items: center;
 }
 
+
 .menu-type {
     margin-bottom: 20px;
 }
@@ -259,7 +253,6 @@ nav a {
     box-shadow: 0px 0px 10px #ddd;
     /* margin-top: -70px; */
 }
-
 #details {
     display: grid;
     justify-items: center;
@@ -269,13 +262,11 @@ nav a {
     border-radius: 5px;
     /* margin: 56px 0 0 -34px; */
 }
-
 .single-view-wrapper {
     display: grid;
     grid-template-columns: 0.7fr 2fr;
     grid-gap: 25px;
 }
-
 .order {
     /* display: flex;
     justify-content: space-between; */
@@ -284,7 +275,6 @@ nav a {
 .order-head {
     border-bottom: 1px solid #ddd;
 }
-
 .order-head {
     display: grid;
     grid-template-columns: 0.7fr 1fr 1fr 1fr;
@@ -295,7 +285,6 @@ nav a {
     padding: 10px;
     cursor: pointer;
 }
-
 .detail-head, .detail-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -305,7 +294,6 @@ nav a {
     margin: 0;
     padding: 5px 20px;
 }
-
 .detail-info p:last-of-type {
     justify-self: flex-end;
     padding-right: 20px;
@@ -379,7 +367,6 @@ nav a {
     height: 53vh;
     position: relative;
 }
-
 .order-details {
     display: none;
 }
@@ -397,7 +384,6 @@ nav a {
 .visible {
     display: block;
 }
-
 .hidden {
     display: none;
 }
@@ -438,7 +424,6 @@ nav a {
     box-shadow: 0 -10px 10px 0px rgba(221, 221, 221, 0.452);
     /* opacity: 1; */
 }
-
 .inactive {
     background: none;
     margin: 0;
@@ -451,17 +436,14 @@ nav a {
     margin-bottom: -5px;
     /* opacity: 0; */
 }
-
 .status {
     display: flex;
     justify-content: space-between;
 }
-
 .accepted {
     padding: 15px 20px 5px;
     border-top: 1px solid #ddd;
 }
-
 #profileClick {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -469,7 +451,6 @@ nav a {
     align-items: center;
     margin-top: 25px;
 }
-
 .detail-wrap {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -481,7 +462,6 @@ nav a {
     grid-template-columns: 1fr 1fr;
     grid-gap: 0px;
 }
-
 .underline-input {
     border: none;
     border-bottom: 1px solid lightgray;
@@ -493,7 +473,6 @@ nav a {
     color: #444444;
     margin-bottom: 15px;
 }
-
 .payment-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -502,70 +481,57 @@ nav a {
     align-items: center;
     /* justify-items: center; */
 }
-
 .payment-logo {
     height: 45px;
     width: auto;
     margin-top: 9px;
 }
-
 .flex {
     display: flex;
     /* justify-content: center; */
 }
-
 .datepicker {
     background: whitesmoke;
     height: 100vh;
     padding: 55px 55px 55px 100px;
 }
-
 .payment {
     background: white;
     height: 100vh;
     padding: 55px 100px 55px 55px;
     box-shadow: 0px 0px 10px lightgray;
 }
-
 #card {
     position: relative;
 }
-
 .card-number {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     border-bottom: none;
 }
-
 #cardWrap {
     display: flex;
 }
-
 .expiration {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
-
 .security {
     border-top-right-radius: 0;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left: none;
 }
-
 .card-number, .security, .expiration, .card-name, .payment-address {
     padding: 19px 10px;
 }
-
 .card-name {
     margin-bottom: 15px;
 }
-
 #cardLabel {
     margin-top: 15px;
 }
-
 #cardImg {
     position: absolute;
     top: 5px;
@@ -573,12 +539,10 @@ nav a {
     height: 30px;
     width: auto;
 }
-
 .payment-order-item {
     display: flex;
     justify-content: space-between;
 }
-
 .payment-order {
     background: white;
     padding: 15px 15px 5px 15px;
@@ -588,7 +552,6 @@ nav a {
     box-shadow: 0px 0px 10px lightgray;
     max-height: 50vh;
 }
-
 .asap {
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -609,7 +572,6 @@ nav a {
     transition: margin-top 300ms ease;
     z-index: 1;
 }
-
 .react-datepicker-wrapper {
     width: 100%;
 }
@@ -625,6 +587,7 @@ nav a {
     box-shadow: 0px 0px 10px #ddd;
 }
 
+
 .receipt-wrapper .detail-info {
     border-bottom: none;
 }
@@ -637,6 +600,7 @@ nav a {
     border: none;
     margin: auto;
   }
+
 
 /******************* TRANSITIONS ***********************/
 
@@ -656,14 +620,17 @@ nav a {
     transition: opacity 300ms linear 150ms;
 }
 
+
 .fade-exit {
     opacity: 1;
 }
+
 
 .fade-exit.fade-exit-active {
     opacity: 0;
     transition: opacity 150ms linear;
 }
+
 
 .page {
   position: absolute;

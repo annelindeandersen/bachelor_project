@@ -139,7 +139,7 @@ class RestaurantAuthController extends Controller
             'button_text' => 'Reset your password',
             'link' => 'http://localhost:8000/restaurant-password-reset?key=' . $api_key
         ];
-        \Mail::to('fionasdevemail@gmail.com')->send(new \App\Mail\PasswordResetMail($details));
+        Mail::to('fionasdevemail@gmail.com')->send(new \App\Mail\PasswordResetMail($details));
         $new_api_key = new PasswordApiKey([
             'restaurant_id' => $restaurant->id,
             'api_key' => $api_key,
@@ -147,6 +147,7 @@ class RestaurantAuthController extends Controller
         $new_api_key->save();
         return response()->json(['message' => 'Email sent'], 201);
     }
+    
     public function resetPassword(Request $request)
     {
         $request->validate([

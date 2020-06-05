@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
-// import RestaurantOrder from '../../components/RestaurantOrder';
 import './../../restaurant.css';
 
 const Orders = () => {
@@ -90,50 +89,42 @@ const Orders = () => {
                 console.log(error);
             })
 
-        // try {
-        //     // console.log(id);
-        //     event.preventDefault();
-        //     const response = await fetch(`/api/acceptOrder/${id}`, {
-        //         method: 'post',
-        //         headers: {
-        //             'Accept': 'application/json',
-        //             'Content-Type': 'application/json'
-        //         }
-        //     });
-        //     const data = await response.json();
-        //     // console.log(data)
-        //     dispatch({ type: 'ORDER_ACCEPTED', order_accepted: true });
-        //     dispatch({ type: 'ORDER_ACCEPTED', order_accepted: false });
-        // } catch (error) {
-        //     console.log(error)
-        // }
     }
 
     //reject order
-    const reject = (id) => {
-        // console.log(id);
-        event.preventDefault();
 
-        axios.post('/api/rejectOrder', { id: id })
-            .then(response => {
-                console.log(response);
-                dispatch({ type: 'ORDER_ACCEPTED', order_accepted: false });
-                dispatch({ type: 'ORDER_ACCEPTED', order_accepted: '' });
-            })
-            .catch(error => {
-                console.log(error);
-            })
+    const confirmReject = (id) => {
+        swal({
+            title: "Are you sure you want to cancel this order?",
+            text: "Once you have cancel it you will not be able to undo this action",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                axios.post('/api/rejectOrder', { id: id })
+                .then(response => {
+                    console.log(response);
+                    dispatch({ type: 'ORDER_ACCEPTED', order_accepted: false });
+                    dispatch({ type: 'ORDER_ACCEPTED', order_accepted: '' });
+                })
+                .catch(error => {
+                    console.log(error);
+                })
 
-        // const response = await fetch(`/api/rejectOrder/${id}`, {
-        //     method: 'post',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     }
-        // });
-        // const data = await response.json();
-        // dispatch({ type: 'ORDER_ACCEPTED', order_accepted: false });
-        // dispatch({ type: 'ORDER_ACCEPTED', order_accepted: '' });
+              swal("Order has been rejected, a message has been sent to the customer", {
+                icon: "success",
+              });
+            } else {
+                swal({
+                    text: "Order saved",
+                    icon: "success",
+                    timer: 1000,
+                    button: false
+                })
+            }
+          });
     }
 
     //set order in progress
@@ -149,19 +140,6 @@ const Orders = () => {
             .catch(error => {
                 console.log(error);
             })
-
-        // event.preventDefault();
-        // const response = await fetch(`/api/orderInProgress/${id}`, {
-        //     method: 'post',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     }
-        // });
-        // const data = await response.json();
-        // console.log(data)
-        // dispatch({ type: 'IN_PROGRESS', order_ready: true });
-        // dispatch({ type: 'IN_PROGRESS', order_ready: false });
     }
 
     //set ready for dispatch
@@ -177,104 +155,137 @@ const Orders = () => {
             .catch(error => {
                 console.log(error)
             });
-
-
-        // event.preventDefault();
-        // const response = await fetch(`/api/ordersforDispatch/${id}`, {
-        //     method: 'post',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     }
-        // });
-        // const data = await response.json();
-        // console.log(data)
-        // dispatch({ type: 'READY_FOR_DISPATCH', order_ready: true });
-        // dispatch({ type: 'READY_FOR_DISPATCH', order_ready: false });
     }
 
     return (
         <div className="container">
-            <h1>Orders</h1>
+            <h1 className="orange-text text-center">Orders</h1>
             <div className="order_container">
                 <div className="section">
-                    <h2>New orders</h2>
-                    {aReceivedOrders && aReceivedOrders.map((order, i) => (
-                        <div key={i}>
-                            <h1>{order.id}</h1>
-                            <button name="accept" type="submit" value={order.id} onClick={(event) => accept(event.target.value)}>Accept</button>
-                            <button name="reject" type="submit" value={order.id} onClick={(event) => reject(event.target.value)}>Reject</button>
-                            <h5>{order.delivery_time}</h5>
-                            <h5>Total price: {order.total_amount},-</h5>
-                            <p>{order.user.first_name} {order.user.last_name}</p>
-                            {order.order_item ? order.order_item.map((item, i) => (
-                                <div key={i}>
-                                    <p>{item.menu_item.id}. {item.menu_item.title}</p>
-                                </div>
-                            )) : ''}
-                            <hr></hr>
+                    <div className="card scroll-card m-1">
+                        <div className="card-header">
+                        <div className="icon-container mt-3">
+                            <img src="./img/ordering.svg" className="card-img-top" alt="icon" />
                         </div>
-                    ))}
-                </div>
-                <div className="section">
-                    <h2>Accepted</h2>
-                    {aAcceptedOrders && aAcceptedOrders.map((order, i) => (
-                        <div key={i}>
-                            <h1>{order.id}</h1>
-                            <button name="status" type="submit" value={order.id} onClick={(event) => setInProgress(event.target.value)}>
-                                Mark as in Progress
-                            </button>
-                            <h5>{order.delivery_time}</h5>
+                            <h2 className="text-center mt-3">New orders</h2>
+                        </div>
+                       
+                        <ul className="list-group list-group-flush orders-list overflow-auto">
+                            {aReceivedOrders && aReceivedOrders.map((order, i) => (
+                        <li key={i} className="list-group-item  pb-5">
+                            {/* <p>Order ID: {order.id}</p> */}
+                            <h5>Delivery date: {order.delivery_time}</h5>
                             <h5>Total price: {order.total_amount},-</h5>
-                            <p>{order.user.first_name} {order.user.last_name}</p>
+                            <p>Customer name: {order.user.first_name} {order.user.last_name}</p>
+                            <h3>Items</h3>
                             {order.order_item ? order.order_item.map((item, i) => (
                                 <div key={i}>
                                     <p>{item.menu_item.title}</p>
                                 </div>
-                            )) : ''}
-                            <hr></hr>
-                        </div>
+                                
+                            )) : ''}       
+                                <button name="accept" type="submit" className="btn btn-secondary mr-3" value={order.id} onClick={(event) => accept(event.target.value)}>Accept</button>
+                                <button name="reject" type="submit"  className=" btn btn-danger" value={order.id} onClick={(event) => confirmReject(event.target.value)}>Reject</button>
+                        </li>
                     ))}
+                        </ul>
+                  
+                    </div>
                 </div>
                 <div className="section">
-                    <h2>In Progress</h2>
-                    {aOrdersInProgress && aOrdersInProgress.map((order, i) => (
-                        <div key={i}>
-                            <h1>{order.id}</h1>
-                            <button name="status" type="submit" value={order.id}
-                                onClick={(event) => setReadyForDispatch(event.target.value)}>Mark as Ready for Dispatch</button>
-                            <h5>{order.delivery_time}</h5>
-                            <h5>Total price: {order.total_amount},-</h5>
-                            <p>{order.user.first_name} {order.user.last_name}</p>
-                            {order.order_item ? order.order_item.map((item, i) => (
-                                <div key={i}>
-                                    <p>{item.menu_item.title}</p>
-                                    <p></p>
-                                </div>
-                            )) : ''}
-                            <hr></hr>
+                    <div className="card scroll-card m-1">
+                        <div className="card-header">
+                        <div className="icon-container mt-3">
+                            <img src="./img/check.svg" className="card-img-top" alt="icon" />
                         </div>
-                    ))}
-                </div>
-                <div className="section">
-                    <h2>Ready for pick up</h2>
-                    {aOrdersForDispatch && aOrdersForDispatch.map((order, i) => (
-                        <div key={i}>
-                            <h1>{order.id}</h1>
-                            {/* <button name="status" type="submit" value={order.id} onClick={(event) => setForDispatch(event.target.value)}>
-                                Mark as Completed
-                        </button> */}
-                            <h5>{order.delivery_time}</h5>
+                            <h2 className="text-center mt-3">Accepted orders</h2>
+                        </div>
+                       
+                        <ul className="list-group list-group-flush orders-list overflow-auto">
+                        {aAcceptedOrders && aAcceptedOrders.map((order, i) => (
+                        <li key={i} className="list-group-item  pb-5">
+                            {/* <p>Order ID: {order.id}</p> */}
+                            <h5>Delivery date: {order.delivery_time}</h5>
                             <h5>Total price: {order.total_amount},-</h5>
-                            <p>{order.user.first_name} {order.user.last_name}</p>
+                            <p>Customer name: {order.user.first_name} {order.user.last_name}</p>
+                            <h3>Items</h3>
                             {order.order_item ? order.order_item.map((item, i) => (
                                 <div key={i}>
                                     <p>{item.menu_item.title}</p>
                                 </div>
-                            )) : ''}
-                            <hr></hr>
-                        </div>
+                                
+                            )) : ''}       
+                            <button name="status" type="submit" className="btn btn-secondary" value={order.id} onClick={(event) => setInProgress(event.target.value)}>Accepted</button>
+
+                        </li>
                     ))}
+                        </ul>
+                  
+                    </div>
+                </div>
+                <div className="section">
+                    <div className="card scroll-card m-1">
+                        <div className="card-header">
+                        <div className="icon-container mt-3">
+                            <img src="./img/cooking.svg" className="card-img-top" alt="icon" />
+                        </div>
+                            <h2 className="text-center mt-3">In progress</h2>
+                        </div>
+                       
+                        <ul className="list-group list-group-flush orders-list overflow-auto">
+                        {aOrdersInProgress && aOrdersInProgress.map((order, i) => (
+                        <li key={i} className="list-group-item  pb-5">
+                            {/* <p>Order ID: {order.id}</p> */}
+                            <h5>Delivery date: {order.delivery_time}</h5>
+                            <h5>Total price: {order.total_amount},-</h5>
+                            <p>Customer name: {order.user.first_name} {order.user.last_name}</p>
+                            <h3>Items</h3>
+                            {order.order_item ? order.order_item.map((item, i) => (
+                                <div key={i}>
+                                    <p>{item.menu_item.title}</p>
+                                </div>
+                                
+                            )) : ''}       
+                            <button name="status" type="submit" className="grey-btn" value={order.id}
+                                onClick={(event) => setReadyForDispatch(event.target.value)}>Ready for Dispatch</button>
+
+                        </li>
+                    ))}
+                        </ul>
+                  
+                    </div>
+                </div>
+                <div className="section">
+                    <div className="card scroll-card m-1">
+                        <div className="card-header">
+                        <div className="icon-container mt-3">
+                            <img src="./img/deliver.svg" className="card-img-top" alt="icon" />
+                        </div>
+                            <h2 className="text-center mt-3">In progress</h2>
+                        </div>
+                       
+                        <ul className="list-group list-group-flush orders-list overflow-auto">
+                        {aOrdersForDispatch && aOrdersForDispatch.map((order, i) => (
+                        <li key={i} className="list-group-item  pb-5">
+                            {/* <p>Order ID: {order.id}</p> */}
+                            <h5>Delivery date: {order.delivery_time}</h5>
+                            <h5>Total price: {order.total_amount},-</h5>
+                            <p>Customer name: {order.user.first_name} {order.user.last_name}</p>
+                            <h3>Items</h3>
+                            {order.order_item ? order.order_item.map((item, i) => (
+                                <div key={i}>
+                                    <p>{item.menu_item.title}</p>
+                                </div>
+                                
+                            )) : ''}       
+                            {/* <button name="status" type="submit" value={order.id} 
+                            onClick={(event) => setForDispatch(event.target.value)}>Mark as Completed</button> */}
+
+                        </li>
+                    ))}
+                        </ul>
+                  
+                    </div>
                 </div>
             </div>
         </div>

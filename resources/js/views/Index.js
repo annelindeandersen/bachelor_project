@@ -23,11 +23,15 @@ import RestaurantLogin from './restaurant/RestaurantLogin';
 import Dashboard from './restaurant/Dashboard';
 import PasswordResetRequest from './restaurant/PasswordResetRequestForm';
 import PasswordReset from './restaurant/PasswordReset';
+import ProfileForm from './restaurant/ProfileForm';
+import RestaurantProfile from './restaurant/RestaurantProfile';
+import RestaurantMenuPage from './restaurant/RestaurantMenu';
+import RestaurantOrders from './restaurant/Orders';
 
 // Components
 import Menu from './user/Menu';
 import Footer from './../components/Footer';
-import RestaurantMenu from './../components/RestaurantMenu';
+import RestaurantMenu from './restaurant/components/RestaurantMenu';
 
 // Connect redux
 import { createStore, combineReducers } from 'redux';
@@ -57,6 +61,10 @@ function Index() {
     const localStorageData = localStorage.getItem('email');
 
     // get user if logged in
+    const user = useSelector(state => state.usersReducer.user);
+    const token = useSelector(state => state.usersReducer.token);
+
+    // get user if logged in
     useEffect(() => {
         const authOptions = {
             method: 'GET',
@@ -65,7 +73,6 @@ function Index() {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         }
-
         axios(authOptions)
             .then(response => {
                 console.log({ "INDEX_USER": response.data });
@@ -140,7 +147,6 @@ function Index() {
                                     <RestaurantLogin />
                                 </Route>
                                 <Route exact path="/restaurant-dashboard">
-                                    <RestaurantMenu />
                                     <Dashboard />
                                 </Route>
                                 <Route exact path="/restaurant-password-request">
@@ -151,6 +157,22 @@ function Index() {
                                     <RestaurantMenu />
                                     <PasswordReset />
                                 </Route>
+                                <Route exact path="/update-profile">
+                                    <RestaurantMenu />
+                                    <ProfileForm />
+                                </Route>
+                                <Route exact path="/restaurant-profile">
+                                    <RestaurantMenu />
+                                    <RestaurantProfile />
+                                </Route>
+                                <Route exact path="/restaurant-orders">
+                                    <RestaurantMenu />
+                                    <RestaurantOrders />
+                                </Route>
+                                <Route exact path="/restaurant-menu">
+                                    <RestaurantMenu />
+                                    <RestaurantMenuPage />
+                                </Route>
                             </Switch>
                         </CSSTransition>
                     </TransitionGroup>
@@ -158,6 +180,7 @@ function Index() {
             </Router>
         </div>
     );
+
 }
 
 export default Index;

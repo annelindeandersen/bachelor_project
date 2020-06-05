@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import swal from 'sweetalert';
+
+
 
 const Register = () => {
     const [user, setUser] = useState({});
@@ -15,7 +18,7 @@ const Register = () => {
     const [sConfirmPassword, setConfirmPassword] = useState('');
     const [aCountries, setCountries] = useState([]);
 
-    //get countis for select options
+    //get countries for select options
     const getCountries = async () => {
         const result = await fetch('/api/getCountries', {
             method: 'get',
@@ -25,7 +28,6 @@ const Register = () => {
         });
         console.log(result);
         const data = await result.json();
-        console.log(data);
         setCountries(data);
     }
 
@@ -59,33 +61,69 @@ const Register = () => {
             .then(response => {
                 console.log(response);
                 setUser(response.data);
+
+                if (response.status === 201) {
+                    var elem = document.createElement("div");
+                    elem.innerHTML = "<a href='/restaurant-login'>Login</a>";
+                    swal({
+                        text: "Successfully registered",
+                        icon: "success",
+                        timer: 2000,
+                        content: elem,
+                        button: false
+                    })
+                }
             }).catch((err) => {
                 console.log(err);
+                swal("Ooops", "something went wronf", "error");
             })
     }
     return (
-        <div className="container d-flex justify-content-center">
-            <h1 className="card-header">Register your restaurant</h1>
-            <p>Already have an account?<Link to="/restaurant-login">LOGIN</Link></p>
-            <input value={sName} onChange={(event) => setName(event.target.value)} id="registerRestaurantName" name="registerRestaurantName" className="form-control" placeholder="restaurant name" /><br />
-            <input value={sEmail} onChange={(event) => setEmail(event.target.value)} id="registerRestaurantEmail" name="registerRestaurantEmail" className="form-control" placeholder="email" /><br />
-            <input value={sPhone} onChange={(event) => setPhone(event.target.value)} id="registerRestaurantPhone" name="registerRestaurantPhone" className="form-control" placeholder="phone" /><br />
-            <input value={sAddress} onChange={(event) => setAddress(event.target.value)} id="restaurantRegisterAddress" name="registerRestaurantAddress" className="form-control" placeholder="street" /><br />
-            <input value={sCity} onChange={(event) => setCity(event.target.value)} id="restaurantRegisterCity" name="registerRestaurantCity" className="form-control" placeholder="city" /><br />
-            <input value={sPostcode} onChange={(event) => setPostcode(event.target.value)} id="restaurantRegisterPostcode" name="registerRestaurantPostcode" className="form-control" placeholder="postcode" /><br />
-            <label htmlFor="countries_select">Select Country</label>
-            <select id="countries_select" value={sCountry} onChange={(event) => setCountry(event.target.value)}>
-                <option>Select a country</option>
-                {
-                    aCountries.map(country => (
-                        <option value={country.id}>{country.name}</option>
-                    ))
-                }
-            </select>
-            <input value={sPassword} onChange={(event) => setPassword(event.target.value)} id="registerPassword" name="registerPassword" className="form-control" type="password" placeholder="password" /><br />
-            <input value={sConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} id="registerConfirmPassword" name="registerConfirmPassword" className="form-control" type="password" placeholder="confirm password" /><br />
-            <meta name="csrf-token" content="{{ csrf_token() }}" />
-            <input id="registerButton" className="form-control" type="submit" value="Register" onClick={register} />
+        <div className="page">
+            <div className="container pt-5">                
+               <div className="form-container card card-shadow">
+                <h1 className="orange-text text-center">Register Today</h1>
+                    <p>Already have an account? <Link to="/restaurant-login">Login</Link></p>
+                    <label className="form-label">Company Name</label>
+                    <input value={sName} onChange={(event) => setName(event.target.value)} id="registerRestaurantName" name="registerRestaurantName" className="underline-input" placeholder="restaurant name" />
+                    <span className="d-flex justify-content-between">
+                        <span className="short-input mr-5">
+                            <label className="form-label">Email</label>
+                            <input value={sEmail} onChange={(event) => setEmail(event.target.value)} id="registerRestaurantEmail" name="registerRestaurantEmail" className="underline-input" placeholder="email" />
+                        </span>
+                        <span className="short-input">
+                            <label className="form-label">Phone</label>
+                            <input value={sPhone} onChange={(event) => setPhone(event.target.value)} id="registerRestaurantPhone" name="registerRestaurantPhone" className="underline-input" placeholder="phone" />
+                        </span>
+                    </span>
+                    <label className="form-label">Address</label>
+                    <input value={sAddress} onChange={(event) => setAddress(event.target.value)} id="restaurantRegisterAddress" name="registerRestaurantAddress" className="underline-input" placeholder="street" />
+                    <span className="d-flex justify-content-between">
+                        <span className="short-input mr-5">
+                            <label className="form-label">City</label>
+                            <input value={sCity} onChange={(event) => setCity(event.target.value)} id="restaurantRegisterCity" name="registerRestaurantCity" className="underline-input" placeholder="city" />                        </span>
+                        <span className="short-input">
+                            <label className="form-label">Postcode</label>
+                            <input value={sPostcode} onChange={(event) => setPostcode(event.target.value)} id="restaurantRegisterPostcode" name="registerRestaurantPostcode" className="underline-input" placeholder="postcode" />
+                        </span>
+                    </span>
+                    <label htmlFor="countries_select" className="form-label">Country</label><br />
+                    <select id="countries_select" value={sCountry} onChange={(event) => setCountry(event.target.value)}>
+                        <option>Select a country</option>
+                        {
+                            aCountries.map(country => (
+                                <option value={country.id}>{country.name}</option>
+                            ))
+                        }
+                    </select>
+                    <label className="form-label pt-4">Password</label>
+                    <input value={sPassword} onChange={(event) => setPassword(event.target.value)} id="registerPassword" name="registerPassword" className="underline-input" type="password" placeholder="password" />
+                    <label className="form-label">Password Confirmation</label>
+                   <input value={sConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} id="registerConfirmPassword" name="registerConfirmPassword" className="underline-input" type="password" placeholder="confirm password" />
+                    <meta name="csrf-token" content="{{ csrf_token() }}" />
+                    <input id="registerButton" type="submit" value="Register" className="btn btn-secondary" onClick={register} />
+                </div>
+            </div>
         </div>
     );
 }

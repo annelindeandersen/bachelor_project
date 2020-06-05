@@ -4,18 +4,29 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
     return (
-        <div className="page container">
-            <div className="row justify-content-center">
-                <div className="card">
-                    <h1 className="card-header">Welcome to DELIVR</h1>
-                    <div>
-                        <Link to="/orderfood"><button className="form-control">ORDER FOOD</button></Link>
-                        <Link to="/for-restaurants"><button className="form-control">RESTAURANTS</button></Link>
-                        <button className="form-control">VOLUNTEERS</button>
+            <div className="page background">
+            <div className="home-container container">
+                <div>
+                    <h1 className="logo text-center pt-5">DELIVR</h1>
+                    <div className="home-text">
+                        <h1 className=" title pt-5 pb-4">Welcome to the Food App!</h1>
+                        <p className="body-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+                    </div>
+                    <div className="home-options">
+                    <Link to="/orderfood"className="home-menu">order food</Link>
+                    <Link to="/for-restaurants"  className="home-menu">
+                        <span className="menu-small">for</span>
+                        <span>restaurants</span>
+                    </Link>
+                    <Link to="/volunteers" className="home-menu">
+                    <span className="menu-small">for</span>
+                                <span>volunteers</span>
+                    </Link>
                     </div>
                 </div>
+                </div>
             </div>
-        </div>
     );
 }
 

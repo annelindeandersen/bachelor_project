@@ -1,0 +1,412 @@
+@import 'variables';
+@import "mixins";
+
+body {
+  background-color: #f4f7fa;
+  font-family: 'Nunito' !important;
+}
+
+.restaurant-nav {
+  background-color: white;
+}
+
+.orange-text {
+  color: $orange;
+}
+.restaurant-nav {
+  height: 10vh;
+  background-color: none;
+  padding-right: 165px;
+  padding-left: 165px;
+
+}
+
+
+
+.form-label {
+  font-family: 'Nunito' !important;
+  text-transform: uppercase;
+  color: 		#808080;
+  font-size: 12px;
+
+}
+
+.card-shadow, .profile-form, .img-upload{
+  box-shadow: 0 1px 15px rgba(27,31,35,.15), 0 0 1px rgba(106,115,125,.35);
+}
+
+.grey-bg {
+  background-color: #f4f7fa;
+  min-height: 100vh;
+}
+
+.green-bg {
+  background-color: $green;
+  min-height: 100vh;
+}
+
+
+.nav-container {
+  padding: 0 165px;
+}
+
+.nav-links {
+  margin-left: 60px;
+  font-size: 24px;
+  font-family: $display-font;
+  a {
+    color:black;
+  }
+}
+
+.background {
+  width: 100vw;
+  height: 100%;
+  background-color: #A1CFB8;
+  background-image: url('../.././public/img/chilli_rot.png');
+  background-position: top right;
+  background-repeat: no-repeat;
+  rotate: 90deg;
+  background-size: 60%;
+}
+
+
+.orange-button {
+  color: $white;
+  font-family: $display-font;
+  font-size: 20px;
+  padding: 0 20px;
+  background-color: $orange;
+  display:inline;
+  text-decoration: none;
+}
+
+.orange-button:hover {
+  text-decoration: none;
+}
+
+.home-container {
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  .logo {
+    color: $orange;
+    font-family: $display-font;
+    font-size: 32px;
+  }
+
+  p {
+    font-size: $body-size;
+    color: $white;
+    text-align: left;
+    font-size: 24px;
+    font-weight: 200;
+
+    @include md {
+      font-size: 16px;
+      padding: 0px 15px 30px;
+      color: black;
+    }
+  }
+}
+
+.title {
+  color: $white;
+  font-family: $display-font;
+  font-size: 32px;
+
+  @include md {
+    font-size: 24px;
+    color: black;
+  
+  }
+}
+
+.home-menu {
+  display: flex;
+
+}
+
+.home-options {
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  @include md {
+    display: inline-block;
+  }
+
+
+    a {
+        text-decoration: none;
+        padding: 0 20px;
+
+        @include md {
+          padding: 20px 0;
+        }
+
+    .home-menu:hover {
+      color: $pink;
+    }
+  }
+}
+
+.home-options a {
+  border-right: 6px solid $white;
+
+  @include md {
+    border-right: none;
+  }
+}
+
+.home-options a:last-child {
+  border-right: none;
+}
+
+.home-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 100px 150px 30px;
+
+  @include md {
+    padding: 0;
+  }
+  
+}
+
+.home-menu {
+  color: $white;
+  font-family: 'PT Sans narrow';
+  font-weight: 400;
+  font-size: 44px;
+  text-transform: uppercase;
+  vertical-align: text-top;
+
+  @include md {
+    padding: 50px 0;
+  }
+
+
+  .menu-small {
+    font-size: 20px;
+    padding: 12px 6px;
+
+    @include md {
+      font-size: 24px;
+      padding: 0px 6px;
+    }
+  }
+
+  @include md {
+    font-size: 24px;
+    padding: 0px;
+  }
+}
+
+.restaurants-page {
+  background-color:#f2f2f2;
+}
+
+.short-input {
+  width: 100%;
+}
+
+// ************************ DASHBOARD *************************** //
+.dashboard-page {
+  background-image: url('../.././public/img/spices.png');
+  background-position:  left;
+  background-repeat: no-repeat;
+}
+
+.dashboard-container {
+  padding-top: 100px;
+}
+
+
+
+.dashboard-logo {
+  padding-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.dashboard-links {
+  display: flex;
+}
+
+.dashboard-link {
+  background-color: $white;
+  box-shadow: 0 1px 15px rgba(27,31,35,.15), 0 0 1px rgba(106,115,125,.35);
+  width: 100%;
+  border-radius: 10px;
+  padding: 20px;
+  transition-property: background;
+  transition-duration: 0.6s;
+  transition-timing-function: linear;
+  h3, p { 
+    text-decoration: none;
+  }
+
+}
+
+
+.dashboard-link:hover {
+  background: #fcdbc2;
+  transform: scale(1.01);
+
+  text-decoration: none;
+}
+
+// ************PROFILE FORM
+
+.profile-header {
+  height: 200px;
+  background-color: $green;
+  position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.profile-form-card {
+  padding-top: 50px;
+}
+
+.grey-btn {
+  background-color: $slate;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  padding: 5px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.btn-secondary  {
+  background-color: $slate !important;
+}
+
+.tags {
+  background-color: $green; 
+}
+ 
+.checkbox-input:checked +  .tags {
+  background-color: $pink; 
+}
+
+.profile-form-body {
+  width: 100%;
+  height: 100vh;
+  background-color: #f4f7fa;
+}
+
+.profile-form-body {
+  width: 100%;
+  height: 100vh;
+  background-color: #f4f7fa;
+} 
+
+.profile-form {
+  background-color: $white;
+  padding: 30px;
+}
+
+.form-image-div {
+  width: 100%;
+  height: 200px;
+}
+
+.form-image {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+// PROFILE PAGE//
+
+.profile-page {
+  position: relative;
+  min-height: 100vh;
+}
+
+.upload-img-container {
+  height: 150px;
+  background-color: #F2F2F2;
+
+  img {
+    display : block;
+    margin : auto;
+    padding: 20px;
+  }
+}
+
+.upload-menu-img-container {
+  height: 150px;
+  width: 150px;
+  background-color: #F2F2F2;
+
+  img {
+    display : block;
+    margin : auto;
+    padding: 20px;
+  }
+}
+
+.icon-container {
+  height: 50px;
+  display: flex;
+  text-align: center;
+}
+
+.scroll-card {
+  height: 500px;
+}
+
+.orders-list  {
+  li { 
+    background: #f4f7fa; 
+  }
+li:nth-child(odd) { 
+  background: #fff; 
+}
+}
+
+// MENU PAGE //
+#header {
+  width: 100%;
+  height: 50px;
+  background-color: red;
+  position: fixed;
+  z-index:999;
+}
+#parent {
+  width:100%;
+  height:100%;
+}
+#sidebar {
+
+  width:300px;
+  top: 170px;
+  background-color: #f2f2f2;
+  padding: 0 50px 20px;
+  box-sizing:border-box;
+  position: fixed;
+  z-index:99;
+}
+#main-content {
+  position: relative;
+  width: 100%;
+  padding-left:320px; 
+  height: 100%; 
+  box-sizing:border-box;
+  margin-top: 100px; 
+}
