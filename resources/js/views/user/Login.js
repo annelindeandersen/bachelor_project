@@ -65,8 +65,6 @@ const Login = () => {
                     <label>PASSWORD</label>
                     <input value={sPassword} onChange={(event) => setPassword(event.target.value)} className="form-control" type="password" id="loginPassword" placeholder="password" />
                 </div>
-                {/* <input value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" className="form-control" placeholder="email" /><br /> */}
-                {/* <input value={sPassword} onChange={(e) => setPassword(e.target.value)} type="password" id="loginPassword" className="form-control" placeholder="password" /><br /> */}
                 <input id="loginButton" className="blue-button" type="submit" value="Login" onClick={login} />
             </div>
         </div>

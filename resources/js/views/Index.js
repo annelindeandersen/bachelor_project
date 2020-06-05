@@ -23,11 +23,15 @@ import RestaurantLogin from './restaurant/RestaurantLogin';
 import Dashboard from './restaurant/Dashboard';
 import PasswordResetRequest from './restaurant/PasswordResetRequestForm';
 import PasswordReset from './restaurant/PasswordReset';
+import ProfileForm from './restaurant/ProfileForm';
+import RestaurantProfile from './restaurant/RestaurantProfile';
+import RestaurantMenuPage from './restaurant/RestaurantMenu';
+import RestaurantOrders from './restaurant/Orders';
 
 // Components
 import Menu from './user/Menu';
 import Footer from './../components/Footer';
-import RestaurantMenu from './../components/RestaurantMenu';
+import RestaurantMenu from './restaurant/components/RestaurantMenu';
 
 // Connect redux
 import { createStore, combineReducers } from 'redux';
@@ -140,7 +144,6 @@ function Index() {
                                     <RestaurantLogin />
                                 </Route>
                                 <Route exact path="/restaurant-dashboard">
-                                    <RestaurantMenu />
                                     <Dashboard />
                                 </Route>
                                 <Route exact path="/restaurant-password-request">
@@ -150,6 +153,22 @@ function Index() {
                                 <Route exact path="/restaurant-password-reset">
                                     <RestaurantMenu />
                                     <PasswordReset />
+                                </Route>
+                                <Route exact path="/update-profile">
+                                    <RestaurantMenu />
+                                    <ProfileForm />
+                                </Route>
+                                <Route exact path="/restaurant-profile">
+                                    <RestaurantMenu />
+                                    <RestaurantProfile />
+                                </Route>
+                                <Route exact path="/restaurant-orders">
+                                    <RestaurantMenu />
+                                    <RestaurantOrders />
+                                </Route>
+                                <Route exact path="/restaurant-menu">
+                                    <RestaurantMenu />
+                                    <RestaurantMenuPage />
                                 </Route>
                             </Switch>
                         </CSSTransition>
