@@ -79,78 +79,88 @@ class MenuController extends Controller
             'beverage' => ['Beverage', $beverage_type],
             'extra' => ['Extra', $extra_type],
         ]);
-        
+
         return response()->json($fullMenu);
     }
 
     //RESTAURANT FLOW
             //add menu item
-            public function addMenuItem(Request $request, $id)
-            {
-                if(!$request->menu_item_type_id){return response()->json(['message'=>'Enter a menu type id']);}
-                if(!$request->title){return response()->json(['message'=>'Enter a title']);}
-                if(!$request->description){return response()->json(['message'=>'Enter a description']);}
-                if(!$request->price){return response()->json(['message'=>'Enter a proce']);}
-                if(!$request->image){return response()->json(['message'=>'Enter an logo image']);}
-               $menuItem = new MenuItem([
-                   'restaurant_id' => $id,
-                   'menu_item_type_id' => $request->menu_item_type_id,
-                   'title' => $request->title,
-                   'description' => $request->description,
-                   'price' => $request->price,
-                   'image' => $request->image
-               ]);
+    public function addMenuItem(Request $request, $id)
+    {
+        if (!$request->menu_item_type_id) {
+            return response()->json(['message' => 'Enter a menu type id']);
+        }
+        if (!$request->title) {
+            return response()->json(['message' => 'Enter a title']);
+        }
+        if (!$request->description) {
+            return response()->json(['message' => 'Enter a description']);
+        }
+        if (!$request->price) {
+            return response()->json(['message' => 'Enter a proce']);
+        }
+        if (!$request->image) {
+            return response()->json(['message' => 'Enter an logo image']);
+        }
+        $menuItem = new MenuItem([
+            'restaurant_id' => $id,
+            'menu_item_type_id' => $request->menu_item_type_id,
+            'title' => $request->title,
+            'description' => $request->description,
+            'price' => $request->price,
+            'image' => $request->image
+        ]);
             //    $file = Request::file('image');
             //    $file->move(public_path('/uploads/'. $request->image));
             //    Image::make(public_path('/uploads/'. $request->image))->resize(300,300)->save(public_path('/uploads/'. $request->image));
-               $menuItem->save();
-               return response()->json([
-                   'message' => 'Successfully saved menu',
-                   'data'=> $menuItem
-               ], 201);
-           }
+        $menuItem->save();
+        return response()->json([
+            'message' => 'Successfully saved menu',
+            'data' => $menuItem
+        ], 201);
+    }
            //get menu types
-           public function getMenuItemTypes(Request $request)
-           {
-               $menuTypesArray =  MenuItemType::all();
-                return $menuTypesArray;
-            }
+    public function getMenuItemTypes(Request $request)
+    {
+        $menuTypesArray = MenuItemType::all();
+        return $menuTypesArray;
+    }
               //get menu item
-           public function getMenu(Request $request, $restaurant_id)
-           {
-            $aMenuItems =  MenuItem::where([
-                ['restaurant_id', '=', $restaurant_id]
-            ])->get();
+    public function getMenu(Request $request, $restaurant_id)
+    {
+        $aMenuItems = MenuItem::where([
+            ['restaurant_id', '=', $restaurant_id]
+        ])->get();
         // get starters
-            $aStarters = MenuItem::where([
-                ['restaurant_id', '=', $restaurant_id],
-                ['menu_item_type_id', '=', '1']
-            ])->get();
+        $aStarters = MenuItem::where([
+            ['restaurant_id', '=', $restaurant_id],
+            ['menu_item_type_id', '=', '1']
+        ])->get();
             // get mains
-            $aMains = MenuItem::where([
-                ['restaurant_id', '=', $restaurant_id],
-                ['menu_item_type_id', '=', '2']
-            ])->get();
+        $aMains = MenuItem::where([
+            ['restaurant_id', '=', $restaurant_id],
+            ['menu_item_type_id', '=', '2']
+        ])->get();
             // get deserts
-            $aSnacks = MenuItem::where([
-                ['restaurant_id', '=', $restaurant_id],
-                ['menu_item_type_id', '=', '4']
-            ])->get();
+        $aSnacks = MenuItem::where([
+            ['restaurant_id', '=', $restaurant_id],
+            ['menu_item_type_id', '=', '4']
+        ])->get();
                 // get deserts
-                $aDesserts = MenuItem::where([
-                ['restaurant_id', '=', $restaurant_id],
-                ['menu_item_type_id', '=', '5']
-            ])->get();
+        $aDesserts = MenuItem::where([
+            ['restaurant_id', '=', $restaurant_id],
+            ['menu_item_type_id', '=', '5']
+        ])->get();
             // get deserts
-            $aBeverages = MenuItem::where([
-                ['restaurant_id', '=', $restaurant_id],
-                ['menu_item_type_id', '=', '6']
-            ])->get();
+        $aBeverages = MenuItem::where([
+            ['restaurant_id', '=', $restaurant_id],
+            ['menu_item_type_id', '=', '6']
+        ])->get();
                      // get deserts
-                     $aExtras = MenuItem::where([
-                        ['restaurant_id', '=', $restaurant_id],
-                        ['menu_item_type_id', '=', '7']
-                    ])->get();
+        $aExtras = MenuItem::where([
+            ['restaurant_id', '=', $restaurant_id],
+            ['menu_item_type_id', '=', '7']
+        ])->get();
         // set full menu
         $fullMenu[] = ([
             'starter' => $aStarters,
@@ -161,14 +171,14 @@ class MenuController extends Controller
             'extra' => $aExtras
         ]);
         return response()->json($fullMenu);
-        }
+    }
         //del menu types
-        public function deleteMenuItem(Request $request, $id)
-        {
-            $menuItem =  MenuItem::find($id);
-            $menuItem->delete();
-            return response()->json([
-                'message' => $menuItem->title.' was deleted'
-            ]);
-        }
+    public function deleteMenuItem(Request $request, $id)
+    {
+        $menuItem = MenuItem::find($id);
+        $menuItem->delete();
+        return response()->json([
+            'message' => $menuItem->title . ' was deleted'
+        ]);
+    }
 }

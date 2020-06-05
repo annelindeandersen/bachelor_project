@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
+import swal from 'sweetalert';
 
 const Profile = () => {
     // Redux states
@@ -33,28 +34,28 @@ const Profile = () => {
     const [order, setOrder] = useState('');
     let history = useHistory();
 
-    useEffect(() => {
-        console.log({ 'TOKEN': token });
+    // useEffect(() => {
+    //     console.log({ 'TOKEN': token });
 
-        const authOptions = {
-            method: 'GET',
-            url: '/api/auth/user',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }
+    //     const authOptions = {
+    //         method: 'GET',
+    //         url: '/api/auth/user',
+    //         headers: {
+    //             'Authorization': 'Bearer ' + localStorage.getItem('token')
+    //         }
+    //     }
 
-        axios(authOptions)
-            .then(response => {
-                console.log(response.data);
-                dispatch({ type: 'LOGOUT_USER', logout: false });
-                dispatch({ type: 'CURRENT_USER', user: response.data });
-                dispatch({ type: 'USER_TOKEN', token: localStorage.getItem('token') });
-            }).catch((err) => {
-                console.log(err);
-                history.push('/login');
-            })
-    }, [])
+    //     axios(authOptions)
+    //         .then(response => {
+    //             console.log(response.data);
+    //             dispatch({ type: 'LOGOUT_USER', logout: false });
+    //             dispatch({ type: 'CURRENT_USER', user: response.data });
+    //             dispatch({ type: 'USER_TOKEN', token: localStorage.getItem('token') });
+    //         }).catch((err) => {
+    //             console.log(err);
+    //             history.push('/login');
+    //         })
+    // }, [])
 
     useEffect(() => {
         if (user) {
@@ -120,10 +121,10 @@ const Profile = () => {
             }
         }).then(response => {
             console.log(response);
-            setMessage('Your profile was updated!');
+            swal("Success!", "Your profile was updated!", "success");
         }).catch(error => {
             console.log(error);
-            setMessage('Something went wrong. Try updating again.');
+            swal("Error!", "Something went wrong. Try updating again.", "error");
         })
     }
 
@@ -136,8 +137,10 @@ const Profile = () => {
             }
         }).then(response => {
             console.log(response);
+            swal("Success!", "Your password was updated!", "success");
         }).catch(error => {
             console.log(error);
+            swal("Error!", "Something went wrong. Please try again.", "error");
         })
     }
 
@@ -182,7 +185,6 @@ const Profile = () => {
                     <div id="profileWrapper">
                         <div className={classNames({ 'opacity-0': !settingsComponent, 'opacity-1': settingsComponent }, 'profile-component')}>
                             <h2>Profile details</h2>
-                            <p>{message}</p>
                             <div className="detail-wrap">
                                 <div>
                                     <label>FIRST NAME</label>
@@ -218,7 +220,7 @@ const Profile = () => {
                                 </div>
                             </div>
                             <br />
-                            <input onClick={updateProfile} className="form-control blue-button" type="submit" value="Update" />
+                            <input onClick={updateProfile} className="blue-button" type="submit" value="Update" />
                         </div>
                         <div className={classNames({ 'opacity-0': !orderComponent, 'opacity-1': orderComponent }, 'order-component')}>
                             <h2>Your orders:</h2>
@@ -267,7 +269,7 @@ const Profile = () => {
                                 <input value={sConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} className="underline-input" type="password" placeholder="confirm password" />
                             </div>
                             <br />
-                            <input onClick={updatePassword} className="form-control blue-button" type="submit" value="Update" />
+                            <input onClick={updatePassword} className="blue-button" type="submit" value="Update" />
                         </div>
                     </div>
                 </div>

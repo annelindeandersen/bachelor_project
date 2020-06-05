@@ -1,9 +1,16 @@
 const initialState = {
-    users: {},
-    logout: true
+    logout: true,
+    user: '',
+    token: '',
 }
 
 const reducer = (state = initialState, action) => {
+    if (action.type === 'LOGOUT_USER') {
+        return {
+            ...state,
+            logout: action.logout
+        }
+    }
     if (action.type === 'USER_TOKEN') {
         return {
             ...state,
@@ -14,11 +21,6 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             user: action.user
-        }
-    }
-    if (action.type === 'LOGOUT_USER') {
-        return {
-            logout: action.logout
         }
     }
     if (action.type === 'CART_ITEMS') {

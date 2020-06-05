@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
+import swal from 'sweetalert';
 
 const RestaurantSingleView = () => {
     const location = useLocation();
+    const history = useHistory();
     console.log(location);
     const dispatch = useDispatch();
 
@@ -58,18 +60,22 @@ const RestaurantSingleView = () => {
         console.log(user);
 
         if (!user || user === undefined) {
-            console.log('cannot add');
-            setError('Sorry, you must login/register to order food!');
+            console.log('user undefined/not logged in');
+            swal("Error!", "You must login/register to order food!", "error");
         } else {
-            axios.post('/api/addtocart', { user: sUser.id, menu_item: item.id })
+            axios.post('/api/addtocart', { user: user && user.id, menu_item: item.id })
                 .then(response => {
                     console.log(response);
-                    setMessage('Item was added to cart!');
+                    if (response.status === 201) {
+                        return swal("Oops!", response.data.error, "warning");
+                    }
                     dispatch({ type: 'ITEM_ADDED', item_added: true });
                     dispatch({ type: 'ITEM_ADDED', item_added: false });
                 })
                 .catch(error => {
                     console.log(error);
+                    // swal("Error!", "Something went wrong. Please try again.", "error");
+                    swal("Error!", error.message, "error");
                 })
         }
 
@@ -77,22 +83,22 @@ const RestaurantSingleView = () => {
 
     return (
         <div className="container page">
-            <h1 className="card-header">Restaurant {!restaurant ? '' : restaurant.restaurant.name}</h1>
+            <div className="singleview-page" style={{ 'backgroundImage': `url(./img/${restaurant ? restaurant.restaurant.image : ''})` }}></div>
+            <h1 className="card-header white-font">Restaurant {!restaurant ? '' : restaurant.restaurant.name}</h1>
             <div className="single-view-wrapper">
                 <div id="details">
-                    <img src={`./img/${!restaurant ? '' : restaurant.profile.logo}`} alt="logo" />
-                    <h4>About:</h4>
+                    <img className="restaurant-logo" src={`./img/${!restaurant ? '' : restaurant.profile.logo}`} alt="logo" />
+                    <h3>About:</h3>
                     <p>{!restaurant ? '' : restaurant.profile.description}</p>
-                    <h4>Address:</h4>
+                    <h3>Address:</h3>
                     <p>{!restaurant ? '' : restaurant.restaurant.address + ', ' + restaurant.restaurant.city}</p>
-                    <h4>Country:</h4>
+                    <h3>Country:</h3>
                     <p>{!restaurant ? '' : restaurant.country.name}</p>
-                    <h4>Opening hours:</h4>
+                    <h3>Opening hours:</h3>
                     <p>{!restaurant ? '' : restaurant.profile.opening_hour + ' - ' + restaurant.profile.closing_hour}</p>
                 </div>
                 {!menu ? '' :
                     <div id="menu">
-                        <p>{error}</p><p>{message}</p>
                         {/* get starter dishes */}
                         <div className="menu-type" id="starters">
                             <h3>{menu.data[0].starter[1].length === 0 ? '' : menu.data[0].starter[0]}</h3>

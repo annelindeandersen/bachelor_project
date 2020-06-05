@@ -39,6 +39,30 @@ label {
     font-size: 12px;
 }
 
+.register-wrapper label, .profile-wrapper label {
+    color: lightslategray;
+    font-weight: bolder;
+}
+
+.register-wrapper, .profile-wrapper {
+    width: 70%;
+    margin: auto;
+}
+
+.register-wrapper .form-control, .profile-wrapper .form-control {
+    border: none !important;
+    box-shadow: 0 0 10px #ddd !important;
+    margin-bottom: 10px;
+}
+
+.register-wrapper .blue-button, .profile-wrapper .blue-button {
+    margin-top: 10px;
+}
+
+#menu {
+    margin-top: 50px;
+}
+
 .menu-items {
     display: flex;
     justify-content: flex-end;
@@ -50,11 +74,24 @@ label {
     cursor: pointer;
 }
 
+a {
+    text-decoration-line: none;
+}
+
 nav a {
     font-size: 18px;
     text-decoration-line: none;
     color: gray;
     margin-left: 10px;
+}
+
+.white-logo {
+    filter: brightness(10);
+}
+
+.white-font {
+    color: white !important;
+    text-shadow: 0px 0px 10px #444444;
 }
 
 #cartMenu {
@@ -122,10 +159,18 @@ nav a {
 }
 
 .category-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 10px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    max-width: 600px;
     justify-items: center;
+    padding: 30px 0;
+    margin: auto;
+}
+
+.category-wrapper div {
+    margin: 5px;
 }
 
 .restaurant-wrapper {
@@ -136,11 +181,15 @@ nav a {
 
 .restaurant {
     background: white;
-    box-shadow: 0px 0px 10px rgb(177, 177, 177);
+    box-shadow: 0px 0px 10px #ddd;
     display: grid;
     justify-items: center;
     align-items: center;
     border-radius: 5px;
+}
+
+.restaurant:hover {
+    opacity: 0.9;
 }
 
 .restaurant-image {
@@ -148,51 +197,83 @@ nav a {
     height: auto;
 }
 
-.button-wrapper {
+.category-restaurant-wrapper {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-content: center;
     align-items: center;
     margin: 10px 0;
 }
 
-/* .menu-type {
-    background: white;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgb(177, 177, 177);
-} */
+.card-header {
+    color: #ff632d;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.category-types {
+    color: #759b85;
+    font-family: 'PT Sans narrow';
+    text-transform: uppercase;
+    margin: 0;
+    font-size: 16px;
+}
 
 .cart_item {
     display: grid;
-    grid-template-columns: 3fr 1fr;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
+    grid-template-columns: 3fr 0.5fr;
+    padding: 15px 20px;
+    background: white;
+    box-shadow: 0px 0px 10px #ddd;
+    border-radius: 10px;
+    margin-bottom: 7px;
+    /* border-bottom: 1px solid #ccc; */
     align-items: center;
 }
 
 .menu-item {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    /* justify-content: space-between; */
-    /* border-bottom: 1px dotted grey; */
+    grid-template-columns: 2fr 0.5fr;
     margin-bottom: 10px;
-    padding: 20px;
+    padding: 15px 20px;
     background: white;
-    box-shadow: 0px 0px 10px rgb(177, 177, 177);
+    box-shadow: 0px 0px 10px #ddd;
     border-radius: 5px;
+    align-items: center;
+}
+
+.menu-type {
+    margin-bottom: 20px;
+}
+
+.menu-item .blue-button {
+    height: 40px;
+}
+
+.restaurant-logo {
+    width: 170px;
+    height: auto;
+    border-radius: 200px;
+    /* border: 2px solid #ddd; */
+    box-shadow: 0px 0px 10px #ddd;
+    /* margin-top: -70px; */
 }
 
 #details {
+    display: grid;
+    justify-items: center;
     padding: 20px;
     background: white;
-    box-shadow: 0px 0px 10px rgb(177, 177, 177);
+    box-shadow: 0px 0px 10px #ddd;
     border-radius: 5px;
-    margin: 20px 0;
+    /* margin: 56px 0 0 -34px; */
 }
 
 .single-view-wrapper {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-gap: 10px;
+    grid-template-columns: 0.7fr 2fr;
+    grid-gap: 25px;
 }
 
 .order {
@@ -200,8 +281,8 @@ nav a {
     justify-content: space-between; */
 }
 
-.order-head, .detail-info {
-    border-bottom: 1px dotted black;
+.order-head {
+    border-bottom: 1px solid #ddd;
 }
 
 .order-head {
@@ -239,6 +320,54 @@ nav a {
     top: 0;
     position: fixed;
     opacity: 0.5;
+    z-index: -2;
+}
+
+.restaurant-page {
+    background: url(./../../public/img/default.jpg);
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    position: fixed;
+    opacity: 0.1;
+    z-index: -2;
+}
+
+.cart-page {
+    background: url(./../../public/img/burger-bg.jpg);
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    position: fixed;
+    opacity: 0.2;
+    z-index: -2;
+}
+
+.receipt-page {
+    background: url(./../../public/img/default.jpg);
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    position: fixed;
+    opacity: 0.2;
+    z-index: -2;
+}
+
+.singleview-page {
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
+    height: 220px;
+    left: 0;
+    top: 0;
+    position: fixed;
+    opacity: 0.7;
     z-index: -2;
 }
 
@@ -329,7 +458,8 @@ nav a {
 }
 
 .accepted {
-    padding: 5px 20px;
+    padding: 15px 20px 5px;
+    border-top: 1px solid #ddd;
 }
 
 #profileClick {
@@ -343,7 +473,13 @@ nav a {
 .detail-wrap {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    /* grid-gap: 15px; */
+    grid-gap: 10px;
+}
+
+#profileWrapper .detail-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0px;
 }
 
 .underline-input {
@@ -478,25 +614,29 @@ nav a {
     width: 100%;
 }
 
-.react-datepicker__header {
-    background-color: white !important;
+.receipt-page-wrapper h2 {
+    text-align: center;
 }
 
-.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle {
-    border-bottom-color: white !important;
-    border-top: none !important;
+.receipt-wrapper {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px #ddd;
 }
 
-.react-datepicker__day--selected {
-    background-color: #ff4200 !important;
+.receipt-wrapper .detail-info {
+    border-bottom: none;
 }
 
-.react-datepicker__input-container input {
-    padding: 10px;
-    border: 1px solid #ccc;
+.swal-button {
+    padding: 10px 50px;
     border-radius: 5px;
-    width: 100%;
-}
+    background-color: lightslategray;
+    font-size: 15px;
+    border: none;
+    margin: auto;
+  }
 
 /******************* TRANSITIONS ***********************/
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import classNames from 'classnames';
 
 const Menu = () => {
     let location = useLocation();
@@ -13,6 +14,8 @@ const Menu = () => {
     const addedToCart = useSelector(state => state.usersReducer.item_added);
     const deleted = useSelector(state => state.ordersReducer.deleted);
     const [cart, setCart] = useState('');
+
+    const [color, setColor] = useState('');
 
     const logmeout = () => {
         const authOptions = {
@@ -45,45 +48,53 @@ const Menu = () => {
             })
     }, [user, addedToCart, deleted])
 
+    // useEffect(() => {
+    //     if (location.pathname = '/restaurant') {
+    //         setColor('white');
+    //     } else {
+    //         setColor('grey');
+    //     }
+    // }, [location.pathname])
+
     return (
         <>
             {location.pathname === '/payment' ? '' :
                 <nav className="container">
                     <div>
                         <Link to="/">
-                            <img id="logo" src="./img/delivr-3.png" alt="logo" />
+                            <img className={classNames({ 'white-logo': location.pathname === '/restaurant' })} id="logo" src="./img/delivr-3.png" alt="logo" />
                         </Link>
                     </div>
                     <div className="menu-items">
                         {logout === false ? '' :
                             <div>
-                                <Link to="/login">Login</Link>
+                                <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/login">Login</Link>
                             </div>
                         }
                         {logout === false ? '' :
                             <div>
-                                <Link to="/register">Register</Link>
+                                <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/register">Register</Link>
                             </div>
                         }
                         {logout === true ? '' :
                             <div>
-                                <Link to="/orderfood">Food</Link>
+                                <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/orderfood">Food</Link>
                             </div>
                         }
                         {logout === true ? '' :
                             <div>
-                                <Link to="/profile">Profile</Link>
+                                <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/profile">Profile</Link>
                             </div>
                         }
                         {logout === true ? '' :
                             <div id="cartMenu">
                                 <div id="cartItemsLength">{cart && cart.items.length}</div>
-                                <Link to="/cart">Cart</Link>
+                                <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/cart">Cart</Link>
                             </div>
                         }
                         {logout === true ? '' :
                             <div>
-                                <div onClick={logmeout}>Logout</div>
+                                <div className={classNames({ 'white-font': location.pathname === '/restaurant' })} onClick={logmeout}>Logout</div>
                             </div>
                         }
                     </div>

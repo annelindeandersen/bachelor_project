@@ -61,6 +61,7 @@ const RestaurantOverview = () => {
 
     return (
         <div className="container page">
+            <div className="restaurant-page"></div>
             <div className="row justify-content-center">
                 <div className="card">
                     {/* <h1 className="card-header">Select your faveorite food types and choose!</h1> */}
@@ -76,28 +77,30 @@ const RestaurantOverview = () => {
                         {catClick === '' ?
 
                             !restaurants ? '' : restaurants.data.map((restaurant, index) => (
-                                <div className="restaurant" key={index}>
-                                    <h3>{restaurant.restaurant.name}</h3>
-                                    <img className="restaurant-image" src={`./img/${restaurant.restaurant.image}`} />
-                                    <div className="button-wrapper">
-                                        {restaurant.restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>))}
-                                        <Link to={`/restaurant?id=${restaurant.restaurant.id}`}><button className="green-button">See menu</button></Link>
+                                <Link to={`/restaurant?id=${restaurant.restaurant.id}`} key={index} style={{ 'textDecoration': 'none' }} >
+                                    <div className="restaurant">
+                                        <h3>{restaurant.restaurant.name}</h3>
+                                        <img className="restaurant-image" src={`./img/${restaurant.restaurant.image}`} />
+                                        <div className="category-restaurant-wrapper">
+                                            {restaurant.restaurant.category.map((cat, index) => (<p className="category-types" key={index}>{cat.category}</p>))}
+                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             ))
 
                             :
 
                             catClick.restaurants.map((restaurant, index) => (
-                                <div className="restaurant" key={index}>
-                                    <h3>{restaurant.name}</h3>
-                                    <img className="restaurant-image" src={`./img/${restaurant.image}`} />
-                                    <div className="button-wrapper">
-                                        {/* <p>{catClick.category}</p> */}
-                                        {restaurant.category.map((cat, index) => (<p key={index}>{cat.category}</p>))}
-                                        <Link to={`/restaurant?id=${restaurant.id}`}><button className="green-button">See menu</button></Link>
+                                <Link to={`/restaurant?id=${restaurant.id}`} key={index} style={{ 'textDecoration': 'none' }}>
+                                    <div className="restaurant">
+                                        <h3>{restaurant.name}</h3>
+                                        <img className="restaurant-image" src={`./img/${restaurant.image}`} />
+                                        <div className="category-restaurant-wrapper">
+                                            {/* <p>{catClick.category}</p> */}
+                                            {restaurant.category.map((cat, index) => (<p className="category-types" key={index}>{cat.category}</p>))}
+                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             ))
 
                         }

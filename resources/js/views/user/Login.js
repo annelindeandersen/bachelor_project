@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import swal from 'sweetalert';
 
 const Login = () => {
     // Redux
@@ -46,25 +47,28 @@ const Login = () => {
                 history.push('/profile');
             }).catch((err) => {
                 console.log(err);
+                swal("Error!", "Something went wrong. Please try again.", "error");
             })
     }
 
     return (
         <div className="page container d-flex justify-content-center">
-            <h1 className="card-header">Login</h1><br />
+            <div className="profile-page"></div>
+            <div className="profile-wrapper">
+                <h1 className="card-header">Login</h1><br />
 
-            <div>
-                <label>EMAIL</label>
-                <input value={sEmail} onChange={(event) => setEmail(event.target.value)} className="underline-input" type="text" id="loginEmail" placeholder="email" />
+                <div>
+                    <label>EMAIL</label>
+                    <input value={sEmail} onChange={(event) => setEmail(event.target.value)} className="form-control" type="text" id="loginEmail" placeholder="email" />
+                </div>
+                <div>
+                    <label>PASSWORD</label>
+                    <input value={sPassword} onChange={(event) => setPassword(event.target.value)} className="form-control" type="password" id="loginPassword" placeholder="password" />
+                </div>
+                {/* <input value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" className="form-control" placeholder="email" /><br /> */}
+                {/* <input value={sPassword} onChange={(e) => setPassword(e.target.value)} type="password" id="loginPassword" className="form-control" placeholder="password" /><br /> */}
+                <input id="loginButton" className="blue-button" type="submit" value="Login" onClick={login} />
             </div>
-            <div>
-                <label>PASSWORD</label>
-                <input value={sPassword} onChange={(event) => setPassword(event.target.value)} className="underline-input" type="password" id="loginPassword" placeholder="password" />
-            </div>
-            {/* <input value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" className="form-control" placeholder="email" /><br /> */}
-            {/* <input value={sPassword} onChange={(e) => setPassword(e.target.value)} type="password" id="loginPassword" className="form-control" placeholder="password" /><br /> */}
-            <input id="loginButton" className="form-control orange-button" type="submit" value="Login" onClick={login} />
-
         </div>
     );
 }

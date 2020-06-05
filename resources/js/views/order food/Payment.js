@@ -73,10 +73,6 @@ const Payment = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    // console.log({ 'OPENING_HOUR': Number(openingHour.slice(0, 2)) });
-    // console.log({ 'CLOSING_HOUR': Number(closingHour.slice(0, 2)) });
-    // console.log({ 'MONTH': month });
-    // console.log({ 'DATE': day });
     console.log({ 'SELECTED': dateSelected });
 
     useEffect(() => {
@@ -104,56 +100,60 @@ const Payment = () => {
 
 
     const orderNow = () => {
-        // console.log('clicked', user, restaurantId, startDate.toISOString().substring(0, 10) + ' ' + startDate.toISOString().substring(11, 16));
 
-        if (cardNumber.length !== 16) {
-            console.log('has to be 16')
-            setCardError('1px solid red');
-        }
-        if (expirationDate.length !== 5) {
-            console.log('has to be 5')
-            setExpirationError('1px solid red');
-        }
-        if (securityNumber.length !== 3) {
-            console.log('has to be 3')
-            setSecurityError('1px solid red');
-        }
-        if (cardName.length < 4) {
-            console.log('has to be more than 3')
-            setNameError('1px solid red');
-        }
+        // if (cardNumber.length !== 16) {
+        //     console.log('has to be 16')
+        //     setCardError('1px solid red');
+        // }
+        // if (expirationDate.length !== 5) {
+        //     console.log('has to be 5')
+        //     setExpirationError('1px solid red');
+        // }
+        // if (securityNumber.length !== 3) {
+        //     console.log('has to be 3')
+        //     setSecurityError('1px solid red');
+        // }
+        // if (cardName.length < 4) {
+        //     console.log('has to be more than 3')
+        //     setNameError('1px solid red');
+        // }
         // if (currentTime > Number(closingHour.slice(0, 2))) {
         //     console.log('The restaurant does not have enough time today. Pick another day.')
         //     setNameError('1px solid red');
         // }
 
-        if (cardNumber.length === 16 && expirationDate.length === 5 && securityNumber.length === 3 && cardName.length > 3) {
+        // if (cardNumber.length === 16 && expirationDate.length === 5 && securityNumber.length === 3 && cardName.length > 3) {
 
-            axios.post('/api/createorder', {
-                id: order.user.id, //user.id, 
-                restaurant: restaurantId,
-                date: dateSelected
+        axios.post('/api/createorder', {
+            id: order.user.id,
+            restaurant: restaurantId,
+            date: moment(dateSelected).format('YYYY-MM-DD HH:mm')
+        })
+            .then(response => {
+                console.log(response);
+                dispatch({ type: 'GET_ORDER', order: response.data });
+                deleteAll();
+                dispatch({ type: "DELETE_ONE", deleted: true })
             })
-                .then(response => {
-                    console.log(response);
-                    dispatch({ type: 'GET_ORDER', order: response.data });
-                })
-                .catch(error => {
-                    console.log(error);
-                })
+            .catch(error => {
+                console.log(error);
+                console.log(restaurantId, moment(dateSelected).format('YYYY-MM-DD HH:mm'), order.user.id);
+            })
+        // }
+    }
 
-            axios.post('/api/deleteall', {
-                user: order.user.id
-            }) //user.id })
-                .then(response => {
-                    console.log(response);
-                    history.push('/receipt');
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        }
-
+    // delete items from cart after creating order
+    const deleteAll = () => {
+        axios.post('/api/deleteall', {
+            user: order.user.id
+        }) //user.id })
+            .then(response => {
+                console.log(response);
+                history.push('/receipt');
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
     return (

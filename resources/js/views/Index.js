@@ -31,7 +31,7 @@ import RestaurantMenu from './../components/RestaurantMenu';
 
 // Connect redux
 import { createStore, combineReducers } from 'redux';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 
 // Reducers
 import users from './../reducers/users';
@@ -52,6 +52,8 @@ const store = createStore(rootReducer, composeWithDevTools());
 
 function Index() {
     const dispatch = useDispatch();
+    const user = useSelector(state => state.usersReducer.user);
+    const token = useSelector(state => state.usersReducer.token);
     const localStorageData = localStorage.getItem('email');
 
     // get user if logged in
@@ -67,21 +69,21 @@ function Index() {
         axios(authOptions)
             .then(response => {
                 console.log({ "INDEX_USER": response.data });
+                // dispatch({ type: 'USER_TOKEN', token: localStorage.getItem('token') });
                 dispatch({ type: 'LOGOUT_USER', logout: false });
                 dispatch({ type: 'CURRENT_USER', user: response.data });
-                dispatch({ type: 'USER_TOKEN', token: localStorage.getItem('token') });
                 // dispatch({ type: 'CART_ITEMS', cart: cart });
             }).catch((err) => {
                 console.log(err);
             })
-    }, [])
+    }, [token])
 
     // get restaurant information if logged in
     useEffect(() => {
         axios.get('/api/getRestaurant/', { params: { id: localStorageData } })
             .then(response => {
                 console.log({ 'FROM_INDEX': response });
-                dispatch({ type: 'CURRENT_USER', restaurant: response.data.restaurant });
+                dispatch({ type: 'CURRENT_RESTAURANT', restaurant: response.data.restaurant });
                 dispatch({ type: 'LOGGED_OUT', logged_out: false });
             })
             .catch(error => {

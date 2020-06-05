@@ -52,7 +52,8 @@ const Cart = () => {
 
     return (
         <div className="container page">
-            <h1>Cart</h1>
+            <div className="cart-page"></div>
+            <h1>Your cart</h1>
             {!cart ? '' :
                 cart.items.length === 0 ? 'Nothing added to cart yet' : cart.items.map((item, index) => (
                     <div className="cart_item" key={index}>
