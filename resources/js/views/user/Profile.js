@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
+import swal from 'sweetalert';
 
 const Profile = () => {
     // Redux states
@@ -28,9 +29,33 @@ const Profile = () => {
     const [sConfirmPassword, setConfirmPassword] = useState('');
     const [orderDetails, setOrderDetails] = useState([]);
 
+    const [userLoaded, setUserLoaded] = useState('');
     const [message, setMessage] = useState('');
     const [order, setOrder] = useState('');
     let history = useHistory();
+
+    // useEffect(() => {
+    //     console.log({ 'TOKEN': token });
+
+    //     const authOptions = {
+    //         method: 'GET',
+    //         url: '/api/auth/user',
+    //         headers: {
+    //             'Authorization': 'Bearer ' + localStorage.getItem('token')
+    //         }
+    //     }
+
+    //     axios(authOptions)
+    //         .then(response => {
+    //             console.log(response.data);
+    //             dispatch({ type: 'LOGOUT_USER', logout: false });
+    //             dispatch({ type: 'CURRENT_USER', user: response.data });
+    //             dispatch({ type: 'USER_TOKEN', token: localStorage.getItem('token') });
+    //         }).catch((err) => {
+    //             console.log(err);
+    //             history.push('/login');
+    //         })
+    // }, [])
 
     useEffect(() => {
         if (user) {
@@ -41,6 +66,7 @@ const Profile = () => {
             setAddress(user.address);
             setCity(user.city);
             setPost(user.postcode);
+            setUserLoaded(user);
         }
     }, [user])
 
@@ -52,28 +78,6 @@ const Profile = () => {
         }
     }, [logout])
 
-    useEffect(() => {
-        console.log({ 'TOKEN': token });
-
-        const authOptions = {
-            method: 'GET',
-            url: '/api/auth/user',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }
-
-        axios(authOptions)
-            .then(response => {
-                console.log(response.data);
-                dispatch({ type: 'LOGOUT_USER', logout: false });
-                dispatch({ type: 'CURRENT_USER', user: response.data });
-                dispatch({ type: 'USER_TOKEN', token: localStorage.getItem('token') });
-            }).catch((err) => {
-                console.log(err);
-                history.push('/login');
-            })
-    }, [])
 
     useEffect(() => {
         axios.get('/api/getorder', { params: { user: user && user.id } })
@@ -117,10 +121,10 @@ const Profile = () => {
             }
         }).then(response => {
             console.log(response);
-            setMessage('Your profile was updated!');
+            swal("Success!", "Your profile was updated!", "success");
         }).catch(error => {
             console.log(error);
-            setMessage('Something went wrong. Try updating again.');
+            swal("Error!", "Something went wrong. Try updating again.", "error");
         })
     }
 
@@ -133,8 +137,10 @@ const Profile = () => {
             }
         }).then(response => {
             console.log(response);
+            swal("Success!", "Your password was updated!", "success");
         }).catch(error => {
             console.log(error);
+            swal("Error!", "Something went wrong. Please try again.", "error");
         })
     }
 
@@ -158,18 +164,27 @@ const Profile = () => {
 
 
     return (
-        <div className="container">
-            {!user ? '' :
+        <div className="container page">
+            <div className="profile-page"></div>
+            {userLoaded === '' ? 'Please try again. Something went wrong.' :
                 <div>
                     <div id="profileClick">
-                        <h4 onClick={settingsClick} className={classNames({ 'inactive': !settingsComponent, 'active': settingsComponent })}>Profile</h4>
-                        <h4 onClick={orderClick} className={classNames({ 'inactive': !orderComponent, 'active': orderComponent })}>Orders</h4>
-                        <h4 onClick={passwordClick} className={classNames({ 'inactive': !passwordComponent, 'active': passwordComponent })}>Change password</h4>
+                        <div onClick={settingsClick} className={classNames({ 'inactive': !settingsComponent, 'active': settingsComponent, '2opacity-0': !settingsComponent, '2opacity-1': settingsComponent }, 'header-profile')}>
+                            <img src="./img/001-user.svg" alt="dddd" />
+                            <h4>Profile</h4>
+                        </div>
+                        <div onClick={orderClick} className={classNames({ 'inactive': !orderComponent, 'active': orderComponent, '2opacity-0': !orderComponent, '2opacity-1': orderComponent }, 'header-order')}>
+                            <img src="./img/008-noodles.svg" alt="dddd" />
+                            <h4>Orders</h4>
+                        </div>
+                        <div onClick={passwordClick} className={classNames({ 'inactive': !passwordComponent, 'active': passwordComponent, '2opacity-0': !passwordComponent, '2opacity-1': passwordComponent }, 'header-password')}>
+                            <img src="./img/004-key.svg" alt="dddd" />
+                            <h4>Change password</h4>
+                        </div>
                     </div>
                     <div id="profileWrapper">
-                        <div className={classNames({ 'hidden': !settingsComponent, 'visible': settingsComponent })}>
+                        <div className={classNames({ 'opacity-0': !settingsComponent, 'opacity-1': settingsComponent }, 'profile-component')}>
                             <h2>Profile details</h2>
-                            <p>{message}</p>
                             <div className="detail-wrap">
                                 <div>
                                     <label>FIRST NAME</label>
@@ -205,9 +220,9 @@ const Profile = () => {
                                 </div>
                             </div>
                             <br />
-                            <input onClick={updateProfile} className="form-control orange-button" type="submit" value="Update" />
+                            <input onClick={updateProfile} className="blue-button" type="submit" value="Update" />
                         </div>
-                        <div className={classNames({ 'hidden': !orderComponent, 'visible': orderComponent })}>
+                        <div className={classNames({ 'opacity-0': !orderComponent, 'opacity-1': orderComponent }, 'order-component')}>
                             <h2>Your orders:</h2>
                             {order && order.data.map((item, index) => (
                                 <div className="order-item" key={index} onClick={() => toggleOrder({ item })}>
@@ -238,7 +253,7 @@ const Profile = () => {
                                 </div>
                             ))}
                         </div>
-                        <div className={classNames({ 'hidden': !passwordComponent, 'visible': passwordComponent })}>
+                        <div className={classNames({ 'opacity-0': !passwordComponent, 'opacity-1': passwordComponent }, 'password-component')}>
                             <h2>Change password</h2>
                             <br />
                             <div>
@@ -254,7 +269,7 @@ const Profile = () => {
                                 <input value={sConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} className="underline-input" type="password" placeholder="confirm password" />
                             </div>
                             <br />
-                            <input onClick={updatePassword} className="form-control orange-button" type="submit" value="Update" />
+                            <input onClick={updatePassword} className="blue-button" type="submit" value="Update" />
                         </div>
                     </div>
                 </div>

@@ -51,22 +51,24 @@ const Cart = () => {
     }
 
     return (
-        <div className="container">
-            <h1>Cart</h1>
+        <div className="container page">
+            <div className="cart-page"></div>
+            <h1>Your cart</h1>
             {!cart ? '' :
                 cart.items.length === 0 ? 'Nothing added to cart yet' : cart.items.map((item, index) => (
-                    <div key={index}>
-                        <strong>{item.menu_item.title}</strong>
-                        <p>{item.menu_item.description}</p>
-                        <p>{item.menu_item.price} DKK</p>
-                        <button onClick={() => deleteOne({ item })} className="green-button">Delete</button>
+                    <div className="cart_item" key={index}>
+                        <div>
+                            <strong>{item.menu_item.title} - <i>{item.menu_item.description}</i></strong><br />
+                            <small>Price: {item.menu_item.price} DKK</small>
+                        </div>
+                        <button onClick={() => deleteOne({ item })} className="orange-button">Delete</button>
                     </div>
                 ))}
             <br />
             <h3>{!cart ? '' : cart.total === 0 ? '' : 'Total: ' + cart.total + ' DKK'} </h3>
             <br />
             {!cart ? '' : cart.items.length === 0 ? '' :
-                <button className="green-button" onClick={order}>Order</button>
+                <button className="blue-button" onClick={order}>Go to payment</button>
             }
         </div >
     )

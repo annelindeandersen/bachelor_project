@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
     return (
-        <div className="container">
+        <div className="page container">
             <div className="row justify-content-center">
                 <div className="card">
                     <h1 className="card-header">Welcome to DELIVR</h1>

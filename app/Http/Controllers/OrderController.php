@@ -18,7 +18,8 @@ class OrderController extends Controller
      *
      * @return [json] order object
      */
-    public function getorder(Request $request) {
+    public function getorder(Request $request)
+    {
 
         $user = $request->user;
 
@@ -33,7 +34,8 @@ class OrderController extends Controller
      *
      * @return [json] order object
      */
-    public function test(Request $request) {
+    public function test(Request $request)
+    {
 
         $user = $request->user;
 
@@ -44,19 +46,13 @@ class OrderController extends Controller
 
         $newArray = array();
 
-        foreach($newOrdersArray as $newOrderArray) {
+        foreach ($newOrdersArray as $newOrderArray) {
 
-            // $newArray[] = ([
-            //     'order' => $newOrderArray
-            // ]);
             $newArray[] = ([
-                'order' => $newOrderArray->groupBy('menu_item_id')
+                'order' => $newOrderArray
+                // 'order' => $newOrderArray->groupBy('id')
             ]);
-            // foreach()
-            // return $newOrderArray->order_item->groupBy('menu_item_id');
         }
-
-        // $newOrdersArray[] = [...$orders];
 
         return response()->json($newArray);
     }
@@ -75,18 +71,17 @@ class OrderController extends Controller
         $date = $request->date;
 
         $cart = Cart::where('user_id', '=', $user)->first();
-        $orderArray = array();
 
         $cart_items = CartItem::with('menu_item')->where('cart_id', '=', $cart->id)->get();
 
         $price_array = array();
 
         // get the menu item price from cart item
-        foreach($cart_items as $cart_item) {
+        foreach ($cart_items as $cart_item) {
             $price_array[] = ($cart_item->menu_item->price);
         }
 
-        // create new order (works)
+        // create new order
         $new_order = new Order([
             'user_id' => $user,
             'restaurant_id' => $restaurant,
@@ -97,7 +92,7 @@ class OrderController extends Controller
         ]);
         $new_order->save();
 
-        foreach($cart_items as $cart_item){
+        foreach ($cart_items as $cart_item) {
             //create new order items
             $new_order_items = new OrderItem([
                 'order_id' => $new_order->id,
@@ -113,63 +108,59 @@ class OrderController extends Controller
 
     // restaurant section ******************************************************************************
      // get new order by restaurant id
-     public function getNewOrders(Request $request)
-     {
+    public function getNewOrders(Request $request)
+    {
         $id = $request->id;
-       $aReceivedOrders = Order::with('user', 'order_item.menu_item')
-       ->where('restaurant_id', '=', $id)
-       ->where('status', '=', 0)
-       ->where('accepted', '=', 0)
-       ->orderBy('delivery_time', 'asc')
-       ->get();
-       return response()->json($aReceivedOrders);
-     }
+        $aReceivedOrders = Order::with('user', 'order_item.menu_item')
+            ->where('restaurant_id', '=', $id)
+            ->where('status', '=', 0)
+            ->where('accepted', '=', 0)
+            ->orderBy('delivery_time', 'asc')
+            ->get();
+        return response()->json($aReceivedOrders);
+    }
           // get accepted order by restaurant id
-          public function getAcceptedOrders(Request $request)
-          {
-            $id = $request->id;
-            $aAcceptedOrders = Order::with('user', 'order_item.menu_item')
+    public function getAcceptedOrders(Request $request)
+    {
+        $id = $request->id;
+        $aAcceptedOrders = Order::with('user', 'order_item.menu_item')
             ->where('restaurant_id', '=', $id)
             ->where('status', '=', 0)
             ->where('accepted', '=', 1)
             ->orderBy('delivery_time', 'asc')
             ->get();
-            // foreach($aAcceptedOrders as $order)
-            // {
-            //     echo $order->order_item->groupBy('menu_item_id');
-            // }
-           return response()->json( $aAcceptedOrders);
-          }
+        return response()->json($aAcceptedOrders);
+    }
         //get order in progress
-        public function getOrdersInProgress(Request $request)
-        {
-            $id = $request->id;
-            $aOrdersInPorgress = Order::with('user', 'order_item.menu_item')
+    public function getOrdersInProgress(Request $request)
+    {
+        $id = $request->id;
+        $aOrdersInPorgress = Order::with('user', 'order_item.menu_item')
             ->where('restaurant_id', '=', $id)
             ->where('status', '=', 1)
             ->where('accepted', '=', 1)
             ->orderBy('delivery_time', 'asc')
             ->get();
-            return response()->json($aOrdersInPorgress);
-        }
+        return response()->json($aOrdersInPorgress);
+    }
     //get order in dispatched
     public function getOrdersDispatched(Request $request)
     {
         $id = $request->id;
         $aOrdersInPorgress = Order::with('user', 'order_item.menu_item')
-        ->where('restaurant_id', '=', $id)
-        ->where('status', '=', 2)
-        ->where('accepted', '=', 1)
-        ->orderBy('delivery_time', 'asc')
-        ->get();
+            ->where('restaurant_id', '=', $id)
+            ->where('status', '=', 2)
+            ->where('accepted', '=', 1)
+            ->orderBy('delivery_time', 'asc')
+            ->get();
         return response()->json($aOrdersInPorgress);
     }
     //accept order by restaurant id
     public function acceptOrder(Request $request)
-    {   
+    {
         $id = $request->id;
         $order = Order::where('id', $id)
-        ->update(['accepted' => 1]);
+            ->update(['accepted' => 1]);
         return response()->json([
             'message' => 'Order has been Accepted',
         ], 201);
@@ -179,29 +170,29 @@ class OrderController extends Controller
     {
         $id = $request->id;
         $order = Order::where('id', $id)
-        ->update(['accepted' => -1]);
+            ->update(['accepted' => -1]);
         return response()->json([
             'message' => 'Order has been Rejected',
         ], 201);
     }
         //set order status in progress
-        public function setStatusInProgress(Request $request)
-        {
-            $id = $request->id;
-            $order = Order::where('id', $id)
+    public function setStatusInProgress(Request $request)
+    {
+        $id = $request->id;
+        $order = Order::where('id', $id)
             ->update(['status' => 1]);
-            return response()->json([
-                'message' => 'Order is in progress',
-            ], 201);
-        }
+        return response()->json([
+            'message' => 'Order is in progress',
+        ], 201);
+    }
         //set order status in progress
-        public function setStatusDispatched(Request $request)
-        {
-            $id = $request->id;
-            $order = Order::where('id', $id)
+    public function setStatusDispatched(Request $request)
+    {
+        $id = $request->id;
+        $order = Order::where('id', $id)
             ->update(['status' => 2]);
-            return response()->json([
-                'message' => 'Order is dispatched',
-            ], 201);
-        }
+        return response()->json([
+            'message' => 'Order is dispatched',
+        ], 201);
+    }
 }

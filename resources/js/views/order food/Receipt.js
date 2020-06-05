@@ -30,13 +30,14 @@ const Receipt = () => {
     }, [user, currentOrder])
 
     return (
-        <div className="container">
+        <div className="page container receipt-page-wrapper">
+            <div className="receipt-page"></div>
             <br />
             <h2>Awesome, {sUser}! Your order has been placed!</h2>
 
             <h2>Your receipt:</h2>
             {!order ? '' :
-                <div>
+                <div className="receipt-wrapper">
                     <div className="order">
                         <div className="order-head">
                             <b>Order ID: {order.id}</b>

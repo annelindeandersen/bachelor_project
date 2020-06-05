@@ -84,7 +84,9 @@ class CartController extends Controller
                 return response()->json($cartArray);
             } 
 
-            return response()->json('It is impossible to order from more than one restaurant at once.');
+            return response()->json([
+                'error' => 'It is impossible to order from more than one restaurant at once.',
+            ], 201);
 
         } else if (!isset($cart_items)) {
             // create new cart_item
@@ -105,7 +107,9 @@ class CartController extends Controller
             return response()->json($cartArray);
         }
 
-        return response()->json('Something went wrong!');
+        return response()->json([
+            'error' => 'Something went wrong!',
+        ], 400);
     }
 
     /**
