@@ -13,27 +13,30 @@ const Dashboard = () => {
     const localStorageData = localStorage.getItem('email');
     // const [restaurant, setRestaurant] = useState('');
     const  [date, setDate] = useState(new Date().toLocaleString())
+    const  [weather, setWeather] = useState({
+        temp: '',
+        desc: '',
+        img: ''
+    })
 
-const weatherData =  async () => {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${restaurantData ? restaurantData.city : ''},uk&appid=cb69e1b7054af1f80f919bc4e4cacf4e`);
-    const data = await response.json();
-    console.log(response)
-    console.log(data)
-}
-weatherData();
+    useEffect(() => {
+        const weatherData =  async () => {
+            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${restaurantData ? restaurantData.city : 'copenhagen'},DK&appid=cb69e1b7054af1f80f919bc4e4cacf4e`);
+            const data = await response.json();
+            console.log(response)
+            console.log(data.weather[0].main);
+            
+            setWeather({
+                temp: (Math.round(data.main.temp - 273.15)),
+                desc: data.weather[0].main
+            });
+            console.log('DEGREES')
 
-// axios.get('///api.openweathermap.org/data/2.5/weather?q=London,uk&appid=cb69e1b7054af1f80f919bc4e4cacf4e', {
-//     params: {
-//       weather: "London",
-//       appid: "cb69e1b7054af1f80f919bc4e4cacf4e"
-//     }
-//   })
-//   .then(function (response) {
-//     console.log(response);
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
+        }
+        weatherData();
+    }, []);
+
+
 
     return (
         <div className="green-bg dashboard-page">
@@ -45,8 +48,7 @@ weatherData();
 <div className="row">
   <div className="col">
     <div>
-        <h1>Welcome {restaurantData ? restaurantData.name : ''}</h1>
-        <p>View your latest activity and update your settings and keep your customers updated with your latest menu and exciting food offering.</p>
+        <h1 className="text-center">Welcome {restaurantData ? restaurantData.name : ''}</h1>
     </div>
   </div>
 </div>
@@ -71,8 +73,8 @@ weatherData();
 <div className="row mt-4">
   <div className="col">
   <div className="dashboard-link">
-            <h2>8°</h2>
-            <p>Cloudy</p>
+    <h2>{weather.temp}°</h2>
+            <p>{weather.desc}</p>
         </div>
   </div>
   <div className="col">

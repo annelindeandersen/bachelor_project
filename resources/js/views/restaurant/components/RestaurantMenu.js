@@ -32,22 +32,31 @@ const Menu = () => {
                 location.pathname === '/restaurant-profile' ||
                 location.pathname === '/restaurant-orders' ||
                 location.pathname === '/restaurant-menu' ?
-                <nav className="container">
-                    <div className="logo-container">
-                        <Link to="/"><img src="./img/delivr-3.png" alt="logo" /></Link>
-                    </div>
-                    {
-                        localStorage.getItem("email") === null ?  
-                            <Link to="/restaurant-login">Login</Link>&&
-                            <Link to="/restaurant-register">Register</Link>
-                        : ''
-                    }
-                    {
-                        localStorage.getItem("email") !== null ?
-                            <Link to="/restaurant-dashboard">Dashboard</Link> &&
-                            <Link to="/" onClick={(e) => logout(e)}>Logout</Link> : ''
-                    }
-                </nav>
+                <nav className="restaurant-nav d-flex justify-content-between">
+                <div className="">
+                    <Link to="/">
+                        <img id="logo" src="./img/delivr-3.png" alt="logo" />
+                    </Link>
+                </div>
+                <div>
+                {
+                    localStorage.getItem("email") === null ? <Link to="/restaurant-login">Login</Link> : '' 
+                        
+                }
+                {
+                    localStorage.getItem("email") === null ? <Link to="/restaurant-register">Register</Link> : ''
+                    
+                }
+                {
+                    localStorage.getItem("email") != null ? <Link to="/restaurant-dashboard">Dashboard</Link> : ''
+                    
+                }
+                 {
+                    localStorage.getItem("email") != null ? <Link to="/" onClick={(e) => logout(e)}>Logout</Link> : ''
+                    
+                }
+             </div>
+             </nav>
                 :
                 ''
         }

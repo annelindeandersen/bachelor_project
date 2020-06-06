@@ -24,6 +24,7 @@ const ForRestaurants = () => {
                     </div>
                     <h1 className="">Why join Delivr?</h1>
                     <p className="join-us-text">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.</p>
+                    <p className="join-us-text">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.</p>
                     <div>
                         <Link to="/restaurant-register"><button className="signup-button">Sign Up</button></Link>
                         {/* <Link to="/restaurant-dashboard"><button>Dashboard</button></Link> */}
