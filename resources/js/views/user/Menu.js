@@ -58,7 +58,19 @@ const Menu = () => {
 
     return (
         <>
-            {location.pathname === '/payment' ? '' :
+        {
+            location.pathname === '/payment' ||
+              location.pathname === '/' ||
+                location.pathname === '/restaurant-dashboard' ||
+                location.pathname === '/for-restaurants' ||
+                location.pathname === '/restaurant-register' ||
+                location.pathname === '/restaurant-login' ||
+                location.pathname === '/restaurant-password-request' ||
+                location.pathname === '/restaurant-password-reset' ||
+                location.pathname === '/update-profile' ||
+                location.pathname === '/restaurant-profile' ||
+                location.pathname === '/restaurant-orders' ||
+                location.pathname === '/restaurant-menu' ? '' :
                 <nav className="container">
                     <div>
                         <Link to="/">
@@ -99,8 +111,8 @@ const Menu = () => {
                         }
                     </div>
                 </nav>
-            }
-        </>
+        }
+    </>
     )
 }
 

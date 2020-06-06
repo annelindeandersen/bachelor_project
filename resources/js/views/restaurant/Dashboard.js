@@ -14,8 +14,26 @@ const Dashboard = () => {
     // const [restaurant, setRestaurant] = useState('');
     const  [date, setDate] = useState(new Date().toLocaleString())
 
+const weatherData =  async () => {
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${restaurantData ? restaurantData.city : ''},uk&appid=cb69e1b7054af1f80f919bc4e4cacf4e`);
+    const data = await response.json();
+    console.log(response)
+    console.log(data)
+}
+weatherData();
 
-
+// axios.get('///api.openweathermap.org/data/2.5/weather?q=London,uk&appid=cb69e1b7054af1f80f919bc4e4cacf4e', {
+//     params: {
+//       weather: "London",
+//       appid: "cb69e1b7054af1f80f919bc4e4cacf4e"
+//     }
+//   })
+//   .then(function (response) {
+//     console.log(response);
+//   })
+//   .catch(function (error) {
+//     console.log(error);
+//   });
 
     return (
         <div className="green-bg dashboard-page">

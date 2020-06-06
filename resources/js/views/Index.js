@@ -60,9 +60,7 @@ function Index() {
     const token = useSelector(state => state.usersReducer.token);
     const localStorageData = localStorage.getItem('email');
 
-    // get user if logged in
-    const user = useSelector(state => state.usersReducer.user);
-    const token = useSelector(state => state.usersReducer.token);
+
 
     // get user if logged in
     useEffect(() => {
@@ -103,6 +101,7 @@ function Index() {
         <div className="App">
             <Router>
                 <Menu />
+                <RestaurantMenu />
                 <Route render={({ location }) => (
                     <TransitionGroup>
                         <CSSTransition key={location.key} timeout={300} classNames='fade'>
@@ -135,42 +134,34 @@ function Index() {
                                     <Receipt />
                                 </Route>
                                 <Route exact path="/for-restaurants">
-                                    <RestaurantMenu />
                                     <ForRestaurants />
                                 </Route>
                                 <Route exact path="/restaurant-register">
-                                    <RestaurantMenu />
                                     <RestaurantRegister />
                                 </Route>
                                 <Route exact path="/restaurant-login">
-                                    <RestaurantMenu />
                                     <RestaurantLogin />
                                 </Route>
                                 <Route exact path="/restaurant-dashboard">
                                     <Dashboard />
                                 </Route>
                                 <Route exact path="/restaurant-password-request">
-                                    <RestaurantMenu />
                                     <PasswordResetRequest />
                                 </Route>
                                 <Route exact path="/restaurant-password-reset">
-                                    <RestaurantMenu />
                                     <PasswordReset />
                                 </Route>
                                 <Route exact path="/update-profile">
-                                    <RestaurantMenu />
                                     <ProfileForm />
                                 </Route>
                                 <Route exact path="/restaurant-profile">
-                                    <RestaurantMenu />
                                     <RestaurantProfile />
                                 </Route>
                                 <Route exact path="/restaurant-orders">
-                                    <RestaurantMenu />
                                     <RestaurantOrders />
                                 </Route>
                                 <Route exact path="/restaurant-menu">
-                                    <RestaurantMenu />
+
                                     <RestaurantMenuPage />
                                 </Route>
                             </Switch>
