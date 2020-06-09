@@ -48,57 +48,62 @@ const Menu = () => {
             })
     }, [user, addedToCart, deleted])
 
-    // useEffect(() => {
-    //     if (location.pathname = '/restaurant') {
-    //         setColor('white');
-    //     } else {
-    //         setColor('grey');
-    //     }
-    // }, [location.pathname])
-
     return (
         <>
-            {location.pathname === '/payment' ? '' :
-                <nav className="container">
-                    <div>
-                        <Link to="/">
-                            <img className={classNames({ 'white-logo': location.pathname === '/restaurant' })} id="logo" src="./img/delivr-3.png" alt="logo" />
-                        </Link>
-                    </div>
-                    <div className="menu-items">
-                        {logout === false ? '' :
-                            <div>
-                                <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/login">Login</Link>
-                            </div>
-                        }
-                        {logout === false ? '' :
-                            <div>
-                                <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/register">Register</Link>
-                            </div>
-                        }
-                        {logout === true ? '' :
-                            <div>
-                                <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/orderfood">Food</Link>
-                            </div>
-                        }
-                        {logout === true ? '' :
-                            <div>
-                                <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/profile">Profile</Link>
-                            </div>
-                        }
-                        {logout === true ? '' :
-                            <div id="cartMenu">
-                                <div id="cartItemsLength">{cart && cart.items.length}</div>
-                                <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/cart">Cart</Link>
-                            </div>
-                        }
-                        {logout === true ? '' :
-                            <div>
-                                <div className={classNames({ 'white-font': location.pathname === '/restaurant' })} onClick={logmeout}>Logout</div>
-                            </div>
-                        }
-                    </div>
-                </nav>
+            {
+                location.pathname === '/payment' ||
+                    location.pathname === '/' ||
+                    location.pathname === '/restaurant-dashboard' ||
+                    location.pathname === '/for-restaurants' ||
+                    location.pathname === '/restaurant-register' ||
+                    location.pathname === '/restaurant-login' ||
+                    location.pathname === '/restaurant-password-request' ||
+                    location.pathname === '/restaurant-password-reset' ||
+                    location.pathname === '/update-profile' ||
+                    location.pathname === '/restaurant-profile' ||
+                    location.pathname === '/restaurant-orders' ||
+                    location.pathname === '/restaurant-menu' ? '' :
+
+                    <nav className="container">
+                        <div>
+                            <Link to="/">
+                                <img className={classNames({ 'white-logo': location.pathname === '/restaurant' })} id="logo" src="./img/delivr-3.png" alt="logo" />
+                            </Link>
+                        </div>
+                        <div className="menu-items">
+                            {logout === false ? '' :
+                                <div>
+                                    <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/login">Login</Link>
+                                </div>
+                            }
+                            {logout === false ? '' :
+                                <div>
+                                    <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/register">Register</Link>
+                                </div>
+                            }
+                            {logout === true ? '' :
+                                <div>
+                                    <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/orderfood">Food</Link>
+                                </div>
+                            }
+                            {logout === true ? '' :
+                                <div>
+                                    <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/profile">Profile</Link>
+                                </div>
+                            }
+                            {logout === true ? '' :
+                                <div id="cartMenu">
+                                    <div id="cartItemsLength">{cart && cart.items.length}</div>
+                                    <Link className={classNames({ 'white-font': location.pathname === '/restaurant' })} style={{ 'textDecoration': 'none' }} to="/cart">Cart</Link>
+                                </div>
+                            }
+                            {logout === true ? '' :
+                                <div>
+                                    <div className={classNames({ 'white-font': location.pathname === '/restaurant' })} onClick={logmeout}>Logout</div>
+                                </div>
+                            }
+                        </div>
+                    </nav>
             }
         </>
     )

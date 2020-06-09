@@ -15,20 +15,37 @@ const Menu = () => {
         history.push('/');
     }
     return (
-        <nav className="container">
-            <Link to="/">Home</Link>
+        <>
             {
-                logged_out === false ? '' :
-                    <Link to="/restaurant-login">Login</Link>
+                location.pathname === '/restaurant-dashboard' ||
+                    location.pathname === '/for-restaurants' ||
+                    location.pathname === '/restaurant-register' ||
+                    location.pathname === '/restaurant-login' ||
+                    location.pathname === '/restaurant-password-request' ||
+                    location.pathname === '/restaurant-password-reset' ||
+                    location.pathname === '/update-profile' ||
+                    location.pathname === '/restaurant-profile' ||
+                    location.pathname === '/restaurant-orders' ||
+                    location.pathname === '/restaurant-menu' ?
+
+                    <nav className="container">
+                        <Link to="/">Home</Link>
+                        {
+                            logged_out === false ? '' :
+                                <Link to="/restaurant-login">Login</Link>
+                        }
+                        {
+                            logged_out === true ?
+                                <Link to="/restaurant-login">Login</Link> &&
+                                <Link to="/restaurant-dashboard">Dashboard</Link> &&
+                                <Link to="/restaurant-register">Register</Link> :
+                                <button onClick={(e) => logout(e)}>Logout</button>
+                        }
+                    </nav>
+                    :
+                    ''
             }
-            {
-                logged_out === true ?
-                    <Link to="/restaurant-login">Login</Link> &&
-                    <Link to="/restaurant-dashboard">Dashboard</Link> &&
-                    <Link to="/restaurant-register">Register</Link> :
-                    <button onClick={(e) => logout(e)}>Logout</button>
-            }
-        </nav>
+        </>
     )
 }
 

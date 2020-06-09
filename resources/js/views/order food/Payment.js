@@ -64,6 +64,7 @@ const Payment = () => {
 
     const [asap, setAsap] = useState('');
     const [later, setLater] = useState('');
+    const [validation, setValidation] = useState('');
 
     // redux & history
     const restaurantId = useSelector(state => state.ordersReducer.restaurant);
@@ -101,45 +102,51 @@ const Payment = () => {
 
     const orderNow = () => {
 
-        // if (cardNumber.length !== 16) {
-        //     console.log('has to be 16')
-        //     setCardError('1px solid red');
-        // }
-        // if (expirationDate.length !== 5) {
-        //     console.log('has to be 5')
-        //     setExpirationError('1px solid red');
-        // }
-        // if (securityNumber.length !== 3) {
-        //     console.log('has to be 3')
-        //     setSecurityError('1px solid red');
-        // }
-        // if (cardName.length < 4) {
-        //     console.log('has to be more than 3')
-        //     setNameError('1px solid red');
-        // }
-        // if (currentTime > Number(closingHour.slice(0, 2))) {
-        //     console.log('The restaurant does not have enough time today. Pick another day.')
-        //     setNameError('1px solid red');
-        // }
+        if (cardNumber.length !== 16) {
+            console.log('has to be 16')
+            setValidation(false);
+            setCardError('1px solid red');
+        }
+        if (expirationDate.length !== 5) {
+            console.log('has to be 5')
+            setValidation(false);
+            setExpirationError('1px solid red');
+        }
+        if (securityNumber.length !== 3) {
+            console.log('has to be 3')
+            setValidation(false);
+            setSecurityError('1px solid red');
+        }
+        if (cardName.length < 4) {
+            console.log('has to be more than 3')
+            setValidation(false);
+            setNameError('1px solid red');
+        }
+        if (currentTime > Number(closingHour.slice(0, 2))) {
+            console.log('The restaurant does not have enough time today. Pick another day.')
+            setValidation(false);
+            setNameError('1px solid red');
+        }
 
         // if (cardNumber.length === 16 && expirationDate.length === 5 && securityNumber.length === 3 && cardName.length > 3) {
+        if (validation !== false) {
 
-        axios.post('/api/createorder', {
-            id: order.user.id,
-            restaurant: restaurantId,
-            date: moment(dateSelected).format('YYYY-MM-DD HH:mm')
-        })
-            .then(response => {
-                console.log(response);
-                dispatch({ type: 'GET_ORDER', order: response.data });
-                deleteAll();
-                dispatch({ type: "DELETE_ONE", deleted: true })
+            axios.post('/api/createorder', {
+                id: order.user.id,
+                restaurant: restaurantId,
+                date: moment(dateSelected).format('YYYY-MM-DD HH:mm')
             })
-            .catch(error => {
-                console.log(error);
-                console.log(restaurantId, moment(dateSelected).format('YYYY-MM-DD HH:mm'), order.user.id);
-            })
-        // }
+                .then(response => {
+                    console.log(response);
+                    dispatch({ type: 'GET_ORDER', order: response.data });
+                    deleteAll();
+                    dispatch({ type: "DELETE_ONE", deleted: true })
+                })
+                .catch(error => {
+                    console.log(error);
+                    console.log(restaurantId, moment(dateSelected).format('YYYY-MM-DD HH:mm'), order.user.id);
+                })
+        }
     }
 
     // delete items from cart after creating order
