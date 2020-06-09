@@ -47,7 +47,7 @@ const RestaurantMenu = () => {
             console.log('restaurant')
             axios.get(`/api/getMenu/${restaurant.id}`)
                 .then(response => {
-                    console.log(response)
+                    console.log({"response":response})
                     console.log({ 1: response.data[0] })
                     setMenuItems({
                         starters: response.data[0].starter,
