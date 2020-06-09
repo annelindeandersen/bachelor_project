@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
@@ -16,6 +17,16 @@ const Orders = () => {
     const [aReceivedOrders, setReceivedOrders] = useState();
     const [aOrdersInProgress, setOrdersInProgress] = useState();
     const [aOrdersForDispatch, setOrdersForDispatch] = useState();
+    let history = useHistory();
+
+    useEffect(() => {
+        const checkAuth = () => {
+            if (localStorage.getItem("email") === null) {
+                 history.push('/');
+              }
+        }
+        checkAuth()
+    }, [])
 
     console.log({ 'RESTAURANT_FROM_ORDER': restaurant })
     //get new orders

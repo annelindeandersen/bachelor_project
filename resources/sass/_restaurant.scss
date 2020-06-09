@@ -6,13 +6,22 @@ body {
   font-family: 'Nunito' !important;
 }
 
-.restaurant-nav {
-  background-color: white;
+.home-body {
+  background-color: $green;
+  max-height: 100vh;
+  margin: 0 !important;
+  background-image: url('../.././public/img/chilli_rot.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  rotate: 90deg;
+  // background-size: 100%;
+  color: black;
 }
 
-.orange-text {
-  color: $orange;
-}
+
+
+
 .restaurant-nav {
   height: 10vh;
   background-color: none;
@@ -21,12 +30,18 @@ body {
 
 }
 
+.restaurant-forms {
+  padding: 0 300px !important;
+  @include md {
+    padding: 0 15px  !important;;
+  }
 
+}   
 
 .form-label {
-  font-family: 'Nunito' !important;
+  font-weight: bolder;
   text-transform: uppercase;
-  color: 		#808080;
+  color: slategray;
   font-size: 12px;
 
 }
@@ -59,16 +74,6 @@ body {
   }
 }
 
-.background {
-  width: 100vw;
-  height: 100%;
-  background-color: #A1CFB8;
-  background-image: url('../.././public/img/chilli_rot.png');
-  background-position: top right;
-  background-repeat: no-repeat;
-  rotate: 90deg;
-  background-size: 60%;
-}
 
 
 .orange-button {
@@ -393,11 +398,10 @@ li:nth-child(odd) {
   height:100%;
 }
 #sidebar {
-
   width:300px;
   top: 170px;
   background-color: #f2f2f2;
-  padding: 0 50px 20px;
+
   box-sizing:border-box;
   position: fixed;
   z-index:99;

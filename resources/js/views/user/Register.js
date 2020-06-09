@@ -47,7 +47,7 @@ const Register = () => {
     }
 
     return (
-        <div className="page container d-flex justify-content-center">
+        <div className="page container">
             <div className="profile-page"></div>
             <h1 className="card-header">Register</h1>
             <div className="register-wrapper">

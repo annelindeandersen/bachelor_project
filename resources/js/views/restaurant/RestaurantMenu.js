@@ -168,7 +168,7 @@ const RestaurantMenu = () => {
                             <div className="form-image-divs">
                             </div>
                             <div className="card-body">
-                                <h4 className="mt-0  card-title">Upload a banner</h4>
+                                <h4 className="mt-0  card-title">Upload an image</h4>
                             <div className="upload-img-container">
                                 <img src={sUrl}  className="form-image"/>
                             </div>
@@ -206,10 +206,10 @@ const RestaurantMenu = () => {
         <div className="menu-courses-container">
                     <h1 className="orange-text">MENU</h1>
                     <div className="menu-courses">
-                <div>
+                <div className="menu-full-container overflow-auto">
 
          
-
+                <div >
                     {aMenuItems.starters.length ? <h2>Starters</h2> : ''}
                     {
                         aMenuItems.starters ? aMenuItems.starters.map((starterItem, i) => (
@@ -325,6 +325,7 @@ const RestaurantMenu = () => {
                         </div>
                         )) : ''
                     }
+                </div>
                 </div>
                 </div>
             </div>

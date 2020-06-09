@@ -1,5 +1,5 @@
 const initialState = {
-    restaurants: {},
+    restaurant: {},
     logged_out: true,
     item_added: false,
     item_deleted: false,

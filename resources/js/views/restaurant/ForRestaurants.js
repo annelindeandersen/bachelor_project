@@ -18,14 +18,16 @@ const ForRestaurants = () => {
         <div className="grey_body page">
             <div className="container">
             <div className="row justify-content-center">
-                <div className="pt-5">                   
-                    <div className="chef-image">
+                <div className="pt-5">  
+                <div className="d-flex">             
+                    <div className=" d-flex chef-image">
+                        <h1 className="">Why join Delivr?</h1>
                         <img src="./img/chef.jpg" alt="test" />
                     </div>
-                    <h1 className="">Why join Delivr?</h1>
-                    <p className="join-us-text">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.</p>
-                    <p className="join-us-text">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.</p>
+                   
+                </div>    
                     <div>
+                        <p className="join-us-text">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.</p>
                         <Link to="/restaurant-register"><button className="signup-button">Sign Up</button></Link>
                         {/* <Link to="/restaurant-dashboard"><button>Dashboard</button></Link> */}
                     </div>

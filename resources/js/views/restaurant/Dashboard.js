@@ -8,7 +8,7 @@ import swal from 'sweetalert';
 const Dashboard = () => {
     // Redux states
     const restaurantData = useSelector(state => state.restaurantsReducer.restaurant); 
-    console.log(restaurantData ? restaurantData.name : '')  
+    console.log({5:restaurantData && restaurantData })  
     let history = useHistory();
     const localStorageData = localStorage.getItem('email');
     // const [restaurant, setRestaurant] = useState('');
@@ -18,6 +18,26 @@ const Dashboard = () => {
         desc: '',
         img: ''
     })
+
+    //check if logged in
+
+useEffect(() => {
+    const checkAuth = () => {
+        if (localStorage.getItem("email") === null) {
+             history.push('/');
+          }
+    }
+    checkAuth()
+}, [])
+  
+
+    const logout = () => {
+        localStorage.removeItem('email');
+        if (localStorage.getItem("email") === null) {
+             history.push('/');
+          }
+    }
+
 
     useEffect(() => {
         const weatherData =  async () => {
@@ -49,6 +69,7 @@ const Dashboard = () => {
   <div className="col">
     <div>
         <h1 className="text-center">Welcome {restaurantData ? restaurantData.name : ''}</h1>
+        <Link to="/" onClick={(e) => logout(e)}>Logout</Link>
     </div>
   </div>
 </div>

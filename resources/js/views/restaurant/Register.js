@@ -75,56 +75,43 @@ const Register = () => {
                 }
             }).catch((err) => {
                 console.log(err);
-                swal("Ooops", "something went wronf", "error");
+                swal("Ooops", "something went wrong", "error");
             })
     }
     return (
-        <div className="page">
-            <div className="container pt-5">                
-               <div className="form-container card card-shadow">
-                <h1 className="orange-text text-center">Register Today</h1>
+        <div className="page container restaurant-forms">
+            <div className="profile-page"></div>
+                <h1 className="card-header">Register Today</h1>
                     <p>Already have an account? <Link to="/restaurant-login">Login</Link></p>
-                    <label className="form-label">Company Name</label>
-                    <input value={sName} onChange={(event) => setName(event.target.value)} id="registerRestaurantName" name="registerRestaurantName" className="underline-input" placeholder="restaurant name" />
-                    <span className="d-flex justify-content-between">
-                        <span className="short-input mr-5">
-                            <label className="form-label">Email</label>
-                            <input value={sEmail} onChange={(event) => setEmail(event.target.value)} id="registerRestaurantEmail" name="registerRestaurantEmail" className="underline-input" placeholder="email" />
-                        </span>
-                        <span className="short-input">
-                            <label className="form-label">Phone</label>
-                            <input value={sPhone} onChange={(event) => setPhone(event.target.value)} id="registerRestaurantPhone" name="registerRestaurantPhone" className="underline-input" placeholder="phone" />
-                        </span>
-                    </span>
-                    <label className="form-label">Address</label>
-                    <input value={sAddress} onChange={(event) => setAddress(event.target.value)} id="restaurantRegisterAddress" name="registerRestaurantAddress" className="underline-input" placeholder="street" />
-                    <span className="d-flex justify-content-between">
-                        <span className="short-input mr-5">
-                            <label className="form-label">City</label>
-                            <input value={sCity} onChange={(event) => setCity(event.target.value)} id="restaurantRegisterCity" name="registerRestaurantCity" className="underline-input" placeholder="city" />                        </span>
-                        <span className="short-input">
-                            <label className="form-label">Postcode</label>
-                            <input value={sPostcode} onChange={(event) => setPostcode(event.target.value)} id="restaurantRegisterPostcode" name="registerRestaurantPostcode" className="underline-input" placeholder="postcode" />
-                        </span>
-                    </span>
-                    <label htmlFor="countries_select" className="form-label">Country</label><br />
-                    <select id="countries_select" value={sCountry} onChange={(event) => setCountry(event.target.value)}>
+                    <label className="form-label mb-0">Company Name</label>
+                    <input value={sName} onChange={(event) => setName(event.target.value)} id="registerRestaurantName" name="registerRestaurantName" className="form-control mb-4" placeholder="restaurant name" />
+                    <label className="form-label mb-0">Email</label>
+                    <input value={sEmail} onChange={(event) => setEmail(event.target.value)} id="registerRestaurantEmail" name="registerRestaurantEmail" className="form-control mb-4" placeholder="email" />
+                    <label className="form-label mb-0">Phone</label>
+                    <input value={sPhone} onChange={(event) => setPhone(event.target.value)} id="registerRestaurantPhone" name="registerRestaurantPhone" className="form-control mb-4" placeholder="phone" />
+                    <label className="form-label mb-0">Address</label>
+                    <input value={sAddress} onChange={(event) => setAddress(event.target.value)} id="restaurantRegisterAddress" name="registerRestaurantAddress" className="form-control mb-4" placeholder="street" />
+                    <label className="form-label mb-0">City</label>
+                    <input value={sCity} onChange={(event) => setCity(event.target.value)} id="restaurantRegisterCity" name="registerRestaurantCity" className="form-control mb-4" placeholder="city" />                      
+                    <label className="form-label mb-0">Postcode</label>
+                    <input value={sPostcode} onChange={(event) => setPostcode(event.target.value)} id="restaurantRegisterPostcode" name="registerRestaurantPostcode" className="form-control mb-4" placeholder="postcode" />
+                    <label htmlFor="countries_select" className="form-label mb-0">Country</label><br/>
+                    <select id="countries_select"className="mb-4" value={sCountry} onChange={(event) => setCountry(event.target.value)}>
                         <option>Select a country</option>
                         {
                             aCountries.map(country => (
                                 <option value={country.id}>{country.name}</option>
                             ))
                         }
-                    </select>
-                    <label className="form-label pt-4">Password</label>
-                    <input value={sPassword} onChange={(event) => setPassword(event.target.value)} id="registerPassword" name="registerPassword" className="underline-input" type="password" placeholder="password" />
-                    <label className="form-label">Password Confirmation</label>
-                   <input value={sConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} id="registerConfirmPassword" name="registerConfirmPassword" className="underline-input" type="password" placeholder="confirm password" />
+                    </select><br />
+                    <label className="form-label mb-0">Password</label>
+                    <input value={sPassword} onChange={(event) => setPassword(event.target.value)} id="registerPassword" name="registerPassword" className="form-control mb-4" type="password" placeholder="password" />
+                    <label className="form-label mb-0">Password Confirmation</label>
+                    <input value={sConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} id="registerConfirmPassword" name="registerConfirmPassword" className="form-control mb-4" type="password" placeholder="confirm password" />
                     <meta name="csrf-token" content="{{ csrf_token() }}" />
                     <input id="registerButton" type="submit" value="Register" className="btn btn-secondary" onClick={register} />
                 </div>
-            </div>
-        </div>
+    
     );
 }
 export default Register;

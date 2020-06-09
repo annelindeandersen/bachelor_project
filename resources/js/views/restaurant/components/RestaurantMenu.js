@@ -8,13 +8,11 @@ const Menu = () => {
     let history = useHistory();
     const dispatch = useDispatch();
 
-    const logout = (e) => {
+    const logout = () => {
         localStorage.removeItem('email');
         if (localStorage.getItem("email") === null) {
              history.push('/');
           }
-           
-    
     }
 
     
@@ -32,7 +30,7 @@ const Menu = () => {
                 location.pathname === '/restaurant-profile' ||
                 location.pathname === '/restaurant-orders' ||
                 location.pathname === '/restaurant-menu' ?
-                <nav className="restaurant-nav d-flex justify-content-between">
+                <nav className="restaurant-nav fixed-top d-flex justify-content-between">
                 <div className="">
                     <Link to="/">
                         <img id="logo" src="./img/delivr-3.png" alt="logo" />

@@ -3,7 +3,7 @@
   height:100vh;
   background-color: #F2F2F2;
 }
-/* for restaurants */
+
 .chef-image {
   height: 500px;
   padding-top: 40px;
@@ -60,4 +60,8 @@
     font-size: 18px;
     color: #444444;
     margin-bottom: 15px;
+}
+
+.menu-full-container {
+    height: 500px;
 }

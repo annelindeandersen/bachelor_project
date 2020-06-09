@@ -40,9 +40,6 @@ const Login = () => {
 
             if (response.status === 200) {
                 localStorage.setItem('email', data.local_storage_id);
-                const sessionData = data.session_data;
-                dispatch({ type: 'CURRENT_RESTAURANT', payload: data });
-
                 history.push('/restaurant-dashboard');
             } else {
                 swal("Ooops", "Incorrect login details", "error");
@@ -53,21 +50,18 @@ const Login = () => {
     }
 
     return (
-        <div className="page">
-               <div className="container pt-5">
-              <div className="form-container card card-shadow">
-                <h1 className="orange-text text-center">Login</h1>
+        <div className="page container restaurant-forms">
+            <div className="profile-page"></div>
+                <h1 className="card-header">Login</h1>
                 <p>Don't have an account? <Link to="/restaurant-register">Register today</Link></p>
-                    <div className="">
-                    <label className="form-label">Email</label>
-                        <input className="underline-input" value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" placeholder="email" />
-                        <label className="form-label">Password</label>
-                        <input  className="underline-input" value={sPassword} onChange={(e) => setPassword(e.target.value)} type="password" id="loginPassword" placeholder="password" /><br />
+                 
+                    <label className="form-label mb-0">Email</label>
+                        <input className="form-control mb-4" value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" placeholder="email" />
+                        <label className="form-label mb-0">Password</label>
+                        <input  className="form-control" value={sPassword} onChange={(e) => setPassword(e.target.value)} type="password" id="loginPassword" placeholder="password" /><br />
                         <input id="loginButton" type="submit" value="Login"  className="btn btn-secondary"  onClick={login} /><br />
                         <small>Forgot your password?<Link to="/restaurant-password-request" >Reset password</Link></small>
-                    </div>
-                </div>
-            </div>
+  
         </div>
     );
 }

@@ -27,19 +27,13 @@ const PasswordResetRequestForm = () => {
             });
     }
     return (
-        <div className="page">
-            <div className="container pt-5">
-                <div className="card card-shadow">
-                    <div className="form-container">
-                    <h1 className="orange-text text-center">Request a link</h1>
-                        <p>{sMessage}</p>
-                        <label className="form-label">Email</label>
-                        <input value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" className="underline-input" placeholder="email" /><br />
-                        <input type="button" className="btn btn-secondary" 
-                            value="Send" onClick={sendPasswordRequest} />
-                    </div>
-                </div>
-            </div>
+        <div className="page container restaurant-forms">
+            <div className="profile-page"></div>
+            <h1 className="card-header">Request a password reset link</h1>
+            <p>{sMessage}</p>
+            <label className="form-label mb-0">Email</label>
+            <input value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" className="form-control" placeholder="email" /><br />
+             <input type="button" className="btn btn-secondary" value="Send" onClick={sendPasswordRequest} />
         </div>
     );
 }
