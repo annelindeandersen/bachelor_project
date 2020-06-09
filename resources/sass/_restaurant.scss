@@ -19,8 +19,42 @@ body {
   color: black;
 }
 
+.login-bg {
+  background: url(./../../public/img/for-resaurant-bg.jpg);
+}
 
+.plate-bg {
+  background: url(./../../public/img/plate-bg.jpg);
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  position: fixed;
+  opacity: 0.7;
+  z-index: -2;
+}
 
+.bg {
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  position: fixed;
+  opacity: 0.5;
+  z-index: -2;
+}
+
+.for-restaurant-text {
+  margin-top: 30vh;
+  margin-right: 100px;
+
+  p {
+    font-size: 24px;
+  }
+  
+}
 
 .restaurant-nav {
   height: 10vh;

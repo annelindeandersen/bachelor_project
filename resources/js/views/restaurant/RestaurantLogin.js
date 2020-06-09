@@ -51,7 +51,7 @@ const Login = () => {
 
     return (
         <div className="page container restaurant-forms">
-            <div className="profile-page"></div>
+            <div className="login-bg bg"></div>
                 <h1 className="card-header">Login</h1>
                 <p>Don't have an account? <Link to="/restaurant-register">Register today</Link></p>
                  
