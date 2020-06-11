@@ -15,7 +15,7 @@ const Dashboard = () => {
     const order_ready = useSelector(state => state.ordersReducer.ready_for_dispatch_status);
     const profile_updated = useSelector(state => state.restaurantsReducer.profile_updated);
     const [aReceivedOrders, setReceivedOrders] = useState();
-    console.log({5:restaurantData && restaurantData })  
+    console.log({5:restaurantData ? restaurantData : '' })  
     let history = useHistory();
     const localStorageData = localStorage.getItem('email');
     // const [restaurant, setRestaurant] = useState('');
@@ -46,7 +46,6 @@ const Dashboard = () => {
 
 
     //check if logged in
-
 useEffect(() => {
     const checkAuth = () => {
         if (localStorage.getItem("email") === null) {
@@ -56,8 +55,7 @@ useEffect(() => {
     checkAuth()
 }, [])
 
-
-  
+ 
 
     const logout = () => {
         localStorage.removeItem('email');
@@ -67,7 +65,6 @@ useEffect(() => {
     }
 
     
-
     useEffect(() => {
         const weatherData =  async () => {
             const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${restaurantData ? restaurantData.city : 'copenhagen'},DK&appid=cb69e1b7054af1f80f919bc4e4cacf4e`);
@@ -89,7 +86,7 @@ useEffect(() => {
         //get new orders
         useEffect(() => {
             console.log(!restaurantData ? '' : restaurantData)
-            axios.get('/api/getNewOrders', { params: { id: restaurantData && restaurantData.id } })
+            axios.get('/api/getNewOrders', { params: { id: restaurantData ? restaurantData.id : '' } })
                 .then(response => {
                     setReceivedOrders(response.data);
                 })
@@ -197,6 +194,3 @@ useEffect(() => {
 }
 
 export default Dashboard;
-if (document.getElementById('dashboard')) {
-    ReactDOM.render(<Dashboard />, document.getElementById('dashboard'));
-}

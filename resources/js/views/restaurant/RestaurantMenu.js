@@ -80,12 +80,11 @@ const RestaurantMenu = () => {
             })
     }
 
-    const save = async (e) => {
-   
+    const save = async (e) => {  
         e.preventDefault();
         try {
             if (restaurant && restaurant.id) {
-                const result = await fetch(`/api/addMenuItem/${restaurant.id}`, {
+                const result = await fetch(`/api/addMenuItem/${restaurant && restaurant.id}`, {
                     method: 'post',
                     body: JSON.stringify({
                         title: sTitle,
