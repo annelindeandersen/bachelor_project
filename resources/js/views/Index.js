@@ -24,7 +24,6 @@ import Dashboard from './restaurant/Dashboard';
 import PasswordResetRequest from './restaurant/PasswordResetRequestForm';
 import PasswordReset from './restaurant/PasswordReset';
 import ProfileForm from './restaurant/ProfileForm';
-import RestaurantProfile from './restaurant/RestaurantProfile';
 import RestaurantMenuPage from './restaurant/RestaurantMenu';
 import RestaurantOrders from './restaurant/Orders';
 
@@ -59,6 +58,7 @@ function Index() {
     const user = useSelector(state => state.usersReducer.user);
     const token = useSelector(state => state.usersReducer.token);
     const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
+    const logged_out = useSelector(state => state.restaurantsReducer.logged_out);
     const localStorageData = localStorage.getItem('email');
 
 
@@ -95,8 +95,8 @@ function Index() {
             .catch(error => {
                 console.log(error)
             })
-    }, [])
-
+    }, [logged_out])
+    
 
     return (
         <div className="App">
@@ -154,9 +154,6 @@ function Index() {
                                 </Route>
                                 <Route exact path="/update-profile">
                                     <ProfileForm />
-                                </Route>
-                                <Route exact path="/restaurant-profile">
-                                    <RestaurantProfile />
                                 </Route>
                                 <Route exact path="/restaurant-orders">
                                     <RestaurantOrders />

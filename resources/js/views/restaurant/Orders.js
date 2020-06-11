@@ -169,11 +169,14 @@ const Orders = () => {
     }
 
     return (
-        <div className="container">
-            <h1 className="orange-text text-center">Orders</h1>
+        <div className="container"> 
             <div className="order_container">
+
+            <div>
+            <h1 className="orange-text text-center">Orders</h1>
+                <div className="order-lists">
                 <div className="section">
-                    <div className="card scroll-card m-1">
+                    <div className="card order_card m-1">
                         <div className="card-header">
                         <div className="icon-container mt-3">
                             <img src="./img/ordering.svg" className="card-img-top" alt="icon" />
@@ -202,8 +205,8 @@ const Orders = () => {
                   
                     </div>
                 </div>
-                <div className="section">
-                    <div className="card scroll-card m-1">
+                <div className="section order_card">
+                <div className="card order_card m-1">
                         <div className="card-header">
                         <div className="icon-container mt-3">
                             <img src="./img/check.svg" className="card-img-top" alt="icon" />
@@ -234,7 +237,7 @@ const Orders = () => {
                     </div>
                 </div>
                 <div className="section">
-                    <div className="card scroll-card m-1">
+                <div className="card order_card m-1">
                         <div className="card-header">
                         <div className="icon-container mt-3">
                             <img src="./img/cooking.svg" className="card-img-top" alt="icon" />
@@ -266,7 +269,7 @@ const Orders = () => {
                     </div>
                 </div>
                 <div className="section">
-                    <div className="card scroll-card m-1">
+                <div className="card order_card m-1">
                         <div className="card-header">
                         <div className="icon-container mt-3">
                             <img src="./img/deliver.svg" className="card-img-top" alt="icon" />
@@ -294,7 +297,8 @@ const Orders = () => {
                         </li>
                     ))}
                         </ul>
-                  
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>

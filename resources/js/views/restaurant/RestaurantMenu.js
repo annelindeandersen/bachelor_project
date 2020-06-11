@@ -154,12 +154,6 @@ const RestaurantMenu = () => {
          .then(url => {
             console.log(url)
             setUrl(url);
-                swal({
-                    text: "File uploaded",
-                    icon: "success",
-                    timer: 2000,
-                    button: false
-                })
          });
      });
     };

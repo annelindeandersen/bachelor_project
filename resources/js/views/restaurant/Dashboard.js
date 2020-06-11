@@ -14,11 +14,10 @@ const Dashboard = () => {
     const order_in_progress = useSelector(state => state.ordersReducer.in_progress_status);
     const order_ready = useSelector(state => state.ordersReducer.ready_for_dispatch_status);
     const profile_updated = useSelector(state => state.restaurantsReducer.profile_updated);
-    // const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
     const logged_out = useSelector(state => state.restaurantsReducer.logged_out);
-    console.log({'cunt':restaurant  && restaurant})
+
     const [aReceivedOrders, setReceivedOrders] = useState();
-    console.log({5:restaurant && restaurant})  
+    console.log({5:restaurant ? restaurant : 'got nuthing'})  
     let history = useHistory();
     const dispatch = useDispatch();
 
@@ -44,6 +43,29 @@ const Dashboard = () => {
         selected: []
     });
     const [checked, setChecked] = useState(false)
+
+      //GET RESTAURANT FROM DB
+      useEffect(() => {
+        axios.get('/api/getRestaurant', { params: { id: localStorageData } })
+            .then(response => {
+                console.log({ 'RESTAURANT_DATA': response.data })
+                setID(response.data.restaurant.id);
+                setName(response.data.restaurant.name);
+                setPhone(response.data.restaurant.phone);
+                setEmail(response.data.restaurant.email);
+                setAddress(response.data.restaurant.address);
+                setCity(response.data.restaurant.city);
+                setPostcode(response.data.restaurant.postcode);
+                sDescription ? setDescription(response.data.restaurant.profile.description) : '';
+                sOpeningHour ? setOpeningHour(response.data.restaurant.profile.opening_hour) : '';
+                sClosingHour ? setClosingHour(response.data.restaurant.profile.closing_hour) : '';
+                sLogoUrl ? setLogoUrl(response.data.restaurant.profile.logo) : '';
+                sBannerUrl ? setBannerUrl(response.data.restaurant.image) : '';
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }, [profile_updated])
 
 
     //check if logged in
@@ -82,28 +104,7 @@ useEffect(() => {
     
     
     
-        //GET RESTAURANT FROM DB
-        useEffect(() => {
-            axios.get('/api/getRestaurant', { params: { id: localStorageData } })
-                .then(response => {
-                    console.log({ 'RESTAURANT_DATA': response.data })
-                    setID(response.data.restaurant.id);
-                    setName(response.data.restaurant.name);
-                    setPhone(response.data.restaurant.phone);
-                    setEmail(response.data.restaurant.email);
-                    setAddress(response.data.restaurant.address);
-                    setCity(response.data.restaurant.city);
-                    setPostcode(response.data.restaurant.postcode);
-                    setDescription(response.data.restaurant.profile.description);
-                    setOpeningHour(response.data.restaurant.profile.opening_hour);
-                    setClosingHour(response.data.restaurant.profile.closing_hour);
-                    setLogoUrl(response.data.restaurant.profile.logo);
-                    setBannerUrl(response.data.restaurant.image);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        }, [profile_updated])
+      
 
     return (
 
