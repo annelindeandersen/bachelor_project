@@ -38,7 +38,9 @@ const ProfileForm = () => {
     const [aCheckedItems, setCheckedItems] = useState({
         selected: []
     });
-    const [checked, setChecked] = useState(false)
+    const [checked, setChecked] = useState(false);
+    const [logoProgress, setLogoProgress ] = useState(0);
+    const [bannerProgress, setBannerProgress ] = useState(0);
 
     //get countries for select options
     const getCountries = async () => {
@@ -57,8 +59,6 @@ const ProfileForm = () => {
 
     //GET RESTAURANT FROM DB
     useEffect(() => {
-        // const getRestaurantData = async () => {
-
         axios.get('/api/getRestaurant', { params: { id: localStorageData } })
             .then(response => {
                 console.log({ 'RESTAURANT_DATA': response.data })
@@ -141,7 +141,6 @@ const ProfileForm = () => {
                     swal({
                         text: "Profile updated",
                         icon: "success",
-                        timer: 2000,
                         content: elem,
                         button: false
                     })
@@ -160,7 +159,6 @@ const handleChange = (e) => {
             reader.readAsDataURL(file);
         } 
         reader.onload = (e) => {
-            // console.log(e.target.result)
             setFile(e.target.result)
         }
     }
@@ -171,7 +169,12 @@ const handleLogoUpload = () => {
     const uploadTask = storage.ref(`/images/${iID}-logo.jpg`).putString(iFile.substring(23), 'base64');
     uploadTask.on(
         "state_changed",
-        snapshot => {},
+        snapshot => {
+            const progress = Math.round(
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+            setLogoProgress(progress)
+        },
         error => {
             console.log(error);
         },
@@ -183,12 +186,12 @@ const handleLogoUpload = () => {
      .then(url => {
         console.log(url)
         setUrl(url);
-            swal({
-                text: "File uploaded",
-                icon: "success",
-                timer: 2000,
-                button: false
-            })
+            // swal({
+            //     text: "File uploaded",
+            //     icon: "success",
+            //     // timer: 2000,
+            //     button: false
+            // })
      });
  });
 };
@@ -199,11 +202,7 @@ axios.post(`/api/uploadLogo`, {
     url: sUrl
   })
 .then(response => {
-    // console.log(response)
-    // console.log(sUrl)
-    // if(response.status === 200) {
-    //     swal("Success", "Logo updated","success");
-    // }
+
 
 })
 .catch(error => {
@@ -215,17 +214,22 @@ axios.post(`/api/uploadLogo`, {
 //banner upload
 const handleBannerUpload = () => {
     console.log(iFile)
-    const uploadTask = storage.ref(`/images/${iID}-logo.jpg`).putString(iFile.substring(23), 'base64');
+    const uploadTask = storage.ref(`/images/${iID}s-logo`).putString(iFile.substring(23), 'base64');
     uploadTask.on(
         "state_changed",
-        snapshot => {},
+        snapshot => {
+            const progress = Math.round(
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+            setBannerProgress(progress)
+        },
         error => {
             console.log(error);
         },
       () =>   {
      storage    
      .ref('images')
-     .child(`${iID}-logo.jpg`)
+     .child(`${iID}s-logo`)
      .getDownloadURL()
      .then(url => {
         console.log(url)
@@ -233,7 +237,6 @@ const handleBannerUpload = () => {
         swal({
             text: "File uploaded",
             icon: "success",
-            timer: 2000,
             button: false
         })
      });
@@ -251,7 +254,7 @@ axios.post(`/api/uploadBanner`, {
     console.log(response)
     console.log(sBannerUrl)
     // if(response.status === 200) {
-    //     swal("Success", "Logo updated","success");
+    //     swal("Success", "Banner updated","success");
     // }
 
 })
@@ -269,11 +272,11 @@ axios.post(`/api/uploadBanner`, {
             <div className=" card profile-form">
             <div>
             <h1 className="pb-3 orange-text text-center">EDIT YOUR BUSINESS DETAILS</h1>
-                <label className="form-label">Company Name</label>
+                <label className="form-label">Restaurant Name</label>
                 <input type="text" value={sName} onChange={e => setName(e.target.value)} name="name" placeholder="Restaurant name" className="underline-input"></input>
-                <label className="form-label">Email</label>
+                <label className="form-label">Email address</label>
                 <input type="text" value={sEmail} onChange={e => setEmail(e.target.value)} name="email" placeholder="Email" className="underline-input"></input>
-                <label className="form-label">Phone</label>
+                <label className="form-label">Phone number</label>
                 <input type="text" value={sPhone} onChange={e => setPhone(e.target.value)} name="phone" placeholder="Phone" className="underline-input"></input>
                 <label className="form-label">Address</label>
                 <input type="text" value={sAddress} onChange={e => setAddress(e.target.value)} name="address" placeholder="Address" className="underline-input"></input>
@@ -333,7 +336,9 @@ axios.post(`/api/uploadBanner`, {
                     <div className="upload-img-container">
                         <img src={sUrl}  className="form-image"/>
                     </div>
+                    <progress id="file" value={logoProgress} max="100"></progress><br/>
                 <input type="file" onChange={handleChange} className="pt-3"/>
+                
                 <a href="#" className="grey-btn mt-2" onClick={handleLogoUpload}>Upload</a>
                 </div>
             </div>
@@ -345,6 +350,7 @@ axios.post(`/api/uploadBanner`, {
                 <div className="upload-img-container">
                     <img src={sBannerUrl}  className="form-image"/>
                 </div>
+                <progress id="file" value={bannerProgress} max="100"></progress>
                 <input type="file" onChange={handleChange} className="pt-3"/>
                 <a href="#" className="grey-btn mt-2" onClick={handleBannerUpload}>Upload</a>
                 </div>

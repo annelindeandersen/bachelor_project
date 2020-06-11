@@ -73,8 +73,14 @@ body {
 .form-label {
   font-weight: bolder;
   text-transform: uppercase;
-  color: slategray;
+  color: #3B444C;
   font-size: 12px;
+}
+
+.logout-link {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 .card-shadow,
@@ -268,6 +274,11 @@ body {
   background-image: url(/images/spices.png?59869ee1e4aaaf0e9604e49099b4bd58);
   background-position: left;
   background-repeat: no-repeat;
+}
+
+.dash-col {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
 }
 
 .dashboard-container {

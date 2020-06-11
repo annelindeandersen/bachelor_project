@@ -75,10 +75,17 @@ body {
 .form-label {
   font-weight: bolder;
   text-transform: uppercase;
-  color: slategray;
+  color: #3B444C;
   font-size: 12px;
 
 }
+
+.logout-link {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px;
+}
+
 
 .card-shadow, .profile-form, .img-upload{
   box-shadow: 0 1px 15px rgba(27,31,35,.15), 0 0 1px rgba(106,115,125,.35);
@@ -260,6 +267,11 @@ body {
   background-image: url('../.././public/img/spices.png');
   background-position:  left;
   background-repeat: no-repeat;
+}
+
+.dash-col{
+  padding-left: 5px!important;
+  padding-right: 5px !important;
 }
 
 .dashboard-container {

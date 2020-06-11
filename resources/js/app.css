@@ -7,6 +7,7 @@ input:focus {
     outline:none !important;
 }
 body {
+    font-family: 'Nunito';
     background: whitesmoke;
     font-family: 'Open sans';
 }
@@ -33,12 +34,11 @@ h2, h3 {
 
 
 label {
-    color: #c8c8c8;
+    color: #3b444c;
     font-size: 12px;
 }
 
 .register-wrapper label, .profile-wrapper label {
-    color: lightslategray;
     font-weight: bolder;
 }
 
@@ -169,7 +169,8 @@ nav a {
 .restaurant-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 15px;
+    grid-gap: 25px;
+    margin-bottom: 50px;
 }
 .restaurant {
     background: white;
@@ -185,14 +186,14 @@ nav a {
 }
 
 .restaurant-image {
-    width: 80%;
-    height: auto;
+    width: 100%;
+    height: auto; 
 }
 
 .category-restaurant-wrapper {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-content: center;
     align-items: center;
     margin: 10px 0;
@@ -208,11 +209,11 @@ nav a {
 
 .category-types {
     color: #759b85;
-
     font-family: 'PT Sans narrow';
     text-transform: uppercase;
     margin: 0;
     font-size: 16px;
+    margin-right: 10px;
 }
 
 .cart_item {
@@ -228,16 +229,25 @@ nav a {
 }
 
 .menu-item {
-    display: grid;
+    display: flex;
+    position: relative;
+    height: 120px;
+    justify-content: space-between;
     grid-template-columns: 2fr 0.5fr;
     margin-bottom: 10px;
-    padding: 15px 20px;
+    /* padding: 15px 20px; */
     background: white;
     box-shadow: 0px 0px 10px #ddd;
     border-radius: 5px;
     align-items: center;
 }
 
+.menu-image {
+    height: 100%;
+    width: auto;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
 
 .menu-type {
     margin-bottom: 20px;
@@ -245,6 +255,14 @@ nav a {
 
 .menu-item .blue-button {
     height: 40px;
+    width: 125px;
+    margin-right: 35px;
+}
+
+.menu-item-div {
+    padding: 15px 20px;
+    position: absolute;
+    left: 125px;
 }
 
 .restaurant-logo {
@@ -268,10 +286,6 @@ nav a {
     display: grid;
     grid-template-columns: 0.7fr 2fr;
     grid-gap: 25px;
-}
-.order {
-    /* display: flex;
-    justify-content: space-between; */
 }
 
 .order-head {

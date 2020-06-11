@@ -71,20 +71,20 @@ const RestaurantProfile = () => {
                 </div>
                 <div className="card-body">
                     <div className="profile">
-                        <h2 className="orange-text">COMPANY INFORMATION</h2>
+                        <h2 className="orange-text">Restaurant Information</h2>
                         <div>
                             <h3>Contact details</h3>
-                            <p>Email: {sEmail} </p>
-                            <p>Phone: {sPhone} </p>
+                            <p>Email address: {sEmail} </p>
+                            <p>Phone number: {sPhone} </p>
                             <p>{sAddress}<br/>
                             {sCity}<br/>
                             {sPostcode}<br/>
                             </p>
                         </div>
-                            <h3>Company details</h3>
-                            <label className="form-label">Company Name</label>
+                            <h3>Restaurant details</h3>
+                            <label className="form-label">Restaurant Name</label>
                             <p>{sName}</p>
-                            <p>Description: {sDescription}</p>        
+                            <p>Restaurant description: {sDescription}</p>        
                             <p>Opening hours: {sOpeningHour}</p>
                             <p>Closing hours: {sClosingHour}</p>
                         </div>

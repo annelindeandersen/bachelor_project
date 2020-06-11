@@ -31,9 +31,9 @@ const PasswordResetRequestForm = () => {
             <div className="profile-page"></div>
             <h1 className="card-header">Request a password reset link</h1>
             <p>{sMessage}</p>
-            <label className="form-label mb-0">Email</label>
+            <label className="form-label mb-0">Email address</label>
             <input value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" className="form-control" placeholder="email" /><br />
-             <input type="button" className="btn btn-secondary" value="Send" onClick={sendPasswordRequest} />
+             <input type="button" className="blue-button" value="Send" onClick={sendPasswordRequest} />
         </div>
     );
 }

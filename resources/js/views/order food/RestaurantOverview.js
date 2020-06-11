@@ -80,7 +80,7 @@ const RestaurantOverview = () => {
                                 <Link to={`/restaurant?id=${restaurant.restaurant.id}`} key={index} style={{ 'textDecoration': 'none' }} >
                                     <div className="restaurant">
                                         <h3>{restaurant.restaurant.name}</h3>
-                                        <img className="restaurant-image" src={`./img/${restaurant.restaurant.image}`} />
+                                        <img className="restaurant-image" src={restaurant.restaurant.image} alt={restaurant.restaurant.image} />
                                         <div className="category-restaurant-wrapper">
                                             {restaurant.restaurant.category.map((cat, index) => (<p className="category-types" key={index}>{cat.category}</p>))}
                                         </div>
@@ -94,7 +94,7 @@ const RestaurantOverview = () => {
                                 <Link to={`/restaurant?id=${restaurant.id}`} key={index} style={{ 'textDecoration': 'none' }}>
                                     <div className="restaurant">
                                         <h3>{restaurant.name}</h3>
-                                        <img className="restaurant-image" src={`./img/${restaurant.image}`} />
+                                        <img className="restaurant-image" src={restaurant.image} alt={restaurant.image} />
                                         <div className="category-restaurant-wrapper">
                                             {/* <p>{catClick.category}</p> */}
                                             {restaurant.category.map((cat, index) => (<p className="category-types" key={index}>{cat.category}</p>))}

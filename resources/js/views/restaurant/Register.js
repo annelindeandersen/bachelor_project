@@ -83,18 +83,30 @@ const Register = () => {
             <div className="profile-page"></div>
                 <h1 className="card-header">Register Today</h1>
                     <p>Already have an account? <Link to="/restaurant-login">Login</Link></p>
-                    <label className="form-label mb-0">Company Name</label>
+                    <label className="form-label mb-0">Restaurant Name</label>
                     <input value={sName} onChange={(event) => setName(event.target.value)} id="registerRestaurantName" name="registerRestaurantName" className="form-control mb-4" placeholder="restaurant name" />
-                    <label className="form-label mb-0">Email</label>
-                    <input value={sEmail} onChange={(event) => setEmail(event.target.value)} id="registerRestaurantEmail" name="registerRestaurantEmail" className="form-control mb-4" placeholder="email" />
-                    <label className="form-label mb-0">Phone</label>
-                    <input value={sPhone} onChange={(event) => setPhone(event.target.value)} id="registerRestaurantPhone" name="registerRestaurantPhone" className="form-control mb-4" placeholder="phone" />
+                        <div className="detail-wrap">
+                            <div>
+                                <label className="form-label mb-0">Email address</label>
+                                <input value={sEmail} onChange={(event) => setEmail(event.target.value)} id="registerRestaurantEmail" name="registerRestaurantEmail" className="form-control mb-4" placeholder="email" />
+                            </div>
+                        <div>
+                            <label className="form-label mb-0">Phone number</label>
+                            <input value={sPhone} onChange={(event) => setPhone(event.target.value)} id="registerRestaurantPhone" name="registerRestaurantPhone" className="form-control mb-4" placeholder="phone" />
+                        </div>
+                        </div>
                     <label className="form-label mb-0">Address</label>
                     <input value={sAddress} onChange={(event) => setAddress(event.target.value)} id="restaurantRegisterAddress" name="registerRestaurantAddress" className="form-control mb-4" placeholder="street" />
-                    <label className="form-label mb-0">City</label>
-                    <input value={sCity} onChange={(event) => setCity(event.target.value)} id="restaurantRegisterCity" name="registerRestaurantCity" className="form-control mb-4" placeholder="city" />                      
-                    <label className="form-label mb-0">Postcode</label>
-                    <input value={sPostcode} onChange={(event) => setPostcode(event.target.value)} id="restaurantRegisterPostcode" name="registerRestaurantPostcode" className="form-control mb-4" placeholder="postcode" />
+                    <div className="detail-wrap">
+                        <div>
+                            <label className="form-label mb-0">City</label>
+                            <input value={sCity} onChange={(event) => setCity(event.target.value)} id="restaurantRegisterCity" name="registerRestaurantCity" className="form-control mb-4" placeholder="city" />                      
+                        </div>  
+                        <div>
+                            <label className="form-label mb-0">Postcode</label>
+                            <input value={sPostcode} onChange={(event) => setPostcode(event.target.value)} id="restaurantRegisterPostcode" name="registerRestaurantPostcode" className="form-control mb-4" placeholder="postcode" />
+                        </div>
+                     </div>
                     <label htmlFor="countries_select" className="form-label mb-0">Country</label><br/>
                     <select id="countries_select"className="mb-4" value={sCountry} onChange={(event) => setCountry(event.target.value)}>
                         <option>Select a country</option>
@@ -104,12 +116,18 @@ const Register = () => {
                             ))
                         }
                     </select><br />
-                    <label className="form-label mb-0">Password</label>
-                    <input value={sPassword} onChange={(event) => setPassword(event.target.value)} id="registerPassword" name="registerPassword" className="form-control mb-4" type="password" placeholder="password" />
-                    <label className="form-label mb-0">Password Confirmation</label>
-                    <input value={sConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} id="registerConfirmPassword" name="registerConfirmPassword" className="form-control mb-4" type="password" placeholder="confirm password" />
+                    <div className="detail-wrap">
+                        <div>
+                            <label className="form-label mb-0">Password</label>
+                            <input value={sPassword} onChange={(event) => setPassword(event.target.value)} id="registerPassword" name="registerPassword" className="form-control mb-4" type="password" placeholder="password" />
+                        </div>
+                        <div>
+                            <label className="form-label mb-0">Password Confirmation</label>
+                            <input value={sConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} id="registerConfirmPassword" name="registerConfirmPassword" className="form-control mb-4" type="password" placeholder="confirm password" />
+                        </div>
+                    </div>
                     <meta name="csrf-token" content="{{ csrf_token() }}" />
-                    <input id="registerButton" type="submit" value="Register" className="btn btn-secondary" onClick={register} />
+                    <input id="registerButton" type="submit" value="Register" className="blue-button" onClick={register} />
                 </div>
     
     );

@@ -29,6 +29,7 @@ const RestaurantMenu = () => {
     });
     const [iFile, setFile] = useState(null);
     const [sUrl, setUrl]= useState('');
+    const [progress, setProgress ] = useState(0);
 
     //get menu item types for select
     useEffect(() => {
@@ -80,6 +81,7 @@ const RestaurantMenu = () => {
     }
 
     const save = async (e) => {
+   
         e.preventDefault();
         try {
             if (restaurant && restaurant.id) {
@@ -103,14 +105,15 @@ const RestaurantMenu = () => {
                 dispatch({ type: 'MENU_ITEM_CREATED', item_added: true });
                 dispatch({ type: 'MENU_ITEM_DELETED', item_added: false });
             }
-            setTitle('');
-            setPrice('');
-            setDescription('');
-            setUrl('');
-            setMenuItemType('');
+         
         } catch (error) {
             console.log(error)
         }
+        setTitle('');
+        setPrice('');
+        setDescription('');
+        setUrl('');
+        setMenuItemType('');
     }
 
 //image upload
@@ -135,7 +138,12 @@ const RestaurantMenu = () => {
         const uploadTask = storage.ref(`/images/${sImageName}.jpg`).putString(iFile.substring(23), 'base64');
         uploadTask.on(
             "state_changed",
-            snapshot => {},
+            snapshot => {
+                const progress = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                setProgress(progress)
+            },
             error => {
                 console.log(error);
             },
@@ -172,6 +180,7 @@ const RestaurantMenu = () => {
                             <div className="upload-img-container">
                                 <img src={sUrl}  className="form-image"/>
                             </div>
+                            <progress id="file" value={progress} max="100"></progress><br/>
                                 <input type="file" onChange={handleChange} className="pt-3"/>
                                 <a href="#" className="grey-btn mt-2" onClick={handleUpload}>Upload</a>
                             </div>
@@ -184,8 +193,6 @@ const RestaurantMenu = () => {
 
                         <input value={sPrice} onChange={(e) => setPrice(e.target.value)} id="price" className="form-control" placeholder="price" /><br />
                         <textarea value={sDescription} onChange={(event) => setDescription(event.target.value)} id="addDescription" name="addDescription" className="form-control" placeholder="description"></textarea><br />
-                    {/* <label htmlFor="img">Select image:</label>
-                <input type="file" id="banner-image" name="image" accept="image/*" value={sImage} onChange={(e) => setImage(e.target.value)}/><br /> */}
                         <label htmlFor="menu_item_type_select">Select Course Type</label>
                         <select id="menu_item_type_select" value={iMenuItemType} onChange={(e) => setMenuItemType(e.target.value)} className="mb-5">
                         <option >Select a course</option>

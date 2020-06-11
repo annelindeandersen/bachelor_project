@@ -55,11 +55,11 @@ const Login = () => {
                 <h1 className="card-header">Login</h1>
                 <p>Don't have an account? <Link to="/restaurant-register">Register today</Link></p>
                  
-                    <label className="form-label mb-0">Email</label>
+                    <label className="form-label mb-0">Email address</label>
                         <input className="form-control mb-4" value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" placeholder="email" />
                         <label className="form-label mb-0">Password</label>
                         <input  className="form-control" value={sPassword} onChange={(e) => setPassword(e.target.value)} type="password" id="loginPassword" placeholder="password" /><br />
-                        <input id="loginButton" type="submit" value="Login"  className="btn btn-secondary"  onClick={login} /><br />
+                        <input id="loginButton" type="submit" value="Login"  className="blue-button" onClick={login} /><br />
                         <small>Forgot your password?<Link to="/restaurant-password-request" >Reset password</Link></small>
   
         </div>
