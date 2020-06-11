@@ -25,11 +25,7 @@ const Dashboard = () => {
     const localStorageData = localStorage.getItem('email');
     // const [restaurant, setRestaurant] = useState('');
     const date = new Date();
-    const  [weather, setWeather] = useState({
-        temp: '',
-        desc: '',
-        img: ''
-    })   
+   
     const [iID, setID] = useState('');
     const [sName, setName] = useState('');
     const [sEmail, setEmail] = useState('');
@@ -70,7 +66,7 @@ useEffect(() => {
           }
     }
 
-    
+
         //get new orders
         useEffect(() => {
             console.log(!restaurant && restaurant   )
@@ -150,8 +146,9 @@ useEffect(() => {
                                 <h2><Moment format= 'LT'>{date}</Moment></h2>
                                 </div>
                                 <div className="dashboard-link mt-5">
-                                    <h2>{weather.temp}°</h2>
-                                    <p>{weather.desc}</p>
+                                <Link to="/restaurant-menu"  style={{ textDecoration: 'none' }}><h3>Menu</h3></Link>
+                                <p>View and update your menu</p>
+                            
                                 </div>
                         </div>
                     </div>
