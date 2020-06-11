@@ -71,24 +71,6 @@ useEffect(() => {
     }
 
     
-    // useEffect(() => {
-    //     const weatherData =  async () => {
-    //         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${restaurant ? restaurant.city : 'copenhagen'},DK&appid=cb69e1b7054af1f80f919bc4e4cacf4e`);
-    //         const data = await response.json();
-    //         console.log(response)
-    //         console.log(data.weather[0].main);
-            
-    //         setWeather({
-    //             temp: (Math.round(data.main.temp - 273.15)),
-    //             desc: data.weather[0].main
-    //         });
-    //         console.log('DEGREES')
-
-    //     }
-    //     weatherData();
-    // }, []);
-
-
         //get new orders
         useEffect(() => {
             console.log(!restaurant && restaurant   )
