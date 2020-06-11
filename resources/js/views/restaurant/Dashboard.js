@@ -9,14 +9,19 @@ import Moment from 'react-moment';
 
 const Dashboard = () => {
     // Redux states
-    const restaurantData = useSelector(state => state.restaurantsReducer.restaurant); 
+    const restaurant = useSelector(state => state.restaurantsReducer.restaurant); 
     const order_accepted = useSelector(state => state.ordersReducer.order_accepted_status);
     const order_in_progress = useSelector(state => state.ordersReducer.in_progress_status);
     const order_ready = useSelector(state => state.ordersReducer.ready_for_dispatch_status);
     const profile_updated = useSelector(state => state.restaurantsReducer.profile_updated);
+    // const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
+    const logged_out = useSelector(state => state.restaurantsReducer.logged_out);
+    console.log({'cunt':restaurant  && restaurant})
     const [aReceivedOrders, setReceivedOrders] = useState();
-    console.log({5:restaurantData ? restaurantData : '' })  
+    console.log({5:restaurant && restaurant})  
     let history = useHistory();
+    const dispatch = useDispatch();
+
     const localStorageData = localStorage.getItem('email');
     // const [restaurant, setRestaurant] = useState('');
     const date = new Date();
@@ -56,44 +61,45 @@ useEffect(() => {
 }, [])
 
  
-
     const logout = () => {
         localStorage.removeItem('email');
         if (localStorage.getItem("email") === null) {
+            dispatch({ type: 'CURRENT_USER', restaurant: '' });
+            dispatch({ type: 'LOGGED_OUT',logged_out: true });
              history.push('/');
           }
     }
 
     
-    useEffect(() => {
-        const weatherData =  async () => {
-            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${restaurantData ? restaurantData.city : 'copenhagen'},DK&appid=cb69e1b7054af1f80f919bc4e4cacf4e`);
-            const data = await response.json();
-            console.log(response)
-            console.log(data.weather[0].main);
+    // useEffect(() => {
+    //     const weatherData =  async () => {
+    //         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${restaurant ? restaurant.city : 'copenhagen'},DK&appid=cb69e1b7054af1f80f919bc4e4cacf4e`);
+    //         const data = await response.json();
+    //         console.log(response)
+    //         console.log(data.weather[0].main);
             
-            setWeather({
-                temp: (Math.round(data.main.temp - 273.15)),
-                desc: data.weather[0].main
-            });
-            console.log('DEGREES')
+    //         setWeather({
+    //             temp: (Math.round(data.main.temp - 273.15)),
+    //             desc: data.weather[0].main
+    //         });
+    //         console.log('DEGREES')
 
-        }
-        weatherData();
-    }, []);
+    //     }
+    //     weatherData();
+    // }, []);
 
 
         //get new orders
         useEffect(() => {
-            console.log(!restaurantData ? '' : restaurantData)
-            axios.get('/api/getNewOrders', { params: { id: restaurantData ? restaurantData.id : '' } })
+            console.log(!restaurant && restaurant   )
+            axios.get('/api/getNewOrders', { params: { id: restaurant ? restaurant.id : '' } })
                 .then(response => {
                     setReceivedOrders(response.data);
                 })
                 .catch(error => {
                     console.log(error)
                 })
-        }, [restaurantData, order_accepted, order_in_progress, order_ready]);
+        }, [restaurant, order_accepted, order_in_progress, order_ready]);
       
     
     
@@ -131,13 +137,13 @@ useEffect(() => {
                 <div className="row">
                     <div className="col dash-col">
                         <div>
-                            <h1 className="text-center">Welcome {restaurantData ? restaurantData.name : ''}</h1>
+                            <h1 className="text-center">Hello {restaurant ? restaurant.name : ''}</h1>
                             <Link to="/" onClick={(e) => logout(e)} className="float-right grey-btn mb-3 logout-link">Logout</Link>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-8 dash-col">
+                <div className="row">
+                    <div className="col-8 dash-col">
                     <div className="row">
                         <div className="col-8 dash-col">
                                     <div className="dashboard-link">
@@ -156,8 +162,6 @@ useEffect(() => {
                                     </div>
                         </div>
                         <div className="col-4 pr-5">
-                        
-                
                                 <div className="dashboard-link">
                                 <Moment format='dddd'>{date}</Moment><br/>
                                 <Moment format= 'MMMM Do YYYY'>{date}</Moment>< br/>
@@ -170,7 +174,7 @@ useEffect(() => {
                         </div>
                     </div>
                     </div>
-                    <div class="col-4 dash-col">
+                    <div className="col-4 dash-col">
         <div className="dashboard-link">
             <h3> Your details</h3>
             <p>About: {sDescription}</p>

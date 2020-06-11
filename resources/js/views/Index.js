@@ -58,6 +58,7 @@ function Index() {
     const dispatch = useDispatch();
     const user = useSelector(state => state.usersReducer.user);
     const token = useSelector(state => state.usersReducer.token);
+    const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
     const localStorageData = localStorage.getItem('email');
 
 

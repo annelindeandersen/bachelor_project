@@ -7,10 +7,15 @@ const Menu = () => {
     let location = useLocation();
     let history = useHistory();
     const dispatch = useDispatch();
+    const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
+    const logged_out = useSelector(state => state.restaurantsReducer.logged_out);
+    
 
     const logout = () => {
         localStorage.removeItem('email');
         if (localStorage.getItem("email") === null) {
+            dispatch({ type: 'CURRENT_USER', restaurant: {} });
+            dispatch({ type: 'LOGGED_OUT',logged_out: true });
              history.push('/');
           }
     }

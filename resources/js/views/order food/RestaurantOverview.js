@@ -63,7 +63,7 @@ const RestaurantOverview = () => {
         <div className="container page">
             <div className="restaurant-page"></div>
             <div className="row justify-content-center">
-                <div className="card">
+                <div>
                     {/* <h1 className="card-header">Select your faveorite food types and choose!</h1> */}
                     <div className="category-wrapper">
                         {!categories ? '' : categories.data.map((category, index) => (

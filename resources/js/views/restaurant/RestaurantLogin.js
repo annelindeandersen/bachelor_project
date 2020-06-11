@@ -6,8 +6,8 @@ import swal from 'sweetalert';
 
 const Login = () => {
     // Redux
-    // const logged_out = useSelector(state => state.restaurantsReducer.logged_out);
-    // console.log(logged_out)
+    const logged_out = useSelector(state => state.restaurantsReducer.logged_out);
+    const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
     const dispatch = useDispatch();
     // States
     const [sEmail, setEmail] = useState('');
@@ -40,6 +40,8 @@ const Login = () => {
 
             if (response.status === 200) {
                 localStorage.setItem('email', data.local_storage_id);
+                // dispatch({ type: 'CURRENT_USER', restaurant: {} });
+                // dispatch({ type: 'LOGGED_OUT',logged_out: true });
                 history.push('/restaurant-dashboard');
             } else {
                 swal("Ooops", "Incorrect login details", "error");
