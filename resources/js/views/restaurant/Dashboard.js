@@ -65,7 +65,7 @@ const Dashboard = () => {
             .catch(error => {
                 console.log(error);
             })
-    }, [profile_updated])
+    }, [])
 
 
     //check if logged in
@@ -91,8 +91,8 @@ useEffect(() => {
 
         //get new orders
         useEffect(() => {
-            console.log(!restaurant && restaurant   )
-            axios.get('/api/getNewOrders', { params: { id: restaurant ? restaurant.id : '' } })
+            console.log(!restaurant && restaurant)
+            axios.get('/api/getNewOrders', { params: { id: iID } })
                 .then(response => {
                     setReceivedOrders(response.data);
                 })
@@ -116,7 +116,7 @@ useEffect(() => {
                 <div className="row">
                     <div className="col dash-col">
                         <div>
-                            <h1 className="text-center">Hello {restaurant ? restaurant.name : ''}</h1>
+                            <h1 className="text-center">Hello {sName}</h1>
                             <Link to="/" onClick={(e) => logout(e)} className="float-right grey-btn mb-3 logout-link">Logout</Link>
                         </div>
                     </div>
