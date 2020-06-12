@@ -345,7 +345,9 @@ body {
 }
 
 .grey-btn:hover {
-  opacity: 1;
+  opacity: 0.9;
+  color: white !important;
+  text-decoration: none;
 }
 
 .order_card {

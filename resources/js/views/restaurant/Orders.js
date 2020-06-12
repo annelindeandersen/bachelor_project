@@ -19,14 +19,14 @@ const Orders = () => {
     const [aOrdersForDispatch, setOrdersForDispatch] = useState();
     let history = useHistory();
 
-    useEffect(() => {
-        const checkAuth = () => {
-            if (localStorage.getItem("email") === null) {
-                 history.push('/');
-              }
-        }
-        checkAuth()
-    }, [])
+    // useEffect(() => {
+    //     const checkAuth = () => {
+    //         if (localStorage.getItem("email") === null) {
+    //              history.push('/');
+    //           }
+    //     }
+    //     checkAuth()
+    // }, [])
 
     console.log({ 'RESTAURANT_FROM_ORDER': restaurant })
     //get new orders
