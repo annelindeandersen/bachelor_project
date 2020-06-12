@@ -53,23 +53,33 @@ const Cart = () => {
     return (
         <div className="container page">
             <div className="cart-page"></div>
-            <h1>Your cart</h1>
-            {!cart ? '' :
-                cart.items.length === 0 ? 'Nothing added to cart yet' : cart.items.map((item, index) => (
-                    <div className="cart_item" key={index}>
-                        <div>
-                            <strong>{item.menu_item.title} - <i>{item.menu_item.description}</i></strong><br />
-                            <small>Price: {item.menu_item.price} DKK</small>
+            <h1 className="cart-header">Your cart</h1>
+            <div className="cart">
+                <div className="cart-items">
+                    {!cart ? '' :
+                        cart.items.length === 0 ? 'Nothing added to cart yet' : cart.items.map((item, index) => (
+                            <div className="cart_item" key={index}>
+                                <div>
+                                    <strong>{item.menu_item.title} - <i>{item.menu_item.description}</i></strong><br />
+                                    <small>Price: {item.menu_item.price} DKK</small>
+                                </div>
+                                <button onClick={() => deleteOne({ item })} className="orange-button">Delete</button>
+                            </div>
+                        ))}
+                </div>
+                {!cart ? '' :
+                    cart.items.length === 0 ? '' :
+                        <div className="total">
+                            <h3>Ready to order?</h3>
+                            <h4>{!cart ? '' : cart.total === 0 ? '' : 'Items: ' + cart.items.length} </h4>
+                            <h4>{!cart ? '' : cart.total === 0 ? '' : 'Total: ' + cart.total + ' DKK'} </h4>
+                            <br />
+                            {!cart ? '' : cart.items.length === 0 ? '' :
+                                <button className="blue-button" onClick={order}>Go to payment</button>
+                            }
                         </div>
-                        <button onClick={() => deleteOne({ item })} className="orange-button">Delete</button>
-                    </div>
-                ))}
-            <br />
-            <h3>{!cart ? '' : cart.total === 0 ? '' : 'Total: ' + cart.total + ' DKK'} </h3>
-            <br />
-            {!cart ? '' : cart.items.length === 0 ? '' :
-                <button className="blue-button" onClick={order}>Go to payment</button>
-            }
+                }
+            </div>
         </div >
     )
 }

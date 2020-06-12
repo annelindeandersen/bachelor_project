@@ -10,8 +10,6 @@ const RestaurantMenu = () => {
     const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
     const item_added = useSelector(state => state.restaurantsReducer.item_added);
     const item_deleted = useSelector(state => state.restaurantsReduceritem_deleted);
-    // const menu = useSelector(state => state.restaurantsReducer.menu);
-    // console.log(restaurant)
     console.log({ 'RESTAURANT': restaurant && restaurant.id })
     const [sTitle, setTitle] = useState('');
     const [sDescription, setDescription] = useState('');

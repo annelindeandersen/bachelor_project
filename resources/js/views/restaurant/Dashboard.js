@@ -17,12 +17,11 @@ const Dashboard = () => {
     const logged_out = useSelector(state => state.restaurantsReducer.logged_out);
 
     const [aReceivedOrders, setReceivedOrders] = useState();
-    console.log({5:restaurant ? restaurant : 'got nuthing'})  
+    console.log({5:restaurant ? restaurant : ''})  
     let history = useHistory();
     const dispatch = useDispatch();
 
     const localStorageData = localStorage.getItem('email');
-    // const [restaurant, setRestaurant] = useState('');
     const date = new Date();
    
     const [iID, setID] = useState('');
@@ -91,7 +90,6 @@ useEffect(() => {
 
         //get new orders
         useEffect(() => {
-            console.log(!restaurant && restaurant)
             axios.get('/api/getNewOrders', { params: { id: iID } })
                 .then(response => {
                     setReceivedOrders(response.data);
@@ -99,12 +97,7 @@ useEffect(() => {
                 .catch(error => {
                     console.log(error)
                 })
-        }, [restaurant, order_accepted, order_in_progress, order_ready]);
-      
-    
-    
-    
-      
+        }, [iID]);
 
     return (
 
@@ -159,7 +152,7 @@ useEffect(() => {
             <h3> Your details</h3>
             <p>About: {sDescription}</p>
             <div className="upload-img-container mb-5">
-                <img src={sLogoUrl}  className="form-image"/>
+                <img src={sBannerUrl}  className="form-image"/>
             </div>
             <p>Phone number: {sPhone}</p>
             <p>Email address: {sEmail}</p>

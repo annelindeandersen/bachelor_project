@@ -88,11 +88,11 @@ const Register = () => {
                 <div className="detail-wrap">
                     <div>
                         <label>PASSWORD</label>
-                        <input value={sPassword} onChange={(event) => setPassword(event.target.value)} className="form-control" type="text" id="registerName" name="registerName" placeholder="password" />
+                        <input value={sPassword} onChange={(event) => setPassword(event.target.value)} className="form-control" type="password" id="registerName" name="registerName" placeholder="password" />
                     </div>
                     <div>
                         <label>CONFIRM PASSWORD</label>
-                        <input value={sConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} className="form-control" type="text" id="registerLastName" name="registerLastName" placeholder="confirm password" />
+                        <input value={sConfirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} className="form-control" type="password" id="registerLastName" name="registerLastName" placeholder="confirm password" />
                     </div>
                 </div>
 

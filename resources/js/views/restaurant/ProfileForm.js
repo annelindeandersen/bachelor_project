@@ -137,7 +137,7 @@ const ProfileForm = () => {
                 dispatch({ type: 'CURRENT_USER', profile_updated: true });
                 if (response.status === 200) {
                     var elem = document.createElement("div");
-                    elem.innerHTML = "View your profile <a href='/restaurant-profile'>Profile</a>";
+                    elem.innerHTML = "View your profile <a href='/restaurant-dashboard'>on the dashboard</a>";
                     swal({
                         text: "Profile updated",
                         icon: "success",
@@ -197,7 +197,7 @@ axios.post(`/api/uploadLogo`, {
     url: sUrl
   })
 .then(response => {
-
+console.log(response)
 
 })
 .catch(error => {
@@ -229,15 +229,9 @@ const handleBannerUpload = () => {
      .then(url => {
         console.log(url)
         setBannerUrl(url);
-        swal({
-            text: "File uploaded",
-            icon: "success",
-            button: false
-        })
      });
  });
 };
-
 
 
 useEffect(() => {
@@ -248,9 +242,6 @@ axios.post(`/api/uploadBanner`, {
 .then(response => {
     console.log(response)
     console.log(sBannerUrl)
-    // if(response.status === 200) {
-    //     swal("Success", "Banner updated","success");
-    // }
 
 })
 .catch(error => {
@@ -263,7 +254,7 @@ axios.post(`/api/uploadBanner`, {
             <div className="container profile-form-card">
                 <div className="card border-0 card-shadow">
                     <div className="card-body">
-                    <h1 className="pb-3 orange-text text-center">EDIT YOUR BUSINESS DETAILS</h1>
+                    <h1 className="pb-3 orange-text text-center">EDIT YOUR RESTARURANT DETAILS</h1>
                     <div class="row">
                         <div class="col-sm-4">
                             <div className="card-body border">
