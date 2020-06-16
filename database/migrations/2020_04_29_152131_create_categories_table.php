@@ -22,22 +22,40 @@ class CreateCategoriesTable extends Migration
         });
         DB::table('categories')->insert([
             [
-                'category'=> 'Vegetarian'
+                'category' => 'Vegetarian'
             ],
             [
-                'category'=> 'Italian'
+                'category' => 'Italian'
             ],
             [
-                'category'=> 'Vegan'
+                'category' => 'Vegan'
             ],
             [
-                'category'=> 'Mexican'
+                'category' => 'Mexican'
             ],
             [
-                'category'=> 'Pizza'
+                'category' => 'Pizza'
             ],
             [
-                'category'=> 'Burger'
+                'category' => 'Burger'
+            ],
+            [
+                'category' => 'Cake'
+            ],
+            [
+                'category' => 'Japanese'
+            ],
+            [
+                'category' => 'Sushi'
+            ],
+            [
+                'category' => 'Thai'
+            ],
+            [
+                'category' => 'Indian'
+            ],
+            [
+                'category' => 'French'
             ],
         ]);
     }

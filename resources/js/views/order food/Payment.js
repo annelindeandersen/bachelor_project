@@ -45,8 +45,6 @@ const Payment = () => {
         timeRows.push(<option key={i} disabled={i + Number(openingHour.slice(0, 2)) - 1 < moment().hour() + 1} value={i + Number(openingHour.slice(0, 2)) - 1}>{i + Number(openingHour.slice(0, 2)) - 1}:00</option>)
     }
 
-    // console.log('CURRENT_TIME', moment().hour());
-    // console.log(moment(today).format('LLLL'))
 
     useEffect(() => {
         setDateSelected(moment(new Date(currentYear, month.value - 1, day, time)).format('LLLL'))
@@ -122,11 +120,11 @@ const Payment = () => {
             setValidation(false);
             setNameError('1px solid red');
         }
-        if (currentTime > Number(closingHour.slice(0, 2))) {
-            console.log('The restaurant does not have enough time today. Pick another day.')
-            setValidation(false);
-            setNameError('1px solid red');
-        }
+        // if (currentTime > Number(closingHour.slice(0, 2))) {
+        //     console.log('The restaurant does not have enough time today. Pick another day.')
+        //     setValidation(false);
+        //     setNameError('1px solid red');
+        // }
 
         // if (cardNumber.length === 16 && expirationDate.length === 5 && securityNumber.length === 3 && cardName.length > 3) {
         if (validation !== false) {

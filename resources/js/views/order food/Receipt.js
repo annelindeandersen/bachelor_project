@@ -35,7 +35,7 @@ const Receipt = () => {
             <br />
             <h2>Awesome, {sUser}! Your order has been placed!</h2>
 
-            <h2>Your receipt:</h2>
+            <h3 style={{ 'textAlign': 'center' }}>Your receipt:</h3>
             {!order ? '' :
                 <div className="receipt-wrapper">
                     <div className="order">
