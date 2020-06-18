@@ -364,6 +364,11 @@ nav a {
     z-index: -2;
 }
 
+.cart-items {
+    max-height: 79vh;
+    overflow: auto;
+}
+
 .receipt-page {
     background: url(./../../public/img/background.jpg);
     background-size: cover;
@@ -632,7 +637,8 @@ nav a {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0px 0px 10px lightgray;
-    max-height: 50vh;
+    max-height: 40vh;
+    overflow: auto;
 }
 
 .asap {

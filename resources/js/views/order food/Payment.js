@@ -42,7 +42,7 @@ const Payment = () => {
 
     let timeRows = []
     for (let i = 1; i <= hoursOpen + 1; i++) {
-        timeRows.push(<option key={i} disabled={i + Number(openingHour.slice(0, 2)) - 1 < moment().hour() + 1} value={i + Number(openingHour.slice(0, 2)) - 1}>{i + Number(openingHour.slice(0, 2)) - 1}:00</option>)
+        timeRows.push(<option key={i} disabled={moment(dateSelected).date() === currentDay ? i + Number(openingHour.slice(0, 2)) - 1 < moment().hour() + 1 : ''} value={i + Number(openingHour.slice(0, 2)) - 1}>{i + Number(openingHour.slice(0, 2)) - 1}:00</option>)
     }
 
 
