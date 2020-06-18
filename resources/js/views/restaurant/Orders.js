@@ -19,14 +19,14 @@ const Orders = () => {
     const [aOrdersForDispatch, setOrdersForDispatch] = useState();
     let history = useHistory();
 
-    useEffect(() => {
-        const checkAuth = () => {
-            if (localStorage.getItem("email") === null) {
-                 history.push('/');
-              }
-        }
-        checkAuth()
-    }, [])
+    // useEffect(() => {
+    //     const checkAuth = () => {
+    //         if (localStorage.getItem("email") === null) {
+    //              history.push('/');
+    //           }
+    //     }
+    //     checkAuth()
+    // }, [])
 
     console.log({ 'RESTAURANT_FROM_ORDER': restaurant })
     //get new orders
@@ -169,11 +169,14 @@ const Orders = () => {
     }
 
     return (
-        <div className="container">
-            <h1 className="orange-text text-center">Orders</h1>
+        <div className="container"> 
             <div className="order_container">
+
+            <div>
+            <h1 className="orange-text text-center">Orders</h1>
+                <div className="order-lists">
                 <div className="section">
-                    <div className="card scroll-card m-1">
+                    <div className="card order_card m-1">
                         <div className="card-header">
                         <div className="icon-container mt-3">
                             <img src="./img/ordering.svg" className="card-img-top" alt="icon" />
@@ -184,7 +187,6 @@ const Orders = () => {
                         <ul className="list-group list-group-flush orders-list overflow-auto">
                             {aReceivedOrders && aReceivedOrders.map((order, i) => (
                         <li key={i} className="list-group-item  pb-5">
-                            {/* <p>Order ID: {order.id}</p> */}
                             <h5>Delivery date: {order.delivery_time}</h5>
                             <h5>Total price: {order.total_amount},-</h5>
                             <p>Customer name: {order.user.first_name} {order.user.last_name}</p>
@@ -203,8 +205,8 @@ const Orders = () => {
                   
                     </div>
                 </div>
-                <div className="section">
-                    <div className="card scroll-card m-1">
+                <div className="section order_card">
+                <div className="card order_card m-1">
                         <div className="card-header">
                         <div className="icon-container mt-3">
                             <img src="./img/check.svg" className="card-img-top" alt="icon" />
@@ -235,7 +237,7 @@ const Orders = () => {
                     </div>
                 </div>
                 <div className="section">
-                    <div className="card scroll-card m-1">
+                <div className="card order_card m-1">
                         <div className="card-header">
                         <div className="icon-container mt-3">
                             <img src="./img/cooking.svg" className="card-img-top" alt="icon" />
@@ -267,12 +269,12 @@ const Orders = () => {
                     </div>
                 </div>
                 <div className="section">
-                    <div className="card scroll-card m-1">
+                <div className="card order_card m-1">
                         <div className="card-header">
                         <div className="icon-container mt-3">
                             <img src="./img/deliver.svg" className="card-img-top" alt="icon" />
                         </div>
-                            <h2 className="text-center mt-3">In progress</h2>
+                            <h2 className="text-center mt-3">Ready for dispatch</h2>
                         </div>
                        
                         <ul className="list-group list-group-flush orders-list overflow-auto">
@@ -295,7 +297,8 @@ const Orders = () => {
                         </li>
                     ))}
                         </ul>
-                  
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>

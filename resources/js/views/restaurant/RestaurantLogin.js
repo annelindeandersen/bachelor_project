@@ -6,8 +6,8 @@ import swal from 'sweetalert';
 
 const Login = () => {
     // Redux
-    // const logged_out = useSelector(state => state.restaurantsReducer.logged_out);
-    // console.log(logged_out)
+    const logged_out = useSelector(state => state.restaurantsReducer.logged_out);
+    const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
     const dispatch = useDispatch();
     // States
     const [sEmail, setEmail] = useState('');
@@ -40,6 +40,8 @@ const Login = () => {
 
             if (response.status === 200) {
                 localStorage.setItem('email', data.local_storage_id);
+                // dispatch({ type: 'CURRENT_USER', restaurant: {} });
+                // dispatch({ type: 'LOGGED_OUT',logged_out: true });
                 history.push('/restaurant-dashboard');
             } else {
                 swal("Ooops", "Incorrect login details", "error");
@@ -51,15 +53,15 @@ const Login = () => {
 
     return (
         <div className="page container restaurant-forms">
-            <div className="profile-page"></div>
+            <div className="login-bg bg"></div>
                 <h1 className="card-header">Login</h1>
                 <p>Don't have an account? <Link to="/restaurant-register">Register today</Link></p>
                  
-                    <label className="form-label mb-0">Email</label>
+                    <label className="form-label mb-0">Email address</label>
                         <input className="form-control mb-4" value={sEmail} onChange={(e) => setEmail(e.target.value)} id="loginEmail" placeholder="email" />
                         <label className="form-label mb-0">Password</label>
                         <input  className="form-control" value={sPassword} onChange={(e) => setPassword(e.target.value)} type="password" id="loginPassword" placeholder="password" /><br />
-                        <input id="loginButton" type="submit" value="Login"  className="btn btn-secondary"  onClick={login} /><br />
+                        <input id="loginButton" type="submit" value="Login"  className="blue-button" onClick={login} /><br />
                         <small>Forgot your password?<Link to="/restaurant-password-request" >Reset password</Link></small>
   
         </div>

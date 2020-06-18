@@ -42,11 +42,11 @@ const PasswordReset = () => {
         <div className="page container restaurant-forms">
             <div className="profile-page"></div>
             <h1 className="card-header">Password reset</h1>
-            <label className="form-label mb-0">Password</label>
+            <label className="form-label mb-0">New Password</label>
             <input value={sPassword} onChange={(e) => setPassword(e.target.value)} id="resetPassword" placeholder="enter new password"  className="form-control mb-4" type="password" />
             <label className="form-label mb-0">Password Confirmation</label>
             <input value={sPasswordConfirmation} onChange={(e) => setPasswordConfirmation(e.target.value)} id="resetPasswordConfirmation" placeholder="confirm new password"  className="form-control" type="password"/>
-            <input type="button"  className="btn btn-secondary" value="Send" onClick={resetPassword} />
+            <input type="button"  className="blue-button" value="Send" onClick={resetPassword} />
         </div>
     );
 }

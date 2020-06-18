@@ -20,11 +20,11 @@ class CreateCartsTable extends Migration
             $table->timestamps();
         });
 
-        DB::table('carts')->insert([
-            [
-                'user_id'=> '1'
-            ]
-        ]);
+        // DB::table('carts')->insert([
+        //     [
+        //         'user_id'=> '1'
+        //     ]
+        // ]);
     }
 
     /**

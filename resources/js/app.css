@@ -7,6 +7,7 @@ input:focus {
     outline:none !important;
 }
 body {
+    font-family: 'Nunito';
     background: whitesmoke;
     font-family: 'Open sans';
 }
@@ -33,12 +34,11 @@ h2, h3 {
 
 
 label {
-    color: #c8c8c8;
+    color: #3b444c;
     font-size: 12px;
 }
 
 .register-wrapper label, .profile-wrapper label {
-    color: lightslategray;
     font-weight: bolder;
 }
 
@@ -166,10 +166,17 @@ nav a {
 .category-wrapper div {
     margin: 5px;
 }
+
+.category-wrapper .all {
+    margin: 5px;
+    width: auto !important;
+}
+
 .restaurant-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 15px;
+    grid-gap: 25px;
+    margin-bottom: 50px;
 }
 .restaurant {
     background: white;
@@ -185,14 +192,14 @@ nav a {
 }
 
 .restaurant-image {
-    width: 80%;
-    height: auto;
+    width: 100%;
+    height: auto; 
 }
 
 .category-restaurant-wrapper {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-content: center;
     align-items: center;
     margin: 10px 0;
@@ -208,11 +215,11 @@ nav a {
 
 .category-types {
     color: #759b85;
-
     font-family: 'PT Sans narrow';
     text-transform: uppercase;
     margin: 0;
     font-size: 16px;
+    margin-right: 10px;
 }
 
 .cart_item {
@@ -228,16 +235,25 @@ nav a {
 }
 
 .menu-item {
-    display: grid;
+    display: flex;
+    position: relative;
+    height: 120px;
+    justify-content: space-between;
     grid-template-columns: 2fr 0.5fr;
     margin-bottom: 10px;
-    padding: 15px 20px;
+    /* padding: 15px 20px; */
     background: white;
     box-shadow: 0px 0px 10px #ddd;
     border-radius: 5px;
     align-items: center;
 }
 
+.menu-image {
+    height: 100%;
+    width: auto;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
 
 .menu-type {
     margin-bottom: 20px;
@@ -245,6 +261,14 @@ nav a {
 
 .menu-item .blue-button {
     height: 40px;
+    width: 125px;
+    margin-right: 35px;
+}
+
+.menu-item-div {
+    padding: 15px 20px;
+    position: absolute;
+    left: 125px;
 }
 
 .restaurant-logo {
@@ -269,23 +293,18 @@ nav a {
     grid-template-columns: 0.7fr 2fr;
     grid-gap: 25px;
 }
-.order {
-    /* display: flex;
-    justify-content: space-between; */
-}
 
-.order-head {
-    border-bottom: 1px solid #ddd;
-}
 .order-head {
     display: grid;
     grid-template-columns: 0.7fr 1fr 1fr 1fr;
-    /* background: rgba(255, 255, 255, 0.507); */
+    background: whitesmoke;
     align-items: center;
     justify-items: center;
     margin: 0;
     padding: 10px;
     cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 5px;
 }
 .detail-head, .detail-info {
     display: grid;
@@ -294,7 +313,7 @@ nav a {
     /* justify-items: center; */
     justify-content: space-evenly;
     margin: 0;
-    padding: 5px 20px;
+    padding: 5px 25px;
 }
 .detail-info p:last-of-type {
     justify-self: flex-end;
@@ -333,19 +352,19 @@ nav a {
     left: 0;
     top: 0;
     position: fixed;
-    opacity: 0.2;
+    opacity: 0.4;
     z-index: -2;
 }
 
 .receipt-page {
-    background: url(./../../public/img/default.jpg);
+    background: url(./../../public/img/background.jpg);
     background-size: cover;
     width: 100vw;
     height: 100vh;
     left: 0;
     top: 0;
     position: fixed;
-    opacity: 0.2;
+    opacity: 0.4;
     z-index: -2;
 }
 
@@ -366,9 +385,12 @@ nav a {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0px 0px 10px #ddd;
-    height: 53vh;
+    height: 62vh;
+    width: 80%;
+    margin: auto;
     position: relative;
 }
+
 .order-details {
     display: none;
 }
@@ -395,7 +417,8 @@ nav a {
     position: absolute;
     width: 95%;
     background: white;
-    max-height: 50vh;
+    max-height: 56vh;
+    overflow: auto;
 }
 
 .header-password, .header-profile, .header-order {
@@ -442,16 +465,20 @@ nav a {
     display: flex;
     justify-content: space-between;
 }
+
 .accepted {
-    padding: 15px 20px 5px;
+    padding: 15px 25px 5px;
     border-top: 1px solid #ddd;
 }
+
 #profileClick {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     justify-items: center;
     align-items: center;
+    margin: auto;
     margin-top: 25px;
+    width: 80%;
 }
 .detail-wrap {
     display: grid;
@@ -475,6 +502,29 @@ nav a {
     color: #444444;
     margin-bottom: 15px;
 }
+
+.cart {
+    display: grid;
+    grid-template-columns: 2fr 0.7fr;
+    margin-top: 25px;
+    grid-gap: 20px;
+    width: 80%;
+    margin: auto;
+}
+.cart-header {
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.total {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-height: 30vh;
+    box-shadow: 0px 0px 10px #ddd;
+}
+
 .payment-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -584,7 +634,11 @@ nav a {
 
 .receipt-wrapper {
     background: white;
-    padding: 20px;
+    /* padding: 20px; */
+    width: 80%;
+    margin: auto;
+    margin-bottom: 50px;
+    margin-top: 25px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px #ddd;
 }
@@ -592,6 +646,11 @@ nav a {
 
 .receipt-wrapper .detail-info {
     border-bottom: none;
+    
+}
+
+.receipt-wrapper .auto-head {
+    padding: 15px 0;
 }
 
 .swal-button {

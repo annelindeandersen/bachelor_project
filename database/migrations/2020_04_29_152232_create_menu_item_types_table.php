@@ -18,6 +18,7 @@ class CreateMenuItemTypesTable extends Migration
             $table->string('type');
             $table->timestamps();
         });
+
         DB::table('menu_item_types')->insert([
             [
                 'type'=> 'Starter',

@@ -19,8 +19,42 @@ body {
   color: black;
 }
 
+.login-bg {
+  background: url(./../../public/img/for-resaurant-bg.jpg);
+}
 
+.plate-bg {
+  background: url(./../../public/img/plate-bg.jpg);
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  position: fixed;
+  opacity: 0.7;
+  z-index: -2;
+}
 
+.bg {
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  position: fixed;
+  opacity: 0.5;
+  z-index: -2;
+}
+
+.for-restaurant-text {
+  margin-top: 30vh;
+  margin-right: 100px;
+
+  p {
+    font-size: 24px;
+  }
+  
+}
 
 .restaurant-nav {
   height: 10vh;
@@ -41,10 +75,17 @@ body {
 .form-label {
   font-weight: bolder;
   text-transform: uppercase;
-  color: slategray;
+  color: #3B444C;
   font-size: 12px;
 
 }
+
+.logout-link {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px;
+}
+
 
 .card-shadow, .profile-form, .img-upload{
   box-shadow: 0 1px 15px rgba(27,31,35,.15), 0 0 1px rgba(106,115,125,.35);
@@ -228,6 +269,11 @@ body {
   background-repeat: no-repeat;
 }
 
+.dash-col{
+  padding-left: 5px!important;
+  padding-right: 5px !important;
+}
+
 .dashboard-container {
   padding-top: 100px;
 }
@@ -281,7 +327,7 @@ body {
 }
 
 .profile-form-card {
-  padding-top: 50px;
+  margin-top: 100px;
 }
 
 .grey-btn {
@@ -296,21 +342,42 @@ body {
   font-size: 16px;
 }
 
+.grey-btn:hover {
+  opacity: 0.9;
+  color: white !important;
+  text-decoration: none;
+}
+
+.order_card {
+  height: 900px;
+}
 .btn-secondary  {
   background-color: $slate !important;
 }
 
+.order_container {
+  margin-top: 100px;
+
+
+}
+
+.order-lists {
+  display: flex;
+}
 .tags {
-  background-color: $green; 
+  border: 2px solid $green; 
+  border-radius: 20px;
+  margin: 5px;
 }
- 
-.checkbox-input:checked +  .tags {
-  background-color: $pink; 
+
+.categgory-tags {
+  width: 100%;
 }
+
 
 .profile-form-body {
   width: 100%;
-  height: 100vh;
+  // height: 100vh;
   background-color: #f4f7fa;
 }
 
@@ -345,12 +412,13 @@ body {
 
 .upload-img-container {
   height: 150px;
-  background-color: #F2F2F2;
+
+
 
   img {
     display : block;
     margin : auto;
-    padding: 20px;
+
   }
 }
 

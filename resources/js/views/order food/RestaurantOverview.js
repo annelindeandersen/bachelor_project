@@ -9,7 +9,7 @@ const RestaurantOverview = () => {
     const [restaurantCategories, setRestaurantCategories] = useState('');
     const [categories, setCategories] = useState('');
     const [catClick, setCatClick] = useState('');
-    const [header, setHeader] = useState('Selected Restaurants');
+    const [header, setHeader] = useState('All Restaurants');
     const logout = useSelector(state => state.usersReducer.logout);
     const history = useHistory();
 
@@ -62,16 +62,16 @@ const RestaurantOverview = () => {
     return (
         <div className="container page">
             <div className="restaurant-page"></div>
-            <div className="row justify-content-center">
-                <div className="card">
-                    {/* <h1 className="card-header">Select your faveorite food types and choose!</h1> */}
-                    <div className="category-wrapper">
-                        {!categories ? '' : categories.data.map((category, index) => (
-                            <div key={index}>
-                                <button onClick={() => clickCategory({ category })} className="blue-button">{category.category}</button>
-                            </div>
-                        ))}
+   
+
+            <div className="category-wrapper">
+                <button onClick={() => { setCatClick(''); setHeader('All Restaurants') }} className="blue-button all">ALL</button>
+                {!categories ? '' : categories.data.map((category, index) => (
+                    <div key={index}>
+                        <button onClick={() => clickCategory({ category })} className="blue-button">{category.category}</button>
                     </div>
+                ))}
+            </div>
                     <h1 className="card-header">{header}</h1>
                     <div className="restaurant-wrapper">
                         {catClick === '' ?
@@ -80,7 +80,7 @@ const RestaurantOverview = () => {
                                 <Link to={`/restaurant?id=${restaurant.restaurant.id}`} key={index} style={{ 'textDecoration': 'none' }} >
                                     <div className="restaurant">
                                         <h3>{restaurant.restaurant.name}</h3>
-                                        <img className="restaurant-image" src={`./img/${restaurant.restaurant.image}`} />
+                                        <img className="restaurant-image" src={restaurant.restaurant.image} alt={restaurant.restaurant.image} />
                                         <div className="category-restaurant-wrapper">
                                             {restaurant.restaurant.category.map((cat, index) => (<p className="category-types" key={index}>{cat.category}</p>))}
                                         </div>
@@ -94,7 +94,7 @@ const RestaurantOverview = () => {
                                 <Link to={`/restaurant?id=${restaurant.id}`} key={index} style={{ 'textDecoration': 'none' }}>
                                     <div className="restaurant">
                                         <h3>{restaurant.name}</h3>
-                                        <img className="restaurant-image" src={`./img/${restaurant.image}`} />
+                                        <img className="restaurant-image" src={restaurant.image} alt={restaurant.image} />
                                         <div className="category-restaurant-wrapper">
                                             {/* <p>{catClick.category}</p> */}
                                             {restaurant.category.map((cat, index) => (<p className="category-types" key={index}>{cat.category}</p>))}
@@ -106,8 +106,7 @@ const RestaurantOverview = () => {
                         }
 
                     </div>
-                </div>
-            </div>
+        
         </div>
     );
 }
