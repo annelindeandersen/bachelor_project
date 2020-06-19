@@ -2,7 +2,9 @@ const initialState = {
     delete: false,
     order_accepted_status: '',
     in_progress_status: false,
-    ready_for_dispatch_status: false
+    ready_for_dispatch_status: false,
+    order_incoming_status: false,
+    rejected_status: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -22,6 +24,18 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             accepted: action.accepted
+        }
+    }
+    if (action.type === 'ORDER_INCOMING') {
+        return {
+            ...state,
+            order_incoming_status: action.order_incoming
+        }
+    }
+    if (action.type === 'ORDER_REJECTED') {
+        return {
+            ...state,
+            rejected_status: action.order_rejected
         }
     }
     if (action.type === 'ORDER_ACCEPTED') {

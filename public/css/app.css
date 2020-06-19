@@ -18,7 +18,7 @@ body {
 }
 
 .login-bg {
-  background: url(/images/for-resaurant-bg.jpg?b5bc435e8daa52f109db81c6e7be255d);
+  background: url(/images/for-resaurant-bg.jpg?34e7a7b3b04d5fb03f81ed5bf8816934);
 }
 
 .plate-bg {
@@ -55,9 +55,10 @@ body {
 
 .restaurant-nav {
   height: 10vh;
-  background-color: none;
-  padding-right: 165px;
-  padding-left: 165px;
+}
+
+.restaurant-nav a {
+  color: #3B444C;
 }
 
 .restaurant-forms {
@@ -243,6 +244,10 @@ body {
   }
 }
 
+.home-menu .menu-full-container {
+  height: 100vh !important;
+}
+
 .home-menu .menu-small {
   font-size: 20px;
   padding: 12px 6px;
@@ -270,10 +275,18 @@ body {
   width: 100%;
 }
 
-.dashboard-page {
-  background-image: url(/images/spices.png?59869ee1e4aaaf0e9604e49099b4bd58);
-  background-position: left;
-  background-repeat: no-repeat;
+.notification-circle {
+  background-color: #ff632d;
+  height: 25px;
+  width: 25px;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  text-align: center;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 6px;
 }
 
 .dash-col {
@@ -313,10 +326,44 @@ body {
   text-decoration: none;
 }
 
+.dashboard-link p {
+  font-size: 18px;
+}
+
+.dashboard-link h4 {
+  color: #778899;
+  font-size: 12px;
+  font-family: "PT Sans narrow" !important;
+  text-transform: uppercase;
+  margin: 0;
+}
+
 .dashboard-link:hover {
   background: #fcdbc2;
   transform: scale(1.01);
   text-decoration: none;
+}
+
+.dashboard-profile-logo-container {
+  height: 100px;
+  width: auto;
+  margin-right: 6px;
+}
+
+.revenue {
+  color: #f35b2a;
+  font-size: 50px !important;
+  font-weight: bolder;
+}
+
+.profile-icon {
+  height: 18px;
+  margin-right: 6px;
+}
+
+.edit-icon {
+  height: 14px;
+  margin: 0 0 6px 6px;
 }
 
 .profile-header {
@@ -351,7 +398,7 @@ body {
 }
 
 .order_card {
-  height: 900px;
+  height: 700px;
 }
 
 .btn-secondary {
@@ -366,16 +413,6 @@ body {
   display: flex;
 }
 
-.tags {
-  border: 2px solid #a2cfb8;
-  border-radius: 20px;
-  margin: 5px;
-}
-
-.categgory-tags {
-  width: 100%;
-}
-
 .profile-form-body {
   width: 100%;
   background-color: #f4f7fa;
@@ -384,7 +421,7 @@ body {
 .profile-form-body {
   width: 100%;
   height: 100vh;
-  background-color: #f4f7fa;
+  background-color: whitesmoke;
 }
 
 .profile-form {
@@ -475,6 +512,78 @@ body {
   height: 100%;
   box-sizing: border-box;
   margin-top: 100px;
+}
+
+.orange-text {
+  color: #f35b2a;
+}
+
+.custom-checkbox {
+  left: 50%;
+  top: 50%;
+}
+
+.custom-checkbox-input {
+  display: none;
+}
+
+.custom-checkbox-text {
+  font-family: "Nunito";
+  border-radius: 20px;
+  margin: 5px;
+  padding: 0.75em;
+  border: 1px solid #a2cfb8;
+  color: #555;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.custom-checkbox-input:checked ~ .custom-checkbox-text {
+  background-color: #a2cfb8;
+  color: white;
+}
+
+progress {
+  border: none;
+  width: 100%;
+  background-color: lightgrey;
+}
+
+progress::-webkit-progress-value {
+  background: #a2cfb8;
+}
+
+.profile-banner {
+  background-size: cover;
+  background-position: center;
+  width: 100vw;
+  height: 220px;
+  left: 0;
+  top: 0;
+  position: fixed;
+  opacity: 0.7;
+}
+
+.form-error-msg {
+  height: 21px;
+  font-size: 12px;
+  color: red;
+}
+
+.order-label {
+  color: #778899;
+  font-size: 12px;
+  font-family: "PT Sans narrow" !important;
+  text-transform: uppercase;
+  margin: 0 0px 3px;
+}
+
+.btn:hover {
+  opacity: 0.9 !important;
+  color: white !important;
 }
 
 /*!

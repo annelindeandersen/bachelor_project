@@ -8,6 +8,9 @@ import moment from 'moment';
 import DatePicker from './components/DatePicker';
 import CardPayment from './components/CardPayment';
 const Payment = () => {
+
+    const order_incoming = useSelector(state => state.ordersReducer.order_incoming_status);
+
     // variables and states for date & time
     const currentMonth = Number((new Date()).getMonth() + 1)
     const today = moment();
@@ -66,6 +69,7 @@ const Payment = () => {
             history.push('/login');
         }
     }, [logout])
+
     useEffect(() => {
         // if no id then redirect to cart to fetch id once again
         if (!restaurantId) {
@@ -81,6 +85,7 @@ const Payment = () => {
                 console.log(err);
             })
     }, [restaurantId])
+
     const orderNow = () => {
         if (cardNumber.length !== 16) {
             console.log('has to be 16')
@@ -117,6 +122,8 @@ const Payment = () => {
                 .then(response => {
                     console.log(response);
                     dispatch({ type: 'GET_ORDER', order: response.data });
+                     dispatch({ type: 'ORDER_INCOMING', order_incoming: true })
+                    // dispatch({ type: 'ORDER_INCOMING', order_incoming: false })
                     deleteAll();
                     dispatch({ type: "DELETE_ONE", deleted: true })
                 })

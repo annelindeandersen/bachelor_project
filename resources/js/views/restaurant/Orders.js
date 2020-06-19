@@ -5,11 +5,14 @@ import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
 import './../../restaurant.css';
+import Moment from 'react-moment';
+import moment from 'moment';
 
 const Orders = () => {
     //redux
     const order_accepted = useSelector(state => state.ordersReducer.order_accepted_status);
     const order_in_progress = useSelector(state => state.ordersReducer.in_progress_status);
+    const order_rejected = useSelector(state => state.ordersReducer.rejected_status);
     const order_ready = useSelector(state => state.ordersReducer.ready_for_dispatch_status);
     const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
     const dispatch = useDispatch();
@@ -17,16 +20,8 @@ const Orders = () => {
     const [aReceivedOrders, setReceivedOrders] = useState();
     const [aOrdersInProgress, setOrdersInProgress] = useState();
     const [aOrdersForDispatch, setOrdersForDispatch] = useState();
+    
     let history = useHistory();
-
-    // useEffect(() => {
-    //     const checkAuth = () => {
-    //         if (localStorage.getItem("email") === null) {
-    //              history.push('/');
-    //           }
-    //     }
-    //     checkAuth()
-    // }, [])
 
     console.log({ 'RESTAURANT_FROM_ORDER': restaurant })
     //get new orders
@@ -47,7 +42,7 @@ const Orders = () => {
     useEffect(() => {
         console.log(!restaurant ? '' : restaurant)
         // if (restaurant) {
-        axios.get('/api/getAcceptedOrders/', { params: { id: restaurant && restaurant.id } })
+        axios.get('/api/getAcceptedOrders/', { params: { id: restaurant.id && restaurant.id } })
             .then(response => {
                 console.log(response.data);
                 setAcceptedOrders(response.data);
@@ -62,7 +57,7 @@ const Orders = () => {
     useEffect(() => {
         console.log(!restaurant ? '' : restaurant)
         // if (restaurant) {
-        axios.get('/api/ordersInProgress/', { params: { id: restaurant && restaurant.id } })
+        axios.get('/api/ordersInProgress/', { params: { id: restaurant.id && restaurant.id } })
             .then(response => {
                 setOrdersInProgress(response.data);
             })
@@ -76,7 +71,7 @@ const Orders = () => {
     useEffect(() => {
         console.log(!restaurant ? '' : restaurant)
         // if (restaurant) {
-        axios.get('/api/ordersforDispatch', { params: { id: restaurant && restaurant.id } })
+        axios.get('/api/ordersforDispatch', { params: { id: restaurant.id && restaurant.id } })
             .then(response => {
                 console.log(response)
                 setOrdersForDispatch(response.data);
@@ -181,16 +176,18 @@ const Orders = () => {
                         <div className="icon-container mt-3">
                             <img src="./img/ordering.svg" className="card-img-top" alt="icon" />
                         </div>
-                            <h2 className="text-center mt-3">New orders</h2>
+                            <h2 className="text-center mt-3">Incoming orders</h2>
                         </div>
                        
                         <ul className="list-group list-group-flush orders-list overflow-auto">
                             {aReceivedOrders && aReceivedOrders.map((order, i) => (
                         <li key={i} className="list-group-item  pb-5">
-                            <h5>Delivery date: {order.delivery_time}</h5>
-                            <h5>Total price: {order.total_amount},-</h5>
-                            <p>Customer name: {order.user.first_name} {order.user.last_name}</p>
-                            <h3>Items</h3>
+                            <h4 className="order-label">Customer name</h4>
+                            <p>{order.user.first_name} {order.user.last_name}</p>
+                            <h4 className="order-label">Delivery date/time:</h4>
+                            <p><Moment format= 'MMMM Do YYYY'>{order.delivery_time}</Moment>, <Moment format= 'LT'>{order.delivery_time}</Moment></p>
+                            
+                      
                             {order.order_item ? order.order_item.map((item, i) => (
                                 <div key={i}>
                                     <p>{item.menu_item.title}</p>
@@ -217,18 +214,17 @@ const Orders = () => {
                         <ul className="list-group list-group-flush orders-list overflow-auto">
                         {aAcceptedOrders && aAcceptedOrders.map((order, i) => (
                         <li key={i} className="list-group-item  pb-5">
-                            {/* <p>Order ID: {order.id}</p> */}
-                            <h5>Delivery date: {order.delivery_time}</h5>
-                            <h5>Total price: {order.total_amount},-</h5>
-                            <p>Customer name: {order.user.first_name} {order.user.last_name}</p>
-                            <h3>Items</h3>
+                            <h4 className="order-label">Customer name</h4>
+                            <p>{order.user.first_name} {order.user.last_name}</p>
+                            <h4 className="order-label">Delivery date/time:</h4>
+                            <p><Moment format= 'MMMM Do YYYY'>{order.delivery_time}</Moment>, <Moment format= 'LT'>{order.delivery_time}</Moment></p>
                             {order.order_item ? order.order_item.map((item, i) => (
                                 <div key={i}>
                                     <p>{item.menu_item.title}</p>
                                 </div>
                                 
                             )) : ''}       
-                            <button name="status" type="submit" className="btn btn-secondary" value={order.id} onClick={(event) => setInProgress(event.target.value)}>Accepted</button>
+                            <button name="status" type="submit" className="btn btn-secondary" value={order.id} onClick={(event) => setInProgress(event.target.value)}>Mark as in progress</button>
 
                         </li>
                     ))}
@@ -248,18 +244,17 @@ const Orders = () => {
                         <ul className="list-group list-group-flush orders-list overflow-auto">
                         {aOrdersInProgress && aOrdersInProgress.map((order, i) => (
                         <li key={i} className="list-group-item  pb-5">
-                            {/* <p>Order ID: {order.id}</p> */}
-                            <h5>Delivery date: {order.delivery_time}</h5>
-                            <h5>Total price: {order.total_amount},-</h5>
-                            <p>Customer name: {order.user.first_name} {order.user.last_name}</p>
-                            <h3>Items</h3>
+                            <h4 className="order-label">Customer name</h4>
+                            <p>{order.user.first_name} {order.user.last_name}</p>
+                            <h4 className="order-label">Delivery date/time:</h4>
+                            <p><Moment format= 'MMMM Do YYYY'>{order.delivery_time}</Moment>, <Moment format= 'LT'>{order.delivery_time}</Moment></p>
                             {order.order_item ? order.order_item.map((item, i) => (
                                 <div key={i}>
                                     <p>{item.menu_item.title}</p>
                                 </div>
                                 
                             )) : ''}       
-                            <button name="status" type="submit" className="grey-btn" value={order.id}
+                            <button name="status" type="submit" className="btn btn-secondary" value={order.id}
                                 onClick={(event) => setReadyForDispatch(event.target.value)}>Ready for Dispatch</button>
 
                         </li>
@@ -280,11 +275,10 @@ const Orders = () => {
                         <ul className="list-group list-group-flush orders-list overflow-auto">
                         {aOrdersForDispatch && aOrdersForDispatch.map((order, i) => (
                         <li key={i} className="list-group-item  pb-5">
-                            {/* <p>Order ID: {order.id}</p> */}
-                            <h5>Delivery date: {order.delivery_time}</h5>
-                            <h5>Total price: {order.total_amount},-</h5>
-                            <p>Customer name: {order.user.first_name} {order.user.last_name}</p>
-                            <h3>Items</h3>
+                            <h4 className="order-label">Customer name</h4>
+                            <p>{order.user.first_name} {order.user.last_name}</p>
+                            <h4 className="order-label">Delivery date/time:</h4>
+                            <p><Moment format= 'MMMM Do YYYY'>{order.delivery_time}</Moment>, <Moment format= 'LT'>{order.delivery_time}</Moment></p>
                             {order.order_item ? order.order_item.map((item, i) => (
                                 <div key={i}>
                                     <p>{item.menu_item.title}</p>

@@ -99,3 +99,7 @@ Route::post('/updateProfile', 'RestaurantController@updateProfile');
 
 Route::post('/uploadLogo', 'RestaurantController@uploadLogo');
 Route::post('/uploadBanner', 'RestaurantController@uploadBanner');
+Route::post('/addCategory', 'RestaurantController@addCategory');
+Route::post('/removeCategory', 'RestaurantController@removeCategory');
+Route::post('/getSelectedCategories', 'RestaurantController@getSelectedCategories');
+Route::post('/getMonthlyRevenue', 'RestaurantController@getMonthlyRevenue');
