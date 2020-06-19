@@ -4,7 +4,8 @@ const initialState = {
     item_added: false,
     item_deleted: false,
     profile_updated: false,
-    log_out: false
+    log_out: false,
+    checkbox_changed: false
 }
 let lastId = 0
 
@@ -49,6 +50,12 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             log_out: action.log_out
+        }
+    }
+    if (action.type === 'CHECKBOX_CHANGED') {
+        return {
+            ...state,
+            checkbox_changed: action.checkbox_changed
         }
     }
     return state;

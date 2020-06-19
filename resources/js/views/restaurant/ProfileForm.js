@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { storage } from '../../../firebase';
 import swal from 'sweetalert';
+import moment from 'moment';
 
 
 const ProfileForm = () => {
@@ -12,6 +13,7 @@ const ProfileForm = () => {
     const logged_out = useSelector(state => state.restaurantsReducer.logged_out);
     const profile_updated = useSelector(state => state.restaurantsReducer.profile_updated);
     const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
+    const checkbox_changed = useSelector(state => state.restaurantsReducer.checkbox_changed);
     console.log(logged_out)
     console.log(restaurant && restaurant.id)
     const dispatch = useDispatch();
@@ -32,15 +34,16 @@ const ProfileForm = () => {
     const [sImage, setImage] = useState('');
     const [sOpeningHour, setOpeningHour] = useState('');
     const [sClosingHour, setClosingHour] = useState('');
-    const [sMessage, setMessage] = useState('');
     const [aCategories, setCategories] = useState([]);
+    const [aSelectedCategories, setSelectedCategories] = useState([]);
     const [aCountries, setCountries] = useState([]);
     const [aCheckedItems, setCheckedItems] = useState({
         selected: []
     });
-    const [checked, setChecked] = useState(false);
+    const [isChecked, setIsChecked] = useState('');
     const [logoProgress, setLogoProgress ] = useState(0);
     const [bannerProgress, setBannerProgress ] = useState(0);
+    
 
     //get countries for select options
     const getCountries = async () => {
@@ -53,6 +56,7 @@ const ProfileForm = () => {
         const data = await result.json();
         setCountries(data);
     }
+
     useEffect(() => {
         getCountries();
     }, []);
@@ -70,10 +74,12 @@ const ProfileForm = () => {
                 setCity(response.data.restaurant.city);
                 setPostcode(response.data.restaurant.postcode);
                 setCountry(response.data.restaurant.country_id);
+                setBannerUrl(response.data.restaurant.image);
                 setDescription(response.data.restaurant.profile.description);
                 setOpeningHour(response.data.restaurant.profile.opening_hour);
                 setClosingHour(response.data.restaurant.profile.closing_hour);
-                setImage(response.data.restaurant.profile.logo);
+                setUrl(response.data.restaurant.profile.logo);
+               
             })
             .catch(error => {
                 console.log(error);
@@ -91,22 +97,62 @@ const ProfileForm = () => {
             })
     }, [])
 
-    //handle category selection
-    const handleSelect = (e) => {
+
+       //get selected categories
+       useEffect(() => {
+        axios.post(`/api/getSelectedCategories`, {
+            'id': 13
+            })
+            .then(response => {
+                console.log({'CATEGORIES':response.data})
+                setSelectedCategories(response.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }, [checkbox_changed])
+
+    //category select
+    const handleCategory = (e) => {
         const checked = e.target.checked;
-        const selectedCategory = parseInt(e.target.value);
-        if (checked) {
-            setCheckedItems({
-                selected: [...aCheckedItems.selected, selectedCategory]
-            })
-               console.log(aCheckedItems)
-        } else {
-            setCheckedItems({
-                selected: aCheckedItems.selected.filter(selectedItem => selectedItem !== selectedCategory)
-            })
+      
+        const selectedCategory = parseInt(e.target.name);
+        if(checked) {
+            console.log({1:checked})
+            axios.post('/api/addCategory', {
+                id: iID,
+                category: selectedCategory
+              })
+              .then(function (response) {
+                console.log(response);
+                dispatch({type: 'CHECKBOX_CHANGED', checkbox_changed: true});
+                dispatch({type: 'CHECKBOX_CHANGED', checkbox_changed: false});
+            
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+        } 
+
+        else if (checked === false){
+            console.log({2:checked})
+            console.log(selectedCategory +'unchekced')
+            axios.post('/api/removeCategory', {
+                id: iID,
+                category: selectedCategory
+              })
+              .then(function (response) {
+                console.log(response);
+                setIsChecked(false)
+                dispatch({type: 'CHECKBOX_CHANGED', checkbox_changed: true});
+                dispatch({type: 'CHECKBOX_CHANGED', checkbox_changed: false});
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
         }
-        console.log(aCheckedItems)
     }
+
 
     const formData = {
         method: 'POST',
@@ -122,6 +168,7 @@ const ProfileForm = () => {
             country_id: sCountry,
             description: sDescription,
             logo: sUrl,
+            image: sBannerUrl,
             opening_hour: sOpeningHour,
             closing_hour: sClosingHour,
             categories: aCheckedItems.selected
@@ -164,8 +211,8 @@ const handleChange = (e) => {
     }
 }
 
-const handleLogoUpload = () => {
-    console.log(iFile)
+const handleLogoUpload = (e) => {
+    e.preventDefault()
     const uploadTask = storage.ref(`/images/${iID}-logo.jpg`).putString(iFile.substring(23), 'base64');
     uploadTask.on(
         "state_changed",
@@ -207,7 +254,8 @@ console.log(response)
 
 
 //banner upload
-const handleBannerUpload = () => {
+const handleBannerUpload = (e) => {
+    e.preventDefault()
     console.log(iFile)
     const uploadTask = storage.ref(`/images/${iID}s-logo`).putString(iFile.substring(23), 'base64');
     uploadTask.on(
@@ -250,34 +298,14 @@ axios.post(`/api/uploadBanner`, {
 }, [sBannerUrl]);
 
     return (
-        <div class="profile-form-body">
+        <div className="profile-form-body">
             <div className="container profile-form-card">
-                <div className="card border-0 card-shadow">
+            <h1 className="pb-3 orange-text text-center">Edit your restaurant details</h1> 
+                <div className="card border-0 card-shadow">                   
                     <div className="card-body">
-                    <h1 className="pb-3 orange-text text-center">EDIT YOUR RESTARURANT DETAILS</h1>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div className="card-body border">
-                                <h3 className="mt-0  card-title">Upload a banner</h3>
-                                <div className="upload-img-container">
-                                    <img src={sBannerUrl}  className="form-image"/>
-                                </div>
-                                <progress id="file" value={bannerProgress} max="100"></progress>
-                                <input type="file" onChange={handleChange} className="pt-3"/>
-                                <a href="#" className="grey-btn mt-2" onClick={handleBannerUpload}>Upload</a>
-                            </div>
-                            <div className="card-body pt-5 mt-5 border">
-                                <h3 className="mt-0 card-title">Upload a logo</h3>
-                                <div className="upload-img-container">
-                                    <img src={sUrl}  className="form-image"/>
-                                </div>
-                                <progress id="file" value={logoProgress} max="100"></progress><br/>
-                                <input type="file" onChange={handleChange} className="pt-3"/>    
-                                <a href="#" className="grey-btn mt-2" onClick={handleLogoUpload}>Upload</a>
-                            </div>
-                            </div>
-                        <div class="col-sm-8">
-                            <div>
+                    <h2 className="pb-3 text-center">Contact Details</h2> 
+                    
+                        <div className="col-sm-12">                  
                             <label className="form-label">Restaurant Name</label>
                                 <input type="text" value={sName} onChange={e => setName(e.target.value)} name="name" placeholder="Restaurant name" className="underline-input"></input>
                                 <div className="detail-wrap">
@@ -310,35 +338,75 @@ axios.post(`/api/uploadBanner`, {
                                         ))
                                     }
                                 </select><br/>
+                                <div className="detail-wrap mt-4">
+                                    <div>
+                                        <label className="form-label time">Opening time</label><br/>
+                                        <input type="time"  name="appt" min="00:01" max="23:59" value={sOpeningHour} onChange={e => setOpeningHour(e.target.value)} ></input><br />
+                                    </div>
+                                    <div>
+                                        <label className="form-label time">Closing time</label><br/>
+                                        <input type="time" name="appt" min="00:01" max="23:59" value={sClosingHour} onChange={e => setClosingHour(e.target.value)}></input><br />
+                                    </div>
+                                </div>
+
                                 <label className="form-label pt-5">Description</label>
                                 <textarea name="description" id="addDescription" placeholder="Enter a description" className="underline-input" value={sDescription} onChange={e => setDescription(e.target.value)}></textarea><br />
-                                <label className="form-label">RESTAURANT CATEGORIES</label>
-                                    <div className=" d-flex flex-wrap category-tags">                           
-                                    {aCategories && aCategories.map((item, i) => (
-                                            <div key={i}  className="btn-group-toggle d-flex tags">
-                                                <label className="btn">
-                                                    <input type="checkbox" 
-                                                    className="checkbox-input"
-                                                    value={item.id} 
-                                                    name={item.category}    
-                                                    onChange={(e) => handleSelect(e)} 
-                                                    />  {item.category}
-                                                </label>
-                                            </div>
-                                        ))}
+                                <input id="" type="submit" onClick={save} value="Save" className="grey-btn mt-5"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="card mt-5 card-shadow">
+                    <h2 className="pb-3     text-center">RESTAURANT CATEGORIES</h2> 
+                        <div className="card-body">
+                        <label className="form-label">RESTAURANT CATEGORIES</label>
+                            <div className=" d-flex flex-wrap category-tags justify-content-center mt-3" >                    
+                                {aCategories && aCategories.map((item, i) => (
+                                <label key={i} className="custom-checkbox">
+                                <input type="hidden" name={item.id}  value='False' />
+                                <input className="custom-checkbox-input" 
+                                name={item.id}  value="True" type="checkbox" readOnly checked={aSelectedCategories.includes(item.id) ? true : false}
+                                onClick={(e) => handleCategory(e)} />
+                                <div className="custom-checkbox-text">{item.category} </div>
+                                </label>
+                                    ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="row mt-5">
+                        <div className="col-sm-6">
+                            <div className="card">
+                            <div className="card-body">
+                            <h2 className="mt-0 card-title text-center">Edit logo</h2>
+                                <div className="card-body pt-5 mt-5 border">
+                                    <div className="upload-img-container">
+                                        <img src={sUrl}  className="form-image"/>
                                     </div>
-                            
-                                    <input id="" type="submit" onClick={save} value="Save" className="grey-btn mt-5"/>
-                              
+                                </div>
+                                <progress id="file" value={logoProgress} max="100"></progress><br/>
+                                <input type="file" onChange={handleChange} className="pt-3"/>   
+                                <a href="#" className="grey-btn mt-2" onClick={handleLogoUpload}>Upload</a>
+                            </div>
+                            </div>
+                        </div>
+                        <div className="col-sm-6">
+                            <div className="card">
+                            <div className="card-body">
+                                <h2 className="mt-0  card-title text-center">Edit banner image</h2>
+                                <div className="card-body pt-5 mt-5 border">
+                                        <div className="upload-img-container">
+                                            <img src={sBannerUrl}  className="form-image"/>
+                                        </div>
+                                    </div>
+                                    <progress id="file" value={bannerProgress} max="100"></progress>
+                                    <input type="file" onChange={handleChange} className="pt-3"/>
+                                    <a href="#" className="grey-btn mt-2" onClick={handleBannerUpload}>Upload</a>
                                 </div>
                             </div>
-                    </div>
-        
-                    </div>
-                </div>
-       
-            </div> 
-        </div>
+                        </div>
+                    </div>  
+                </div> 
+            </div>
     );
 }
 

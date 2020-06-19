@@ -148,6 +148,8 @@ class RestaurantAuthController extends Controller
         return response()->json(['message' => 'Email sent'], 201);
     }
     
+
+    
     public function resetPassword(Request $request)
     {
         $request->validate([

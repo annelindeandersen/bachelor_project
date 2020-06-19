@@ -73,21 +73,31 @@ class MenuController extends Controller
             //add menu item
     public function addMenuItem(Request $request, $id)
     {
-        if (!$request->menu_item_type_id) {
-            return response()->json(['message' => 'Enter a menu type id']);
-        }
         if (!$request->title) {
-            return response()->json(['message' => 'Enter a title']);
+            return response()->json(['message' => 'Enter a title',
+            'status' => 204]);
         }
-        if (!$request->description) {
-            return response()->json(['message' => 'Enter a description']);
-        }
-        if (!$request->price) {
-            return response()->json(['message' => 'Enter a proce']);
-        }
+
         if (!$request->image) {
-            return response()->json(['message' => 'Enter an logo image']);
+            return response()->json(['message' => 'Add a photo',
+            'status' => 204]);
         }
+
+        if (!$request->price) {
+            return response()->json(['message' => 'Enter a price',
+            'status' => 204]);
+        }
+    
+        if (!$request->description) {
+            return response()->json(['message' => 'Enter a description',
+            'status' => 204]);
+        }
+
+        if (!$request->menu_item_type_id) {
+            return response()->json(['message' => 'Select a menu type',
+            'status' => 204]);
+        }
+     
         $menuItem = new MenuItem([
             'restaurant_id' => $id,
             'menu_item_type_id' => $request->menu_item_type_id,
@@ -96,14 +106,12 @@ class MenuController extends Controller
             'price' => $request->price,
             'image' => $request->image
         ]);
-            //    $file = Request::file('image');
-            //    $file->move(public_path('/uploads/'. $request->image));
-            //    Image::make(public_path('/uploads/'. $request->image))->resize(300,300)->save(public_path('/uploads/'. $request->image));
+
         $menuItem->save();
         return response()->json([
-            'message' => 'Successfully saved menu',
-            'data' => $menuItem
-        ], 201);
+            // 'message' => 'Successfully saved menu',
+            'data' => $menuItem ,
+            'status' => 201]);
     }
            //get menu types
     public function getMenuItemTypes(Request $request)
