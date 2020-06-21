@@ -23,7 +23,7 @@ const Cart = () => {
             .then(response => {
                 console.log(response.data);
                 setCart(response.data);
-                setCurrentRestaurant(response.data.items.map(item => item.menu_item.restaurant_id)[0]);
+                setCurrentRestaurant(Object.keys(response.data.items).map(item => response.data.items[item][0].menu_item.restaurant_id)[0]);
                 dispatch({ type: "DELETE_ONE", deleted: false })
             })
             .catch(error => {
@@ -39,8 +39,8 @@ const Cart = () => {
     }
 
     const deleteOne = ({ item }) => {
-        console.log(item.menu_item.id);
-        axios.post('/api/deleteone', { user: user.id, menu_item: item.menu_item.id })
+        console.log(cart.items[item][0].menu_item.id);
+        axios.post('/api/deleteone', { user: user.id, menu_item: cart.items[item][0].menu_item.id })
             .then(response => {
                 console.log(response);
                 dispatch({ type: "DELETE_ONE", deleted: true })
@@ -57,21 +57,21 @@ const Cart = () => {
             <div className="cart">
                 <div className="cart-items">
                     {!cart ? '' :
-                        cart.items.length === 0 ? 'Nothing added to cart yet' : cart.items.map((item, index) => (
+                        cart.price_array.length === 0 ? 'Nothing added to cart yet' : Object.keys(cart.items).map((item, index) => (
                             <div className="cart_item" key={index}>
                                 <div>
-                                    <strong>{item.menu_item.title} - <i>{item.menu_item.description}</i></strong><br />
-                                    <small>Price: {item.menu_item.price} DKK</small>
+                                    <p><b>{cart.items[item].length + ' x ' + item}</b> - <i>{cart.items[item][0].menu_item.description}</i></p>
+                                    <small>Price: {cart.items[item][0].menu_item.price * cart.items[item].length} DKK</small>
                                 </div>
                                 <button onClick={() => deleteOne({ item })} className="orange-button">Delete</button>
                             </div>
                         ))}
                 </div>
                 {!cart ? '' :
-                    cart.items.length === 0 ? '' :
+                    cart.cart_length === 0 ? '' :
                         <div className="total">
                             <h3>Ready to order?</h3>
-                            <h4>{!cart ? '' : cart.total === 0 ? '' : 'Items: ' + cart.items.length} </h4>
+                            <h4>{!cart ? '' : cart.total === 0 ? '' : 'Items: ' + cart.cart_length} </h4>
                             <h4>{!cart ? '' : cart.total === 0 ? '' : 'Total: ' + cart.total + ' DKK'} </h4>
                             <br />
                             {!cart ? '' : cart.items.length === 0 ? '' :

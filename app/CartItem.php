@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
-    public function cart() {
+    public function cart()
+    {
         return $this->belongsTo('App\Cart');
     }
 
-    public function menu_item() {
+    public function menu_item()
+    {
         return $this->belongsTo('App\MenuItem');
     }
 

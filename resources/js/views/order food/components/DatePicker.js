@@ -10,10 +10,10 @@ const DatePicker = ({ today, day, currentMonth, monthsInYear, month, asap, later
         <div className="datepicker">
             <div className="flex"><h2>Review order from</h2><img className="payment-logo" src="./img/delivr-3.png" alt="logo" /></div>
             <div className="payment-order">
-                {!order ? '' : order.items.map((item, index) => (
+                {!order ? '' : Object.keys(order.items).map((item, index) => (
                     <div className="payment-order-item" key={index}>
-                        <strong>{item.menu_item.title}</strong>
-                        <p>{item.menu_item.price} DKK</p>
+                        <strong>{order.items[item].length + ' x ' + item}</strong>
+                        <p>{order.items[item][0].menu_item.price * order.items[item].length} DKK</p>
                     </div>
                 ))}
             </div>

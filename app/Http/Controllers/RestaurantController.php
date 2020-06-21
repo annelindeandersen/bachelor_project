@@ -142,15 +142,7 @@ class RestaurantController extends Controller
             'closing_hour' => $request->closing_hour
         ]);
 
-        $categories  = $request->categories;
-        // echo $category;
-        // foreach ($categories as &$category) {
-        //     // echo $category;
-        //     RestaurantToCategory::firstOrCreate([
-        //         'restaurant_id' => $id,
-        //         'category_id' => $category,
-        //     ]);
-        // }
+        $categories = $request->categories;
 
         $image = $request->logo;
         if (!$image) {
@@ -198,11 +190,19 @@ class RestaurantController extends Controller
         }
 
         $profileEditableFields = [];
-        if($request->description){ array_push($profileEditableFields, 'description');}
-        if($request->logo){ array_push($profileEditableFields, 'logo');}
-        if($request->opening_hour){ array_push($profileEditableFields, 'opening_hour');}
-        if($request->closing_hour){ array_push($profileEditableFields, 'closing_hour');}
-        if($restaurantData->profile == null){
+        if ($request->description) {
+            array_push($profileEditableFields, 'description');
+        }
+        if ($request->logo) {
+            array_push($profileEditableFields, 'logo');
+        }
+        if ($request->opening_hour) {
+            array_push($profileEditableFields, 'opening_hour');
+        }
+        if ($request->closing_hour) {
+            array_push($profileEditableFields, 'closing_hour');
+        }
+        if ($restaurantData->profile == null) {
 
             $newProfile = new RestaurantProfile([
                 'restaurant_id' => $id,
@@ -215,9 +215,9 @@ class RestaurantController extends Controller
             return 'Success in creating';
         } else {
             //category update
-            $categories  = $request->categories;
+            $categories = $request->categories;
             echo json_encode($categories);
-            foreach ($categories  as $category) {
+            foreach ($categories as $category) {
                 echo $category;
                 RestaurantsToCategory::firstOrCreate([
                     'restaurant_id' => $id,
@@ -246,27 +246,27 @@ class RestaurantController extends Controller
     public function uploadLogo(Request $request)
     {
         $url = $request->url;
-        $id = $request->id;   
+        $id = $request->id;
 
-          $logo = RestaurantProfile::where('restaurant_id', $id)
-          ->update(['logo' => $url]);
-          return response()->json([
-              'message' => 'updated',
-          ], 200);
+        $logo = RestaurantProfile::where('restaurant_id', $id)
+            ->update(['logo' => $url]);
+        return response()->json([
+            'message' => 'updated',
+        ], 200);
     }
 
 //upload bnner
-public function uploadBanner(Request $request)
-{
-    $url = $request->url;
-    $id = $request->id;   
-    echo $url;
-      $logo = Restaurant::where('id', $id)
-      ->update(['image' => $url]);
-      return response()->json([
-          'message' => 'updated',
-      ], 200);
-}
+    public function uploadBanner(Request $request)
+    {
+        $url = $request->url;
+        $id = $request->id;
+        echo $url;
+        $logo = Restaurant::where('id', $id)
+            ->update(['image' => $url]);
+        return response()->json([
+            'message' => 'updated',
+        ], 200);
+    }
 
     //get countries for select
     public function getCountries(Request $request)

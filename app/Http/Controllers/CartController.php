@@ -20,26 +20,36 @@ class CartController extends Controller
     public function cart(Request $request)
     {
         $user = $request->user;
+
+        // get cart for user
         $cart = Cart::where('user_id', '=', $user)->first();
+
+        // array to store result
         $cartArray = array();
 
+        // cart items
         $cart_items = CartItem::where('cart_id', '=', $cart->id)->get();
+
+        // cart items with menu items, grouped according to menu item
+        $cart_menu_items = CartItem::with('menu_item', 'menu_item.restaurant')
+            ->where('cart_id', '=', $cart->id)
+            ->orderBy('menu_item_id', 'desc')
+            ->get()
+            ->groupBy('menu_item.title');
 
         $cart_items_array = array();
         $price_array = array();
  
-        // get the menu item from cart item
-        foreach($cart_items as $cart_item) {
-            $cart_items_array[] = ([
-                'menu_item' => $cart_item->menu_item
-            ]);
+        // get price array of cart items
+        foreach ($cart_items as $cart_item) {
             $price_array[] = ($cart_item->menu_item->price);
         }
 
         $cartArray = ([
             'cart' => $cart,
             'user' => $cart->user,
-            'items' => $cart_items_array,
+            'items' => $cart_menu_items,
+            'cart_length' => count($price_array),
             'price_array' => $price_array,
             'total' => array_sum($price_array),
         ]);
@@ -64,7 +74,7 @@ class CartController extends Controller
         $menu_items = MenuItem::where('id', '=', $menu_item_id)->first();
         if (isset($cart_items)) {
             // check if cart_items have the same restaurant_id as menu_item
-            if($cart_items->menu_item->restaurant_id === $menu_items->restaurant_id) {
+            if ($cart_items->menu_item->restaurant_id === $menu_items->restaurant_id) {
                 
                 // create new cart_item
                 $cart_item = new CartItem([
@@ -82,7 +92,7 @@ class CartController extends Controller
                 ]);
 
                 return response()->json($cartArray);
-            } 
+            }
 
             return response()->json([
                 'error' => 'It is impossible to order from more than one restaurant at once.',
@@ -156,7 +166,7 @@ class CartController extends Controller
         $carts = Cart::all();
         $cartArray = array();
 
-        foreach($carts as $cart) {
+        foreach ($carts as $cart) {
             $cartArray[] = ([
                 'cart' => $cart,
                 'user' => $cart->user,

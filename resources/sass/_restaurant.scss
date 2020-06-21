@@ -57,11 +57,12 @@ body {
 }
 
 .restaurant-nav {
-  height: 10vh;
+  height: 8vh;
   background-color: none;
-  padding-right: 165px;
-  padding-left: 165px;
-
+  padding-right: 125px;
+  padding-left: 125px;
+  background: white;
+  box-shadow: 0 0 10px #ddd;
 }
 
 .restaurant-forms {
@@ -86,9 +87,23 @@ body {
   padding: 5px;
 }
 
+.card {
+  border-radius: 5px !important;
+}
+
+.card-body {
+  padding: 25px !important;
+}
+
+.cat-selected {
+  background: #a2cfb8;
+  color: white;
+}
 
 .card-shadow, .profile-form, .img-upload{
-  box-shadow: 0 1px 15px rgba(27,31,35,.15), 0 0 1px rgba(106,115,125,.35);
+  box-shadow: 0 0 10px #ddd;
+  // box-shadow: 0 1px 15px rgba(27,31,35,.15), 0 0 1px rgba(106,115,125,.35);
+  margin-bottom: 50px;
 }
 
 .grey-bg {
@@ -467,9 +482,11 @@ li:nth-child(odd) {
 }
 #sidebar {
   width:300px;
-  top: 170px;
-  background-color: #f2f2f2;
-
+  // top: 170px;
+  background-color: #a2cfb8;
+  box-shadow: 0 0 10px #ddd;
+  border-radius: 5px;
+  padding: 15px;
   box-sizing:border-box;
   position: fixed;
   z-index:99;

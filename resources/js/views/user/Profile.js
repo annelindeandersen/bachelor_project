@@ -148,14 +148,14 @@ const Profile = () => {
         // create array to push or remove clicked orders to
         const orderArray = [...orderDetails];
 
-        if (item.id) {
-            const clickedOrder = orderArray.indexOf(item.id);
+        if (item.order.id) {
+            const clickedOrder = orderArray.indexOf(item.order.id);
             console.log(clickedOrder);
 
             if (clickedOrder >= 0) {
                 orderArray.splice(clickedOrder, 1);
             } else {
-                orderArray.push(item.id);
+                orderArray.push(item.order.id);
             }
             setOrderDetails(orderArray);
             console.log(orderArray)
@@ -228,26 +228,25 @@ const Profile = () => {
                                 <div className="order-item" key={index} onClick={() => toggleOrder({ item })}>
                                     <div className="order">
                                         <div className="order-head">
-                                            <b>Order ID: {item.id}</b>
-                                            <b>{item.restaurant.name}</b>
-                                            <b>{item.delivery_time}</b>
-                                            <b>{item.total_amount} DKK</b>
+                                            <b>Order ID: {item.order.id}</b>
+                                            <b>{item.order.restaurant.name}</b>
+                                            <b>{item.order.delivery_time}</b>
+                                            <b>{item.order.total_amount} DKK</b>
                                         </div>
                                     </div>
-                                    <div className={classNames({ 'visible': orderDetails.indexOf(item.id) >= 0 }, "order-details")}>
+                                    <div className={classNames({ 'visible': orderDetails.indexOf(item.order.id) >= 0 }, "order-details")}>
                                         <div className="detail-head">
                                             <h4>Order items:</h4>
                                         </div>
-                                        {item.order_item.map((order_detail, index) => (
+                                        {Object.keys(item.items).map((item_name, index) => (
                                             <div className="detail-info" key={index}>
-                                                {/* <div className={classNames({ 'visible': orderDetails.indexOf(item.order.id) >= 0 }, "detail-info")} key={index}> */}
-                                                <p>{order_detail.menu_item.title}</p>
-                                                <p>{order_detail.menu_item.price} DKK</p>
+                                                <p><b>{item.items[item_name].length}</b>{' x ' + item_name}</p>
+                                                <p>{item.items[item_name][0].menu_item.price * item.items[item_name].length} DKK</p>
                                             </div>
                                         ))}
                                         <div className="accepted">
-                                            <i>{item.accepted === 0 ? `Your order has been sent to ${item.restaurant.name}.` : `Your order has been accepted by ${item.restaurant.name}.`}</i><br />
-                                            <div className="status"><b>Status: </b><p>{item.status === 0 ? 'Order pending' : 'Order has been sent.'}</p></div>
+                                            <i>{item.order.accepted === 0 ? `Your order has been sent to ${item.order.restaurant.name}.` : `Your order has been accepted by ${item.order.restaurant.name}.`}</i><br />
+                                            <div className="status"><b>Status: </b><p>{item.order.status === 0 ? 'Order pending' : 'Order has been sent.'}</p></div>
                                         </div>
                                     </div>
                                 </div>

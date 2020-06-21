@@ -7,6 +7,7 @@ import { setHours, setMinutes, addDays } from 'date-fns';
 import moment from 'moment';
 import DatePicker from './components/DatePicker';
 import CardPayment from './components/CardPayment';
+
 const Payment = () => {
     // variables and states for date & time
     const currentMonth = Number((new Date()).getMonth() + 1)
@@ -15,15 +16,18 @@ const Payment = () => {
     const currentDay = moment().date();
     const currentStamp = moment(today).unix();
     const [dateSelected, setDateSelected] = useState(moment(today).format('LLLL'));
+
     // setting the date
     const [day, setDay] = useState(currentDay);
     const [month, setMonth] = useState({ name: moment(currentMonth).format('M'), value: currentMonth });
     const [time, setTime] = useState(moment().add(60, 'minutes').hours());
+
     // restaurant opening and closing hours
     const [openingHour, setOpeningHour] = useState('');
     const [closingHour, setClosingHour] = useState('');
     const monthsInYear = moment.months()
     const daysInMonth = moment(`${currentYear}-${month.value}`).daysInMonth();
+
     let dayRows = []
     for (let i = 1; i < daysInMonth + 1; i++) {
         const date = moment(`${currentYear}-${month.value}-${i}`).weekday()
@@ -32,14 +36,19 @@ const Payment = () => {
         const dateText = moment.weekdays(date)
         dayRows.push(<option key={i} value={i} disabled={pastDate || sevenDays}>{i} - {(dateText)}</option>)
     }
+
     const hoursOpen = Number(closingHour.slice(0, 2)) - Number(openingHour.slice(0, 2))
+
     let timeRows = []
     for (let i = 1; i <= hoursOpen + 1; i++) {
-        timeRows.push(<option key={i} disabled={i + Number(openingHour.slice(0, 2)) - 1 < moment().hour() + 1} value={i + Number(openingHour.slice(0, 2)) - 1}>{i + Number(openingHour.slice(0, 2)) - 1}:00</option>)
+        timeRows.push(<option key={i} disabled={moment(dateSelected).date() === currentDay ? i + Number(openingHour.slice(0, 2)) - 1 < moment().hour() + 1 : ''} value={i + Number(openingHour.slice(0, 2)) - 1}>{i + Number(openingHour.slice(0, 2)) - 1}:00</option>)
+        // timeRows.push(<option key={i} disabled={i + Number(openingHour.slice(0, 2)) - 1 < moment().hour() + 1} value={i + Number(openingHour.slice(0, 2)) - 1}>{i + Number(openingHour.slice(0, 2)) - 1}:00</option>)
     }
+
     useEffect(() => {
         setDateSelected(moment(new Date(currentYear, month.value - 1, day, time)).format('LLLL'))
     }, [month, day, time])
+
     // input states
     const [cardNumber, setCardNumber] = useState('');
     const [expirationDate, setExpirationDate] = useState('');
@@ -52,6 +61,7 @@ const Payment = () => {
     const [asap, setAsap] = useState('');
     const [later, setLater] = useState('');
     const [validation, setValidation] = useState('');
+
     // redux & history
     const restaurantId = useSelector(state => state.ordersReducer.restaurant);
     const order = useSelector(state => state.ordersReducer.cart);
@@ -59,13 +69,16 @@ const Payment = () => {
     const logout = useSelector(state => state.usersReducer.logout);
     const dispatch = useDispatch();
     const history = useHistory();
+
     console.log({ 'SELECTED': dateSelected });
+
     useEffect(() => {
         if (logout === 'click') {
             console.log('Logout is clicked')
             history.push('/login');
         }
     }, [logout])
+
     useEffect(() => {
         // if no id then redirect to cart to fetch id once again
         if (!restaurantId) {
@@ -81,26 +94,26 @@ const Payment = () => {
                 console.log(err);
             })
     }, [restaurantId])
+
     const orderNow = () => {
         if (cardNumber.length !== 16) {
             console.log('has to be 16')
             setValidation(false);
             setCardError('1px solid red');
-        }
-        if (expirationDate.length !== 5) {
+        } else if (expirationDate.length !== 5) {
             console.log('has to be 5')
             setValidation(false);
             setExpirationError('1px solid red');
-        }
-        if (securityNumber.length !== 3) {
+        } else if (securityNumber.length !== 3) {
             console.log('has to be 3')
             setValidation(false);
             setSecurityError('1px solid red');
-        }
-        if (cardName.length < 4) {
+        } else if (cardName.length < 4) {
             console.log('has to be more than 3')
             setValidation(false);
             setNameError('1px solid red');
+        } else {
+            setValidation(true);
         }
         // if (currentTime > Number(closingHour.slice(0, 2))) {
         //     console.log('The restaurant does not have enough time today. Pick another day.')
@@ -108,7 +121,8 @@ const Payment = () => {
         //     setNameError('1px solid red');
         // }
         // if (cardNumber.length === 16 && expirationDate.length === 5 && securityNumber.length === 3 && cardName.length > 3) {
-        if (validation !== false) {
+        // setTimeout(() => {
+        if (validation === true) {
             axios.post('/api/createorder', {
                 id: order.user.id,
                 restaurant: restaurantId,
@@ -125,7 +139,9 @@ const Payment = () => {
                     console.log(restaurantId, moment(dateSelected).format('YYYY-MM-DD HH:mm'), order.user.id);
                 })
         }
+        // }, 1000)
     }
+
     // delete items from cart after creating order
     const deleteAll = () => {
         axios.post('/api/deleteall', {
@@ -139,6 +155,7 @@ const Payment = () => {
                 console.log(error);
             })
     }
+
     return (
         <div id="payment" className="page">
             <div className="payment-wrapper">

@@ -21,11 +21,39 @@ class OrderController extends Controller
     public function getorder(Request $request)
     {
 
+        // $user = $request->user;
+
+        // $orders = Order::with('order_item.menu_item', 'restaurant')->where('user_id', '=', $user)->orderBy('id', 'desc')->get();
+
+        // return response()->json($orders->toArray());
+
         $user = $request->user;
 
-        $orders = Order::with('order_item.menu_item', 'restaurant')->where('user_id', '=', $user)->get();
+        $orders = Order::with('restaurant')->where('user_id', '=', $user)->orderBy('id', 'desc')->get();
 
-        return response()->json($orders->toArray());
+        $newArray = array();
+
+        foreach ($orders as $order) {
+
+            $orderItemArray = array();
+
+            $order_items = OrderItem::with('menu_item')
+                ->where('order_id', '=', $order->id)
+                ->get()
+                ->groupBy('menu_item.title')
+                ->toArray();
+
+            $orderItemArray[] = ([
+                'ddd' => $order_items
+            ]);
+
+            $newArray[] = ([
+                'order' => $order,
+                'items' => $order_items
+            ]);
+        }
+
+        return response()->json($newArray);
     }
 
 
@@ -36,25 +64,60 @@ class OrderController extends Controller
      */
     public function test(Request $request)
     {
+        // for fetching all orders of a user
 
         $user = $request->user;
 
-        $orders = Order::where('user_id', '=', $user)->first();
-        $order_items = OrderItem::with('menu_item', 'order')->where('order_id', '=', $orders->id)->get();
-
-        $newOrdersArray = array_merge($order_items->toArray());
+        $orders = Order::with('restaurant')->where('user_id', '=', $user)->orderBy('id', 'desc')->get();
 
         $newArray = array();
 
-        foreach ($newOrdersArray as $newOrderArray) {
+        foreach ($orders as $order) {
+
+            $order_items = OrderItem::with('menu_item')
+                ->where('order_id', '=', $order->id)
+                ->get()
+                ->groupBy('menu_item.title');
 
             $newArray[] = ([
-                'order' => $newOrderArray
-                // 'order' => $newOrderArray->groupBy('id')
+                'order' => $order,
+                'items' => $order_items
             ]);
         }
 
         return response()->json($newArray);
+
+        // $orders = Order::where('user_id', '=', $user)->first();
+
+        // $newOrdersArray = array_merge($order_items->toArray());
+
+        // $newArray = array();
+
+        // foreach ($newOrdersArray as $newOrderArray) {
+
+        //     $newArray[] = ([
+        //         'order' => $newOrderArray
+        //         // 'order' => $newOrderArray->groupBy('id')
+        //     ]);
+        // }
+
+        // return response()->json($newArray);
+
+
+
+        // for CART and payment page -> one specific order/cart
+        $user = $request->user;
+
+        $orders = Order::where('user_id', '=', $user)
+            ->first();
+        // $orders = Order::where('user_id', '=', $user)->first();
+        $order_items = OrderItem::with('menu_item')
+            ->where('order_id', '=', $orders->id)
+            ->orderBy('id', 'desc')
+            ->get()
+            ->groupBy('menu_item.title');
+
+        // return response()->json($order_items);
     }
 
 

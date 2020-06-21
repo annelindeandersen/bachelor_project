@@ -236,9 +236,9 @@ nav a {
 
 .menu-item {
     display: flex;
-    position: relative;
+    /* position: relative; */
     height: 120px;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     grid-template-columns: 2fr 0.5fr;
     margin-bottom: 10px;
     /* padding: 15px 20px; */
@@ -253,6 +253,7 @@ nav a {
     width: auto;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+    margin-right: 20px;
 }
 
 .menu-type {
@@ -262,6 +263,7 @@ nav a {
 .menu-item .blue-button {
     height: 40px;
     width: 125px;
+    margin: auto;
     margin-right: 35px;
 }
 
@@ -354,6 +356,11 @@ nav a {
     position: fixed;
     opacity: 0.4;
     z-index: -2;
+}
+
+.cart-items {
+    max-height: 79vh;
+    overflow: auto;
 }
 
 .receipt-page {
@@ -505,7 +512,8 @@ nav a {
 
 .cart {
     display: grid;
-    grid-template-columns: 2fr 0.7fr;
+    /* grid-template-columns: 2fr 0.7fr; */
+    grid-auto-flow: column;
     margin-top: 25px;
     grid-gap: 20px;
     width: 80%;
@@ -602,7 +610,8 @@ nav a {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0px 0px 10px lightgray;
-    max-height: 50vh;
+    max-height: 39vh;
+    overflow: auto;
 }
 .asap {
     border: 1px solid #ccc;
