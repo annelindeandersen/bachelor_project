@@ -5,9 +5,11 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const Receipt = () => {
+    // states
     const [sUser, setUser] = useState('');
     const [order, setOrder] = useState('');
 
+    // redux
     const user = useSelector(state => state.usersReducer.user);
     const logout = useSelector(state => state.usersReducer.logout);
     const currentOrder = useSelector(state => state.ordersReducer.order);

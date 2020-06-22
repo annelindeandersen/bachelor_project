@@ -58,11 +58,15 @@ body {
 
 .restaurant-nav {
   height: 8vh;
-  background-color: none;
-  padding-right: 125px;
-  padding-left: 125px;
-  background: white;
-  box-shadow: 0 0 10px #ddd;
+  // background-color: none;
+  // padding-right: 125px;
+  // padding-left: 125px;
+  // background: white;
+  // box-shadow: 0 0 10px #ddd;
+}
+
+.restaurant-nav a {
+  color: #3B444C;
 }
 
 .restaurant-forms {
@@ -72,6 +76,10 @@ body {
   }
 
 }   
+
+.home-menu .menu-full-container {
+  height: 100vh !important;
+}
 
 .form-label {
   font-weight: bolder;
@@ -278,10 +286,36 @@ body {
 }
 
 // ************************ DASHBOARD *************************** //
-.dashboard-page {
-  background-image: url('../.././public/img/spices.png');
-  background-position:  left;
-  background-repeat: no-repeat;
+// .dashboard-page {
+//   background-image: url('../.././public/img/spices.png');
+//   background-position:  left;
+//   background-repeat: no-repeat;
+// }
+
+.notification-circle {
+  background-color: #ff632d;
+  height: 25px;
+  width: 25px;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  text-align: center;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 6px;
+}
+
+.dashboard-link p {
+  font-size: 18px;
+}
+
+.dashboard-link h4 {
+  color: #778899;
+  font-size: 12px;
+  font-family: "PT Sans narrow" !important;
+  text-transform: uppercase;
+  margin: 0;
 }
 
 .dash-col{
@@ -289,8 +323,34 @@ body {
   padding-right: 5px !important;
 }
 
+.container.profile-form-card {
+  margin-bottom: 50px;
+}
+
 .dashboard-container {
-  padding-top: 100px;
+  padding-top: 0px;
+}
+
+.dashboard-profile-logo-container {
+  height: 100px;
+  width: auto;
+  margin-right: 6px;
+}
+
+.revenue {
+  color: #f35b2a;
+  font-size: 50px !important;
+  font-weight: bolder;
+}
+
+.profile-icon {
+  height: 18px;
+  margin-right: 6px;
+}
+
+.edit-icon {
+  height: 14px;
+  margin: 0 0 6px 6px;
 }
 
 
@@ -364,7 +424,7 @@ body {
 }
 
 .order_card {
-  height: 900px;
+  height: 700px;
 }
 .btn-secondary  {
   background-color: $slate !important;
@@ -379,15 +439,15 @@ body {
 .order-lists {
   display: flex;
 }
-.tags {
-  border: 2px solid $green; 
-  border-radius: 20px;
-  margin: 5px;
-}
+// .tags {
+//   border: 2px solid $green; 
+//   border-radius: 20px;
+//   margin: 5px;
+// }
 
-.categgory-tags {
-  width: 100%;
-}
+// .categgory-tags {
+//   width: 100%;
+// }
 
 
 .profile-form-body {
@@ -399,7 +459,7 @@ body {
 .profile-form-body {
   width: 100%;
   height: 100vh;
-  background-color: #f4f7fa;
+  background-color: whitesmoke;
 } 
 
 .profile-form {
@@ -467,6 +527,79 @@ li:nth-child(odd) {
   background: #fff; 
 }
 }
+
+.orange-text {
+  color: #f35b2a;
+}
+
+.custom-checkbox {
+  left: 50%;
+  top: 50%;
+}
+
+.custom-checkbox-input {
+  display: none;
+}
+
+.custom-checkbox-text {
+  font-family: "Nunito";
+  border-radius: 20px;
+  margin: 5px;
+  padding: 0.75em;
+  border: 1px solid #a2cfb8;
+  color: #555;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.custom-checkbox-input:checked ~ .custom-checkbox-text {
+  background-color: #a2cfb8;
+  color: white;
+}
+
+progress {
+  border: none;
+  width: 100%;
+  background-color: lightgrey;
+}
+
+progress::-webkit-progress-value {
+  background: #a2cfb8;
+}
+
+.profile-banner {
+  background-size: cover;
+  background-position: center;
+  width: 100vw;
+  height: 220px;
+  left: 0;
+  top: 0;
+  position: fixed;
+  opacity: 0.7;
+}
+
+.form-error-msg {
+  height: 21px;
+  font-size: 12px;
+  color: red;
+}
+
+.order-label {
+  color: #778899;
+  font-size: 12px;
+  font-family: "PT Sans narrow" !important;
+  text-transform: uppercase;
+  margin: 0 0px 3px;
+}
+
+.btn:hover {
+  opacity: 0.9 !important;
+  color: white !important;
+}
+
 
 // MENU PAGE //
 #header {

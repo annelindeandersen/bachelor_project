@@ -2,27 +2,23 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import classNames from 'classnames/bind';
-import swal from 'sweetalert';
 import Moment from 'react-moment';
+import moment from 'moment';
 
 
 const Dashboard = () => {
-    // Redux states
-    const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
-    const order_accepted = useSelector(state => state.ordersReducer.order_accepted_status);
-    const order_in_progress = useSelector(state => state.ordersReducer.in_progress_status);
-    const order_ready = useSelector(state => state.ordersReducer.ready_for_dispatch_status);
-    const profile_updated = useSelector(state => state.restaurantsReducer.profile_updated);
-    const logged_out = useSelector(state => state.restaurantsReducer.logged_out);
 
-    const [aReceivedOrders, setReceivedOrders] = useState();
-    console.log({ 5: restaurant ? restaurant : '' })
+    // Redux states
     let history = useHistory();
     const dispatch = useDispatch();
+    const restaurant = useSelector(state => state.restaurantsReducer.restaurant);
+    const order_incoming = useSelector(state => state.ordersReducer.order_incoming_status);
+    const order_accepted = useSelector(state => state.ordersReducer.order_accepted_status);
+    const order_rejected = useSelector(state => state.ordersReducer.rejected_status);
+    const [aReceivedOrders, setReceivedOrders] = useState();
 
     const localStorageData = localStorage.getItem('email');
-    const date = new Date();
+    let date = new Date();
 
     const [iID, setID] = useState('');
     const [sName, setName] = useState('');
@@ -31,23 +27,34 @@ const Dashboard = () => {
     const [sAddress, setAddress] = useState('');
     const [sCity, setCity] = useState('');
     const [sPostcode, setPostcode] = useState('');
-    const [sCountry, setCountry] = useState('');
     const [sDescription, setDescription] = useState('');
     const [sBannerUrl, setBannerUrl] = useState('');
     const [sLogoUrl, setLogoUrl] = useState('');
     const [sOpeningHour, setOpeningHour] = useState('');
     const [sClosingHour, setClosingHour] = useState('');
-    const [aCategories, setCategories] = useState([]);
-    const [aCheckedItems, setCheckedItems] = useState({
-        selected: []
-    });
-    const [checked, setChecked] = useState(false)
+    const [iRevenue, setIRevenue] = useState('');
+
+    const [greeting, setGreeting] = useState('')
+
+    let hour = parseInt(date.getHours());
+
+
+    useEffect(() => {
+        if (hour >= 6 && hour <= 12) {
+            setGreeting('Good morning')
+        }
+        else if (hour >= 13 && hour <= 17) {
+            setGreeting('Good afternoon')
+        }
+        else {
+            setGreeting('Good night')
+        }
+    }, [hour])
 
     //GET RESTAURANT FROM DB
     useEffect(() => {
         axios.get('/api/getRestaurant', { params: { id: localStorageData } })
             .then(response => {
-                console.log({ 'RESTAURANT_DATA': response.data })
                 setID(response.data.restaurant.id);
                 setName(response.data.restaurant.name);
                 setPhone(response.data.restaurant.phone);
@@ -81,7 +88,7 @@ const Dashboard = () => {
     const logout = () => {
         localStorage.removeItem('email');
         if (localStorage.getItem("email") === null) {
-            dispatch({ type: 'CURRENT_USER', restaurant: '' });
+            dispatch({ type: 'CURRENT_RESTAURANT', restaurant: '' });
             dispatch({ type: 'LOGGED_OUT', logged_out: true });
             history.push('/');
         }
@@ -90,14 +97,34 @@ const Dashboard = () => {
 
     //get new orders
     useEffect(() => {
-        axios.get('/api/getNewOrders', { params: { id: iID } })
+        axios.get('/api/getNewOrders', { params: { id: restaurant.id && restaurant.id } })
             .then(response => {
+                console.log(response)
                 setReceivedOrders(response.data);
             })
             .catch(error => {
                 console.log(error)
             })
-    }, [iID]);
+    }, [restaurant, order_incoming, order_accepted, order_rejected]);
+
+
+    //get monthly revenue
+    useEffect(() => {
+        axios.post(`/api/getMonthlyRevenue`, {
+            id: restaurant.id && restaurant.id
+        })
+            .then(response => {
+                console.log(response)
+                setIRevenue(response.data.monthly_total)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }, [restaurant]);
+
+    let m = moment(date, 'YYYY-MM-DD')
+    console.log(m)
+
 
     return (
 
@@ -106,62 +133,81 @@ const Dashboard = () => {
                 <img id="logo" src="./img/delivr-3.png" alt="logo" className="dashboard-logo" />
             </Link>
             <div className="container dashboard-container">
+                <div className="row d-flex align-items-end flex-column">
+                    <Link to="/" onClick={(e) => logout(e)} className="grey-btn mb-3 logout-link">Logout</Link>
+                </div>
                 <div className="row">
                     <div className="col dash-col">
-                        <div>
-                            <h1 className="text-center">Hello {sName}</h1>
-                            <Link to="/" onClick={(e) => logout(e)} className="float-right grey-btn mb-3 logout-link">Logout</Link>
+                        <div className="d-flex justify-content-between">
+                            <h1 className="">{greeting}</h1>
+                            <div className="d-flex flex-column">
+
+
+                                <p className="mb-0"> <Moment format='dddd'>{date}</Moment>, <Moment format='MMMM Do'>{date}</Moment></p>
+                                <h4><Moment format='LT'>{date}</Moment></h4>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-8 dash-col">
-                        <div className="row">
-                            <div className="col-8 dash-col">
-                                <div className="dashboard-link">
-                                    <h3>New Orders</h3>
-                                    {aReceivedOrders ?
-                                        <ul className="list-group list-group-flush orders-list overflow-auto">
-                                            {aReceivedOrders && aReceivedOrders.slice(0, 3).map((order, i) => (
-                                                <li key={i} className="list-group-item  pb-5">
-                                                    <h5>Delivery date: {order.delivery_time}</h5>
-                                                    <h5>Total price: {order.total_amount},-</h5>
-                                                    <p>Customer name: {order.user.first_name} {order.user.last_name}</p>
-                                                </li>
-                                            ))}
-                                        </ul> : <p>You have no orders at the moment..</p>}
-                                    <Link to="/restaurant-orders" style={{ 'textDecoration': 'none' }}>View all your orders</Link>
-                                </div>
-                            </div>
-                            <div className="col-4 pr-5">
-                                <div className="dashboard-link">
-                                    <Moment format='dddd'>{date}</Moment><br />
-                                    <Moment format='MMMM Do YYYY'>{date}</Moment>< br />
-                                    <h2><Moment format='LT'>{date}</Moment></h2>
-                                </div>
-                                <div className="dashboard-link mt-5">
-                                    <Link to="/restaurant-menu" style={{ 'textDecoration': 'none' }}><h3>Menu</h3></Link>
-                                    <p>View and update your menu</p>
+                    <div className="col-7 dash-col">
+                        <div className="dashboard-link">
+                            <h3>Incoming Orders</h3>
+                            <ul className="list-group list-group-flush orders-list overflow-auto">
+                                {aReceivedOrders && aReceivedOrders.length ?
+                                    <div className="alert alert-secondary" role="alert">
+                                        <div className="notification-circle">{aReceivedOrders.length}</div>You have incoming orders.
+                                                <Link to="/restaurant-orders"> Manage your orders</Link>
+                                    </div> : <p>You have no new orders. <Link to="/restaurant-orders">View active orders</Link></p>}
+                                {aReceivedOrders && aReceivedOrders.slice(0, 3).map((order, i) => (
 
-                                </div>
-                            </div>
+                                    <li key={i} className="list-group-item  pb-5">
+                                        <div className="d-flex justify-content-between border-bottom mb-2">
+                                            <p>{order.user.first_name} {order.user.last_name}</p>
+                                            <p>{
+                                                moment(order.created_at, 'YYYY-MM-DD' - 12).fromNow()}</p>
+                                        </div>
+                                        <h4>Delivery date/time:</h4>
+                                        <p><Moment format='MMMM Do YYYY'>{order.delivery_time}</Moment>, <Moment format='LT'>{order.delivery_time}</Moment></p>
+                                        <h4>Total price:</h4>
+                                        <p>{order.total_amount},-</p>
+
+                                    </li>
+                                ))}
+                            </ul>
+
+
                         </div>
                     </div>
-                    <div className="col-4 dash-col">
+                    <div className="col-5 dash-col">
                         <div className="dashboard-link">
-                            <h3> Your details</h3>
-                            <p>About: {sDescription}</p>
-                            <div className="upload-img-container mb-5">
-                                <img src={sBannerUrl} className="form-image" />
+                            <div className="d-flex">
+                                <div className="dashboard-profile-logo-container">
+                                    <img src={sLogoUrl} className="form-image" alt="" />
+                                </div>
+                                <div>
+                                    <h3>{sName}</h3>
+                                    <p>{sDescription ? sDescription : <Link to="/update-profile"><img src="/img/pen.svg" className="edit-icon" alt="" /></Link>}</p>
+                                </div>
                             </div>
-                            <p>Phone number: {sPhone}</p>
-                            <p>Email address: {sEmail}</p>
-                            <p>Mon - Fri: {sOpeningHour} to {sClosingHour}</p>
-                            <p>Address: {sAddress}, {sCity}</p>
-                            <Link to="/update-profile" style={{ 'textDecoration': 'none' }} className="">Edit your profile</Link>
+                            <div className="d-flex">
+                                <div>
+                                    <p><img src="/img/tel.svg" className="profile-icon" alt="" /> {sPhone}</p>
+                                    <p><img src="/img/mail.svg" className="profile-icon" alt="" />{sEmail}</p>
+                                    <p><img src="/img/pin.svg" className="profile-icon" alt="" /> {sAddress}, {sCity}, {sPostcode}</p>
+                                    <p>Mon - Fri: {sOpeningHour && sClosingHour ? `${sOpeningHour} to ${sClosingHour}` : <Link to="/update-profile"><img src="/img/pen.svg" className="edit-icon" alt="" /></Link>}</p>
+                                </div>
+                            </div>
+                            <Link to="/update-profile" className="">Edit your profile</Link>
+                        </div>
+                        <div className="dashboard-link mt-3">
+                            <Link to="/restaurant-menu" style={{ textDecoration: 'none' }}><h3>View and Update your Menu</h3></Link>
+                        </div>
+                        <div className="dashboard-link mt-3">
+                            <h3><Moment format='MMMM'>{date}</Moment> Revenue</h3>
+                            <p className="revenue">{iRevenue},-</p>
 
                         </div>
-
                     </div>
                 </div>
             </div>

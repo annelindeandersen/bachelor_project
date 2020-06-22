@@ -15,6 +15,7 @@ use App\Country;
 use App\Category;
 use App\RestaurantProfile;
 use App\RestaurantsToCategory;
+use App\Order;
 
 class RestaurantController extends Controller
 {
@@ -215,15 +216,16 @@ class RestaurantController extends Controller
             return 'Success in creating';
         } else {
             //category update
-            $categories = $request->categories;
-            echo json_encode($categories);
-            foreach ($categories as $category) {
-                echo $category;
-                RestaurantsToCategory::firstOrCreate([
-                    'restaurant_id' => $id,
-                    'category_id' => $category,
-                ]);
-            } 
+            // $categories = $request->categories;
+            // echo json_encode($categories);
+            // foreach ($categories as $category) {
+            //     echo $category;
+            //     RestaurantsToCategory::firstOrCreate([
+            //         'restaurant_id' => $id,
+            //         'category_id' => $category,
+            //     ]);
+            // } 
+
             // profile update 
             $profileFieldsToUpdate = $request->only($profileEditableFields);
             $restaurantData->profile->fill($profileFieldsToUpdate);
@@ -236,10 +238,6 @@ class RestaurantController extends Controller
 
             return $restaurantData;
         }
-
-     
-
-        // return $restaurantData;
     }
 
 //upload logo
@@ -274,10 +272,74 @@ class RestaurantController extends Controller
         $countryArray = Country::all();
         return $countryArray;
     }
+    
     //get categories for select
     public function getCategories(Request $request)
     {
         $categoryArray = Category::all();
         return $categoryArray;
     }
+
+    public function addCategory(Request $request)
+    {
+        $restaurantId = $request->id;
+        $categoryId = $request->category;
+
+        $newCategory = RestaurantsToCategory::firstOrCreate([
+            'restaurant_id' => $restaurantId,
+            'category_id' => $categoryId,
+        ]);
+
+        return response()->json([
+            'message' => 'category added'
+        ], 200);
+    }
+
+    public function removeCategory(Request $request)
+    {
+        $restaurantId = $request->id;
+        $categoryId = $request->category;
+
+        $row = RestaurantsToCategory::where('restaurant_id', $restaurantId)
+            ->where('category_id', $categoryId)->delete();
+
+        return response()->json([
+            'message' => 'category deleted'
+        ], 200);
+    }
+
+    public function getSelectedCategories(Request $request)
+    {
+        $restaurantId = $request->id;
+
+        $categories = RestaurantsToCategory::where('restaurant_id', $restaurantId)->get();
+        $category_arr = [];
+        foreach ($categories as $category) {
+            array_push($category_arr, $category->category_id);
+        }
+
+        return $category_arr;
+    }
+
+
+    public function getMonthlyRevenue(Request $request)
+
+    {
+        $restaurantId = $request->id;
+        $first_date = date('yy-m-d', strtotime('first day of this month'));
+        $last_date = date('yy-m-d', strtotime('last day of this month'));
+        $orderRevenues = Order::where('restaurant_id', '=', $restaurantId)
+            ->where('status', 2)
+            ->whereBetween('created_at', [$first_date, $last_date])->get();
+
+        $total_orders_arr = [];
+        foreach ($orderRevenues as $orderRevenue) {
+            array_push($total_orders_arr, $orderRevenue->total_amount);
+        }
+        $monthlyRevenue = array_sum($total_orders_arr);
+        return response()->json([
+            'monthly_total' => $monthlyRevenue
+        ], 200);
+    }
+
 }

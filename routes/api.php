@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
@@ -28,10 +28,10 @@ Route::group([
     Route::post('update', 'AuthController@update');
     Route::post('restaurantRegister', 'RestaurantAuthController@restaurantRegister');
     Route::post('restaurantLogin', 'RestaurantAuthController@restaurantLogin');
-  
+
     Route::group([
-      'middleware' => 'auth:api'
-    ], function() {
+        'middleware' => 'auth:api'
+    ], function () {
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
     });
@@ -99,3 +99,7 @@ Route::post('/updateProfile', 'RestaurantController@updateProfile');
 
 Route::post('/uploadLogo', 'RestaurantController@uploadLogo');
 Route::post('/uploadBanner', 'RestaurantController@uploadBanner');
+Route::post('/addCategory', 'RestaurantController@addCategory');
+Route::post('/removeCategory', 'RestaurantController@removeCategory');
+Route::post('/getSelectedCategories', 'RestaurantController@getSelectedCategories');
+Route::post('/getMonthlyRevenue', 'RestaurantController@getMonthlyRevenue');

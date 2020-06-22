@@ -26,8 +26,9 @@ const RestaurantMenu = () => {
         beverages: []
     });
     const [iFile, setFile] = useState(null);
-    const [sUrl, setUrl]= useState('');
-    const [progress, setProgress ] = useState(0);
+    const [sUrl, setUrl] = useState('');
+    const [progress, setProgress] = useState(0);
+    const [systemMessage, setSystemMessage] = useState('');
 
     //get menu item types for select
     useEffect(() => {
@@ -43,10 +44,10 @@ const RestaurantMenu = () => {
     //get menu
     useEffect(() => {
         if (restaurant) {
-            console.log('restaurant')
+            // console.log('restaurant')
             axios.get(`/api/getMenu/${restaurant.id}`)
                 .then(response => {
-                    console.log({"response":response})
+                    console.log({ "response": response })
                     console.log({ 1: response.data[0] })
                     setMenuItems({
                         starters: response.data[0].starter,
@@ -65,11 +66,10 @@ const RestaurantMenu = () => {
     //delete menu item
     const deleteMenuItem = (e) => {
         e.preventDefault()
-        // console.log(e.target.name)
         axios.delete(`/api/deleteMenuItem/${e.target.name}`, {
         })
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 dispatch({ type: 'MENU_ITEM_DELETED', item_deleted: true });
                 dispatch({ type: 'MENU_ITEM_DELETED', item_deleted: false });
             })
@@ -78,8 +78,12 @@ const RestaurantMenu = () => {
             })
     }
 
-    const save = async (e) => {  
+    const save = async (e) => {
         e.preventDefault();
+
+        if (!progress == 100) {
+            console.log('image is uploading')
+        }
         try {
             if (restaurant && restaurant.id) {
                 const result = await fetch(`/api/addMenuItem/${restaurant && restaurant.id}`, {
@@ -98,40 +102,56 @@ const RestaurantMenu = () => {
                 })
                 const response = await result.json()
                 console.log(response);
-                //inform reducer about menu
+
+                if (response.status != 201) {
+                    console.log(response.message)
+                    let sysMsg = response.message
+
+                    swal('Oppps', sysMsg, "warning");
+                } else {
+                    swal("Success", "Item added     ", "success");
+                }
+
                 dispatch({ type: 'MENU_ITEM_CREATED', item_added: true });
                 dispatch({ type: 'MENU_ITEM_DELETED', item_added: false });
+                // setTitle('');
+                // setPrice('');
+                // setDescription('');
+                // setUrl('');
+                // setMenuItemType('');
             }
-         
+
+
         } catch (error) {
             console.log(error)
         }
-        setTitle('');
-        setPrice('');
-        setDescription('');
-        setUrl('');
-        setMenuItemType('');
+
     }
 
-//image upload
+    const listenScrollEvent = () => {
+        console.log('Scroll event detected!');
+    }
+
+    //image upload
     const handleChange = (e) => {
-        if(e.target.files[0]) {
-        let file = e.target.files[0]
-        setImageName(file.name)
+        if (e.target.files[0]) {
+            let file = e.target.files[0]
+            setImageName(file.name)
             let reader = new FileReader();
             if (file && file.type.match('image.*')) {
                 reader.readAsDataURL(file);
-            } 
+            }
             reader.onload = (e) => {
                 // console.log(e.target.result)
                 setFile(e.target.result)
-          
+
             }
         }
     }
-    console.log({9:iFile})
-    const handleUpload = () => {
-        console.log({9:iFile})
+
+    //upload image
+    const handleUpload = (e) => {
+        e.preventDefault()
         const uploadTask = storage.ref(`/images/${sImageName}.jpg`).putString(iFile.substring(23), 'base64');
         uploadTask.on(
             "state_changed",
@@ -144,193 +164,180 @@ const RestaurantMenu = () => {
             error => {
                 console.log(error);
             },
-          () =>   {
-         storage
-         .ref('images')
-         .child(`${sImageName}.jpg`)
-         .getDownloadURL()
-         .then(url => {
-            console.log(url)
-            setUrl(url);
-         });
-     });
+            () => {
+                storage
+                    .ref('images')
+                    .child(`${sImageName}.jpg`)
+                    .getDownloadURL()
+                    .then(url => {
+                        console.log(url)
+                        setUrl(url);
+                    });
+            });
     };
+
     return (
         <div className="container">
-            <div className=" parent ">
-                <div id="sidebar">        
+            <div className=" parent">
+                <div id="sidebar">
                     <div className="menu-form">
                         <h3>Add menu items</h3>
-                    <div>
-                        <input value={sTitle} onChange={(e) => setTitle(e.target.value)} id="title" className="form-control" placeholder="title" /><br />
-                        <div className="card img-upload mt-3 mb-3">                   
-                            <div className="form-image-divs">
-                            </div>
-                            <div className="card-body">
-                                <h4 className="mt-0  card-title">Upload an image</h4>
-                            <div className="upload-img-container">
-                                <img src={sUrl}  className="form-image"/>
-                            </div>
-                            <progress id="file" value={progress} max="100"></progress><br/>
-                                <input type="file" onChange={handleChange} className="pt-3"/>
-                                <a href="#" className="grey-btn mt-2" onClick={handleUpload}>Upload</a>
-                            </div>
-                        </div>
-                
-
-
-
-
-
-                        <input value={sPrice} onChange={(e) => setPrice(e.target.value)} id="price" className="form-control" placeholder="price" /><br />
-                        <textarea value={sDescription} onChange={(event) => setDescription(event.target.value)} id="addDescription" name="addDescription" className="form-control" placeholder="description"></textarea><br />
-                        <label htmlFor="menu_item_type_select">Select Course Type</label>
-                        <select id="menu_item_type_select" value={iMenuItemType} onChange={(e) => setMenuItemType(e.target.value)} className="mb-5">
-                        <option >Select a course</option>
-                        {
-                            aMenuItemOptions ? aMenuItemOptions.map(menuOption => (
-                                <option key={menuOption.id} value={menuOption.id}>{menuOption.type}</option>
-                            )) : null
-                        }
-                        {/* <option value="1">Starter</option> */}
-                        </select>
-            
-                        <input id="registerButton" className="form-control" type="submit" value="Save" onClick={save} />
-                    </div>
-                </div>
-
-    </div>
-    <div id="main-content">
-        <div className="menu-courses-container">
-                    <h1 className="orange-text">MENU</h1>
-                    <div className="menu-courses">
-                <div className="menu-full-container overflow-auto">
-
-         
-                <div >
-                    {aMenuItems.starters.length ? <h2>Starters</h2> : ''}
-                    {
-                        aMenuItems.starters ? aMenuItems.starters.map((starterItem, i) => (
-                        <div key={i} className="card mb-3">
-                            <div className="row">
-                                <div className="col-md-4 m-0">
-                                <img src={starterItem.image} className="card-img p-4" alt="menu_item" />
-                                </div>
-                                <div className="col-md-8">
+                        <div>
+                            <input value={sTitle} onChange={(e) => setTitle(e.target.value)} id="title" className="form-control" placeholder="title" /><br />
+                            <div className="card img-upload mt-3 mb-3">
                                 <div className="card-body">
-                                    <h4 className="card-title">{starterItem.title}</h4>
-                                    <p className="card-text">{starterItem.description}</p>
-                                    <p className="card-text">{starterItem.price}</p>
-                                    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                                    <input type="button" value="Delete" name={starterItem.id} onClick={(e) => deleteMenuItem(e)} />
+                                    <h4 className="mt-0  card-title">Upload an image</h4>
+                                    <div className="upload-img-container">
+                                        <img src={sUrl} className="form-image" />
+                                    </div>
+                                    <progress id="file" value={progress} max="100"></progress><br />
+                                    <input type="file" onChange={handleChange} className="pt-3" />
+                                    <a href="#" className="grey-btn mt-2" onClick={handleUpload}>Upload</a>
+                                </div>
+                            </div>
+                            <input value={sPrice} onChange={(e) => setPrice(e.target.value)} id="price" className="form-control mb-3" placeholder="price" />
+                            <textarea value={sDescription} onChange={(event) => setDescription(event.target.value)} id="addDescription" name="addDescription" className="form-control" placeholder="description"></textarea><br />
+                            <label htmlFor="menu_item_type_select">Select Course Type</label>
+                            <select id="menu_item_type_select" value={iMenuItemType} onChange={(e) => setMenuItemType(e.target.value)} className="mb-5">
+                                <option >Select a course</option>
+                                {
+                                    aMenuItemOptions ? aMenuItemOptions.map(menuOption => (
+                                        <option key={menuOption.id} value={menuOption.id}>{menuOption.type}</option>
+                                    )) : null
+                                }
+                            </select>
+                            <input id="registerButton" className="grey-btn" type="submit" value="Save" onClick={save} />
+                        </div>
+                    </div>
 
+                </div>
+                <div id="main-content" onScroll={listenScrollEvent}>
+                    <div className="menu-courses-container">
+                        <h1 className="orange-text">MENU</h1>
+                        <div className="menu-courses">
+                            <div className="menu-full-container">
+                                <div className="card mb-3 border-0 ">
+                                    {aMenuItems.starters.length ? <h2 className="pl-4">Starters</h2> : ''}
+                                    {
+                                        aMenuItems.starters ? aMenuItems.starters.map((starterItem, i) => (
+                                            <div key={i}>
+                                                <div className="row border-bottom">
+                                                    <div className="col-md-4 m-0">
+                                                        <img src={starterItem.image} className="card-img p-4" alt="menu_item" />
+                                                    </div>
+                                                    <div className="col-md-8">
+
+                                                        <h4 className="card-title">{starterItem.title}</h4>
+                                                        <p className="card-text">{starterItem.description}</p>
+                                                        <p className="card-text">{starterItem.price} kr</p>
+                                                        <input type="button" className="btn btn-danger" value="Delete" name={starterItem.id} onClick={(e) => deleteMenuItem(e)} />
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )) : ''
+                                    }
                                 </div>
+                                <div className="card mb-3 border-0">
+                                    {aMenuItems.mains.length ? <h2 className="pl-4">Mains</h2> : ''}
+                                    {
+                                        aMenuItems.mains ? aMenuItems.mains.map((mainItem, i) => (
+                                            <div key={i}>
+                                                <div className="row border-bottom">
+                                                    <div className="col-md-4 m-0">
+                                                        <img src={mainItem.image} className="card-img p-4" alt="menu_item" />
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <div className="card-body">
+                                                            <h4 className="card-title">{mainItem.title}</h4>
+                                                            <p className="card-text">{mainItem.description}</p>
+                                                            <p className="card-text">{mainItem.price} kr</p>
+                                                            <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+                                                            <input type="button" className="btn btn-danger" value="Delete" name={mainItem.id} onClick={(e) => deleteMenuItem(e)} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )) : ''
+                                    }
+                                </div>
+                                <div className="card mb-3 border-0">
+                                    {aMenuItems.desserts.length ? <h1 className="pl-4">Desserts</h1> : ''}
+                                    {
+                                        aMenuItems.desserts ? aMenuItems.desserts.map((dessertItem, i) => (
+                                            <div key={i}>
+                                                <div className="row border-bottom">
+                                                    <div className="col-md-4 m-0">
+                                                        <img src={dessertItem.image} className="card-img p-4" alt="menu_item" />
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <div className="card-body">
+                                                            <h4 className="card-title">{dessertItem.title}</h4>
+                                                            <p className="card-text">{dessertItem.description}</p>
+                                                            <p className="card-text">{dessertItem.price} kr</p>
+                                                            <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+                                                            <input type="button" className="btn btn-danger" value="Delete" name={dessertItem.id} onClick={(e) => deleteMenuItem(e)} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )) : ''
+                                    }
+                                </div>
+                                <div className="card mb-3 border-0">
+                                    {aMenuItems.beverages.length ? <h1 className="pl-4">Beverages</h1> : ''}
+                                    {
+                                        aMenuItems.beverages ? aMenuItems.beverages.map((beverageItem, i) => (
+                                            <div key={i}>
+                                                <div className="row border-bottom">
+                                                    <div className="col-md-4 m-0">
+                                                        <img src={beverageItem.image} className="card-img p-4" alt="menu_item" />
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <div className="card-body">
+                                                            <h4 className="card-title">{beverageItem.title}</h4>
+                                                            <p className="card-text">{beverageItem.description}</p>
+                                                            <p className="card-text">{beverageItem.price} kr</p>
+                                                            <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+                                                            <input type="button" className="btn btn-danger" value="Delete" name={beverageItem.id} onClick={(e) => deleteMenuItem(e)} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )) : ''
+                                    }
+                                </div>
+                                <div className="card mb-3 border-0">
+                                    {aMenuItems.snacks.length ? <h1 className="pl-4">Sides</h1> : ''}
+                                    {
+                                        aMenuItems.snacks ? aMenuItems.snacks.map((sideItem, i) => (
+                                            <div key={i}>
+                                                <div className="row border-bottom">
+                                                    <div className="col-md-4 m-0">
+                                                        <img src={sideItem.image} className="card-img p-4" alt="menu_item" />
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <div className="card-body">
+                                                            <h4 className="card-title">{sideItem.title}</h4>
+                                                            <p className="card-text">{sideItem.description}</p>
+                                                            <p className="card-text">{sideItem.price} kr</p>
+                                                            <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+                                                            <input type="button" className="btn btn-danger" value="Delete" name={sideItem.id} onClick={(e) => deleteMenuItem(e)} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )) : ''
+                                    }
                                 </div>
                             </div>
                         </div>
-                        )) : ''
-                    }
-                </div>
-                <div>
-                    {aMenuItems.mains.length ? <h2>Mains</h2> : ''}
-                    {
-                        aMenuItems.mains ? aMenuItems.mains.map((mainItem, i) => (
-                            <div key={i} className="card mb-3">
-                                <div className="row">
-                                    <div className="col-md-4 m-0">
-                                        <img src={mainItem.image} className="card-img p-4" alt="menu_item" />
-                                    </div>
-                                    <div className="col-md-8">
-                                        <div className="card-body">
-                                            <h4 className="card-title">{mainItem.title}</h4>
-                                            <p className="card-text">{mainItem.description}</p>
-                                            <p className="card-text">{mainItem.price}</p>
-                                            <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                                            <input type="button" value="Delete" name={mainItem.id} onClick={(e) => deleteMenuItem(e)} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )) : ''
-                    }
-                </div>
-                <div>
-                    
-                    {aMenuItems.desserts.length ? <h1>Desserts</h1> : ''}
-                    {
-                        aMenuItems.desserts ? aMenuItems.desserts.map((dessertItem, i) => (
-                            <div key={i} className="card mb-3">
-                                <div className="row">
-                                    <div className="col-md-4 m-0">
-                                        <img src={dessertItem.image} className="card-img p-4" alt="menu_item" />
-                                    </div>
-                                    <div className="col-md-8">
-                                        <div className="card-body">
-                                            <h4 className="card-title">{dessertItem.title}</h4>
-                                            <p className="card-text">{dessertItem.description}</p>
-                                            <p className="card-text">{dessertItem.price}</p>
-                                            <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                                            <input type="button" value="Delete" name={dessertItem.id} onClick={(e) => deleteMenuItem(e)} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )) : ''
-                    }
-                </div>
-                <div>
-                    {aMenuItems.beverages.length ? <h1>Beverages</h1> : ''}
-                    {
-                        aMenuItems.beverages ? aMenuItems.beverages.map((beverageItem, i) => (
-                        <div key={i} className="card mb-3">
-                            <div className="row">
-                                <div className="col-md-4 m-0">
-                                    <img src={beverageItem.image} className="card-img p-4" alt="menu_item" />
-                                </div>
-                                <div className="col-md-8">
-                                    <div className="card-body">
-                                        <h4 className="card-title">{beverageItem.title}</h4>
-                                        <p className="card-text">{beverageItem.description}</p>
-                                        <p className="card-text">{beverageItem.price}</p>
-                                        <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                                        <input type="button" value="Delete" name={beverageItem.id} onClick={(e) => deleteMenuItem(e)} />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        )) : ''
-                    }
-                </div>
-                <div>
-                    {aMenuItems.snacks.length ? <h1>Sides</h1> : ''}
-                    {
-                        aMenuItems.snacks ? aMenuItems.snacks.map((sideItem, i) => (
-                            <div key={i} className="card mb-3">
-                            <div className="row">
-                                <div className="col-md-4 m-0">
-                                    <img src={sideItem.image} className="card-img p-4" alt="menu_item" />
-                                </div>
-                                <div className="col-md-8">
-                                    <div className="card-body">
-                                        <h4 className="card-title">{sideItem.title}</h4>
-                                        <p className="card-text">{sideItem.description}</p>
-                                        <p className="card-text">{sideItem.price}</p>
-                                        <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                                        <input type="button" value="Delete" name={sideItem.id} onClick={(e) => deleteMenuItem(e)} />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        )) : ''
-                    }
-                </div>
-                </div>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
-        </div>
-    
+
 
 
     );

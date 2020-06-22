@@ -21,31 +21,22 @@ class OrderController extends Controller
     public function getorder(Request $request)
     {
 
-        // $user = $request->user;
-
-        // $orders = Order::with('order_item.menu_item', 'restaurant')->where('user_id', '=', $user)->orderBy('id', 'desc')->get();
-
-        // return response()->json($orders->toArray());
-
         $user = $request->user;
 
-        $orders = Order::with('restaurant')->where('user_id', '=', $user)->orderBy('id', 'desc')->get();
+        $orders = Order::with('restaurant')
+            ->where('user_id', '=', $user)
+            ->orderBy('id', 'desc')
+            ->get();
 
         $newArray = array();
 
         foreach ($orders as $order) {
-
-            $orderItemArray = array();
 
             $order_items = OrderItem::with('menu_item')
                 ->where('order_id', '=', $order->id)
                 ->get()
                 ->groupBy('menu_item.title')
                 ->toArray();
-
-            $orderItemArray[] = ([
-                'ddd' => $order_items
-            ]);
 
             $newArray[] = ([
                 'order' => $order,
@@ -65,6 +56,15 @@ class OrderController extends Controller
     public function test(Request $request)
     {
         // for fetching all orders of a user
+
+        // $user = $request->user;
+
+        $orders = Order::with('order_item.menu_item', 'restaurant')
+            ->where('user_id', '=', $user)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        // return response()->json($orders->toArray());
 
         $user = $request->user;
 

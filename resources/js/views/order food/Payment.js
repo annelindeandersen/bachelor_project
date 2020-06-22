@@ -9,6 +9,8 @@ import DatePicker from './components/DatePicker';
 import CardPayment from './components/CardPayment';
 
 const Payment = () => {
+    const order_incoming = useSelector(state => state.ordersReducer.order_incoming_status);
+
     // variables and states for date & time
     const currentMonth = Number((new Date()).getMonth() + 1)
     const today = moment();
@@ -131,6 +133,7 @@ const Payment = () => {
                 .then(response => {
                     console.log(response);
                     dispatch({ type: 'GET_ORDER', order: response.data });
+                    dispatch({ type: 'ORDER_INCOMING', order_incoming: true })
                     deleteAll();
                     dispatch({ type: "DELETE_ONE", deleted: true })
                 })
